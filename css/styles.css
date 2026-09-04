@@ -1,11 +1,108 @@
+/* google fonts montserrat and playfair display */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 
-header {
-    font-family: 'Playfair Display';
+/* color and fonts (overwrites bootstrap)*/
+:root {
+    --bg-principal: #f7f7f7;
+    --accent-emerald: #2e8b57;
+    --accent-emerald-hover: #246e44;
+    --accent-mustard: #FFD700;
+    --accent-brown: #8B4513;
+    --text-main: #333333;
+    --text-secondary: #666666;
+  
+    --font-main: 'Montserrat', sans-serif;
+    --font-heading: 'Playfair Display', serif;
 }
 
+/* base styles using the above ^^ */
 body {
-    font-family: 'Montserrat';
+    background-color: var(--bg-principal);
+    font-family: var(--font-main);
+    color: var(--text-main)
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+    font-family: var(--font-heading);
+    color: var(--accent-brown);
+}
+
+p, span, body {
+    color: var(--text-main)
+}
+
+.text-secondary,
+.text-body-secondary {
+    color: var(--text-secondary);
+}
+
+/* links and navigation */
+a {
+    color: var(--accent-emerald);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover{
+    color: var(--accent-brown);
+}
+
+.nav-link {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-emerald);
+}
+
+/* buttons */
+.btn-primary {
+    background-color: var(--accent-emerald);
+    border-color: var(--accent-emerald);
+    color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:active:focus {
+    background-color: var(--accent-emerald-hover);
+    border-color: var(--accent-emerald-hover);
+    color: white;
+}
+
+/* promos and stuff */
+.bg-mustard{
+    background-color: var(--accent-mustard);
+    color: var(--text-main);
+}
+
+.text-mustard {
+    color: var(--accent-mustard);
+}
+
+.btn-mustard {
+    background-color: var(--accent-mustard);
+    color: var(--text-main);
+    font-weight: 600;
+    border: none;
+}
+
+.btn-mustard:hover {
+    background-color: #e6c200;
+    color: black;
+}
+
+/* footer and icons */
+footer {
+    background-color: white;
+}
+
+.payment-icons {
+    color: var(--accent-brown);
 }
