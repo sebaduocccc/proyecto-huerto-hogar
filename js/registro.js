@@ -25,4 +25,6 @@ formularioRegistro.addEventListener('submit', (e) => {
         mostrarMensaje('Error','las contraseñas no coinciden.');
         return;
     }
+
+    
 });
