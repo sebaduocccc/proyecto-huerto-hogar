@@ -41,7 +41,7 @@
 
     <div class="container">
             <div class="row justify-content-center">
-                <div class="card menu-sesion d-flex justify-content-center align-items-center min-vh-50">
+                <div class="card menu-sesion d-flex justify-content-center align-items-center min-vh-50 text-center">
                     <div class="card-body">
 
                         <div class="mb-5"><h2 class="card-title">Registro</h2></div>
@@ -60,13 +60,13 @@
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control">
+                                <input type="password" class="form-control" placeholder="•••••••••••••••">
                                 <div class="form-text">Asegurate de crear una contraseña segura.</div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Confirmar Contraseña</label>
-                                <input type="password" class="form-control">
+                                <input type="password" class="form-control" placeholder="•••••••••••••••">
                                 <div class="form-text"></div>
                             </div>
 
@@ -76,22 +76,27 @@
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Telefono</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" placeholder="+56 9 1234 5678">
                             </div>
 
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="check1">
-                                <label for="check1" class="form-check-label">Recordar</label>
-                            </div>
+                            
 
-                            <select name="" id="comunas" class="form-select">
-                                <option selected>Selecciona tu comuna</option>
-                            </select>
+                            <div class="row mb-3">
+                                <label for="" class="form-label">Direccion</label>
+                                <div class="col-6"><select name="" id="region" class="form-select"></select></div>
+                                <div class="col-6"><select name="" id="comuna" class="form-select"></select></div>
+                                
+                            </div>
+                            <input type="text" placeholder="Calle" class="form-control mb-3">
+
+                            
+
+                            
 
                         </form>
 
                     
-                        <a href="#" class="btn btn-primary">Iniciar Sesión</a>
+                        <a href="#" class="btn btn-primary">Registrarme</a>
                     </div>
                 </div>
             </div>
