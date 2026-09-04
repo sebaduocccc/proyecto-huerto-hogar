@@ -53,19 +53,15 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
-    var items = '[{"Id":1,"Title":"Para que la alimentación sea saludable, debe ser inocua, es decir, no contener contaminantes microbianos y químicos"}\
-    ,{"Id":2,"Title":"La alimentación saludable puede adoptar muchas formas, pero debe basarse siempre en cuatro principios fundamentales: adecuación, equilibrio, moderación y diversidad."}\
-    ,{"Id":3,"Title":"Las preferencias y los comportamientos alimentarios establecidos en la infancia y adolescencia suelen prolongarse hasta la edad adulta."}\
-    ,{"Id":4,"Title":"Las prácticas alimentarias saludables deben iniciarse en las primeras etapas de la vida. La lactancia materna favorece un crecimiento saludable y mejora el desarrollo cognitivo."}\
-    ,{"Id":5,"Title":"La base de toda alimentación saludable es un conjunto de alimentos mínimamente procesados y no procesados, con bajo contenido de grasas no saludables, azúcares libres y sodio."},\
-    {"Id":6,"Title":"La alimentación tiene una influencia determinante en la salud y el bienestar, tanto a nivel individual como de la población en su conjunto. Las dietas poco saludables son un factor de riesgo importante de enfermedades y discapacidad."},\
-    {"Id":7,"Title":"La alimentación saludable ayuda a protegerse frente a la malnutrición en todas sus formas, así como frente a las enfermedades no transmisibles (ENT), como la diabetes, las cardiopatías, el accidente cerebrovascular y el cáncer."},\
-    {"Id":8,"Title":"Los carbohidratos deben proceder principalmente de cereales integrales, verduras, frutas y legumbres. Entre los cereales integrales se incluyen el maíz, el mijo, la avena, el trigo y el arroz integral en su forma no procesada. Las legumbres comprenden, entre otras, las lentejas, los garbanzos, los frijoles y los guisantes secos."},\
-    {"Id":9,"Title":"Las frutas y verduras frescas son opciones adecuadas, al igual que las congeladas y las enlatadas, siempre que no contengan azúcares añadidos ni cantidades excesivas de sodio. Aunque los zumos de fruta pueden consumirse, la mayoría de las variedades —incluso las que no llevan azúcares añadidos— contienen cantidades elevadas de azúcares libres, por lo que su consumo debe limitarse."},\
-    {"Id":10,"Title":"Las personas mayores de 10 años deberían procurar consumir al menos 400 g de frutas y verduras al día. En el caso de los niños de entre 6 y 9 años, la cantidad recomendada es de 350 g diarios, y para los niños de entre 2 y 5 años, al menos 250 g."}]';
+    var items = '[{"Id":1,"Title":"El mensaje número 10 de las Guías Alimentarias para Chile, elaborado por el Instituto de Nutrición y Tecnología de los Alimentos de la Universidad de Chile, destaca la necesidad de proteger el planeta, cuidar el agua, evitar el desperdicio de alimentos, separar los residuos y reciclar. "}\
+    ,{"Id":2,"Title":"Se entiende por “sistema alimentario sostenible” aquel que garantiza la seguridad alimentaria y la nutrición de las personas sin poner en riesgo las bases económicas, sociales y ambientales de la seguridad alimentaria de futuras generaciones "}\
+    ,{"Id":3,"Title":"Los alimentos de temporada respetan las estaciones y las condiciones climáticas propicias,proporcionando productos con mejores características organolépticas y nutricionales. Además,los alimentos adquiridos en su temporada suelen ser más económicos y sostenibles."}\
+    ,{"Id":4,"Title":"La sostenibilidad es importante a lo largo de toda la cadena alimentaria (producción,transformación y distribución), tanto en productos animales como vegetales. El medioambiente suele ser más vulnerable a la producción intensiva que a los sistemas tradicionales de producción, cría o pesca y, por ello, hay que fomentar los sistemas alimentarios armónicos y sostenibles."}\
+    ,{"Id":5,"Title":"La Dieta Mediterránea representa uno de los ejemplos más emblemáticos de alimentación saludable y sostenible."},\
+    {"Id":6,"Title":"Utiliza la biodiversidad terrestre y acuática de forma sostenible para asegurar su continuidad."}]';
     var pager = {};
     pager.items = JSON.parse(items);
-    pager.itemsPerPage = 5;
+    pager.itemsPerPage = 3;
     pagerInit(pager);
         
     function bindList() {
