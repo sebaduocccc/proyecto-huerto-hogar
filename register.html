@@ -46,27 +46,27 @@
 
                         <div class="mb-5"><h2 class="card-title">Registro</h2></div>
                         
-                        <form action="">
+                        <form action="" id="form-registro">
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" placeholder="Nombre">
+                                <input type="text" class="form-control" placeholder="Nombre" id="name" name="nombre">
                             </div>
                             
                             <div class="mb-3">
                                 <label for="" class="form-label">Email</label>
-                                <input type="email" class="form-control" placeholder="john_doe@correo.cl">
+                                <input type="email" class="form-control" placeholder="john_doe@correo.cl" id="mail" name="correo">
                             </div>
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" placeholder="•••••••••••••••">
+                                <input type="password" class="form-control" placeholder="•••••••••••••••" id="password1" name="password1">
                                 <div class="form-text">Asegurate de crear una contraseña segura.</div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" placeholder="•••••••••••••••">
+                                <input type="password" class="form-control" placeholder="•••••••••••••••" id="password2" name="password2">
                                 <div class="form-text"></div>
                             </div>
 
@@ -76,27 +76,27 @@
 
                             <div class="mb-3">
                                 <label for="" class="form-label">Telefono</label>
-                                <input type="text" class="form-control" placeholder="+56 9 1234 5678">
+                                <input type="text" class="form-control" placeholder="+56 9 1234 5678" id="phone" name="telefono">
                             </div>
 
                             
 
                             <div class="row mb-3">
                                 <label for="" class="form-label">Direccion</label>
-                                <div class="col-6"><select name="" id="region" class="form-select"></select></div>
-                                <div class="col-6"><select name="" id="comuna" class="form-select"></select></div>
+                                <div class="col-6"><select name="" id="region" class="form-select" name="region"></select></div>
+                                <div class="col-6"><select name="" id="comuna" class="form-select" name="comuna"></select></div>
                                 
                             </div>
-                            <input type="text" placeholder="Calle" class="form-control mb-3">
+                            <input type="text" placeholder="Calle" class="form-control mb-3" id="address" name="direccion">
 
                             
 
                             
 
+                            <button type="submit" class="btn btn-primary">Registrarme</button>
                         </form>
 
                     
-                        <a href="#" class="btn btn-primary">Registrarme</a>
                     </div>
                 </div>
             </div>
@@ -104,8 +104,26 @@
 
 
 
-            
-    <script src="js/direccion.js"></script>
+
+
+    <div class="modal fade" tabindex="-1" id="modal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo-modal"></h5>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" id="mensaje-modal">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="js/direccion.js"></script>
+    <script src="js/registro.js"></script>
 </body>
 </html>
