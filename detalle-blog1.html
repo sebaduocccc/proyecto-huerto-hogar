@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
 
 </head>
 <body>
@@ -39,19 +40,102 @@
     </nav>
     </header>
     <p title="Titulo"style="font-size:300%;text-align:center">Blog de alimentacion saludable</p>
-        
-        <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+    <div class="mx-auto px-5" style=" font: size 120px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">Ultimos consejos</div>
+        <ul id="myList" class="list-group"></ul>
+        <ul class="pager">
+          <li class="previous"><a href="" onclick="prevPage(); return false;">«</a></li>
+          <li class="next"><a href="" onclick="nextPage(); return false;">»</a></li>
+        </ul>
+      </div>
+      <body ng-controller="MainCtrl">
+    
+    
+  
+    <ion-content>
+       <div>
+            <input type="text" ng-model="config.serverip">
+            <input type="button" class="button" value="Apply" ng-click="save()">
+        </div>
+    </ion-content>
+
+    </div>
+    
     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-3.0.2/af-3.0.0/b-4.0.2/cv-1.0.2/cr-3.0.1/cc-2.0.1/date-2.0.0/e-3.0.1/fc-6.0.0/fh-5.0.0/kt-3.0.0/r-4.0.2/rg-2.0.0/rr-2.0.0/sc-3.0.0/sb-2.0.0/sl-4.0.1/datatables.min.js" integrity="sha384-1rkjeA4DdMn+lvv8tWbq2pSwaQ0SxsCzmmYRK9klp7i7ig4UUWGLKyqTz0UJ1Lni" crossorigin="anonymous"></script>
+    <script>
+    var items = '[{"Id":1,"Title":"Para que la alimentación sea saludable, debe ser inocua, es decir, no contener contaminantes microbianos y químicos"}\
+    ,{"Id":2,"Title":"La alimentación saludable puede adoptar muchas formas, pero debe basarse siempre en cuatro principios fundamentales: adecuación, equilibrio, moderación y diversidad."}\
+    ,{"Id":3,"Title":"Las preferencias y los comportamientos alimentarios establecidos en la infancia y adolescencia suelen prolongarse hasta la edad adulta."}\
+    ,{"Id":4,"Title":"Las prácticas alimentarias saludables deben iniciarse en las primeras etapas de la vida. La lactancia materna favorece un crecimiento saludable y mejora el desarrollo cognitivo."}\
+    ,{"Id":5,"Title":"La base de toda alimentación saludable es un conjunto de alimentos mínimamente procesados y no procesados, con bajo contenido de grasas no saludables, azúcares libres y sodio."},\
+    {"Id":6,"Title":"La alimentación tiene una influencia determinante en la salud y el bienestar, tanto a nivel individual como de la población en su conjunto. Las dietas poco saludables son un factor de riesgo importante de enfermedades y discapacidad."},\
+    {"Id":7,"Title":"La alimentación saludable ayuda a protegerse frente a la malnutrición en todas sus formas, así como frente a las enfermedades no transmisibles (ENT), como la diabetes, las cardiopatías, el accidente cerebrovascular y el cáncer."},\
+    {"Id":8,"Title":"Los carbohidratos deben proceder principalmente de cereales integrales, verduras, frutas y legumbres. Entre los cereales integrales se incluyen el maíz, el mijo, la avena, el trigo y el arroz integral en su forma no procesada. Las legumbres comprenden, entre otras, las lentejas, los garbanzos, los frijoles y los guisantes secos."},\
+    {"Id":9,"Title":"Las frutas y verduras frescas son opciones adecuadas, al igual que las congeladas y las enlatadas, siempre que no contengan azúcares añadidos ni cantidades excesivas de sodio. Aunque los zumos de fruta pueden consumirse, la mayoría de las variedades —incluso las que no llevan azúcares añadidos— contienen cantidades elevadas de azúcares libres, por lo que su consumo debe limitarse."},\
+    {"Id":10,"Title":"Las personas mayores de 10 años deberían procurar consumir al menos 400 g de frutas y verduras al día. En el caso de los niños de entre 6 y 9 años, la cantidad recomendada es de 350 g diarios, y para los niños de entre 2 y 5 años, al menos 250 g."}]';
+    var pager = {};
+    pager.items = JSON.parse(items);
+    pager.itemsPerPage = 5;
+    pagerInit(pager);
+        
+    function bindList() {
+      var pgItems = pager.pagedItems[pager.currentPage];
+      $("#myList").empty();
+      for(var i = 0; i < pgItems.length; i++){
+        var option = $('<li class="list-group-item">');
+        for( var key in pgItems[i] ){
+          option.html(pgItems[i][key]);
+        }
+        $("#myList").append(option);
+      }
+    }
+    function prevPage(){
+      pager.prevPage();
+      bindList();
+    }
+    function nextPage(){
+      pager.nextPage();
+      bindList();
+    }
+    function pagerInit(p) {
+      p.pagedItems = [];
+      p.currentPage = 0;
+      if (p.itemsPerPage === undefined) {
+        p.itemsPerPage = 5;
+      }
+      p.prevPage = function () {
+	if (p.currentPage > 0) {
+          p.currentPage--;
+        }
+      };
+      p.nextPage = function () {
+        if (p.currentPage < p.pagedItems.length - 1) {
+          p.currentPage++;
+        }
+      };
+      init = function () {
+        for (var i = 0; i < p.items.length; i++) {
+          if (i % p.itemsPerPage === 0) {
+            p.pagedItems[Math.floor(i / p.itemsPerPage)] = [p.items[i]];
+          } else {
+            p.pagedItems[Math.floor(i / p.itemsPerPage)].push(p.items[i]);
+          }
+        }
+      };
+      init();
+    }		
+    $(function() {
+      bindList();
+    });
+  </script>
+  <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+  <script>
+    function mensajeBlog(){}
+  </script>
 </body>
 </html>
