@@ -54,18 +54,19 @@ function registrarUsuario({nombre, email, password, telefono, direccion}){
     console.log(usuarios);
     console.log("sampo");
 
-    if (usuarios.some((u) => u.email === email)){
-        return {ok: false, msg: "Ya existe una cuenta con ese correo."};
+    if(usuarios.some((u) => u.email === email)){
+        return { ok: false, msg: "Ya existe ese correo."};
     }
+    
 
     const nuevoUsuario = {
         id: generarId(),
-        nombre: nombre,
-        correo: email,
-        pass: password,
-        fono: telefono,
-        direccion: direccion
-    }
+        nombre,
+        email,
+        password,
+        telefono,
+        direccion
+    };  
 
     usuarios.push(nuevoUsuario); // poner usuario al final de la array
     guardarUsuarioDB(usuarios);
@@ -79,28 +80,30 @@ function registrarUsuario({nombre, email, password, telefono, direccion}){
 
 document.addEventListener("DOMContentLoaded",() => {
 
-
     formularioRegistro.addEventListener('submit', (e) => {
 
     e.preventDefault(); // evitar que el formulario recargue la pagina
 
     const nombreUser = document.getElementById("name").value.trim();
-    const correoUser = document.getElementById("mail").value.trim();
+    const correoUser = document.getElementById("mail").value.trim().toLowerCase();
     const passwordUser = document.getElementById("password1").value;
     const password2User = document.getElementById("password2").value;
     const telefonoUser = document.getElementById("phone").value;
     const direccionUser = crearDireccion();
     
     
-    if(passwordUser.value !== password2User.value){
-        mostrarMensaje('error','no coinciden las contraseñas');
+    if(passwordUser !== password2User){
+        mostrarMensaje('error','las contraseñas no coinciden.');
+        return;
     }
 
-    console.log(registrarUsuario(nombreUser,correoUser,passwordUser,telefonoUser,direccionUser));
+    const exito = registrarUsuario({
+        nombre: nombreUser,
+        email: correoUser,
+        password:passwordUser,
+        telefono:telefonoUser,
+        direccion: direccionUser});
+    });
+
     
 });
-
-
-
-});
-
