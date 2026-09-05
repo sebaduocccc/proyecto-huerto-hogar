@@ -86,6 +86,10 @@ a:hover{
     color: var(--accent-mustard);
 }
 
+.text-emerald {
+    color: var(--accent-emerald);
+}
+
 .btn-mustard {
     background-color: var(--accent-mustard);
     color: var(--text-main);
