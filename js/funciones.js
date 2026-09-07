@@ -1,4 +1,7 @@
 
+const CLAVE_USUARIOS = "phuertohogar_usuarios";
+const CLAVE_SESION   = "phuertohogar_session";
+
 function probar(){
     console.log(obtenerUsuarios());
 }
@@ -80,4 +83,22 @@ function iniciarSesion({email,password, recordar}){
     const almacen = recordar ? localStorage : sessionStorage;
     almacen.setItem('phuertohogar_session', usuario.id);
     return {ok: true, msg: "iniciaste sesion correctamente"};
+}
+
+function obtenerIdSesion() {
+    return localStorage.getItem(CLAVE_SESION) ?? sessionStorage.getItem(CLAVE_SESION);
+}
+
+function obtenerUsuarioActual() {
+    const id = obtenerIdSesion();
+    if (!id) return null;
+
+    return obtenerUsuarios().find((u) => u.id === id) || null;
+}
+
+
+function cerrarSesion(){
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
+    location.href = "login.html";
 }
