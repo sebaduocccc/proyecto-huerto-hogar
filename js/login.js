@@ -1,5 +1,4 @@
 // Constantes
-const CLAVE_USUARIOS = "phuertohogar_usuarios";
 const formularioLogin = document.getElementById('form-login');
 
 
@@ -20,7 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = document.getElementById('password').value;
         const recordar = recordarSesionBoton();
         
-        iniciarSesion({email,password,recordar});
+        const resultado = iniciarSesion({email,password,recordar});
+
+        if (!resultado.ok){
+            mostrarMensaje('Error', resultado.msg);
+            return;
+        }
+
+        location.href = "index.html";
         
     });
 

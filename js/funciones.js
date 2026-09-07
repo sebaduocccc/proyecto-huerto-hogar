@@ -77,11 +77,11 @@ function iniciarSesion({email,password, recordar}){
         return {ok: false, msg: "Correo o contaseña incorrecta."};
     }
 
-    localStorage.removeItem('phuertohogar_session');
-    sessionStorage.removeItem('phuertohogar_session');
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
 
     const almacen = recordar ? localStorage : sessionStorage;
-    almacen.setItem('phuertohogar_session', usuario.id);
+    almacen.setItem(CLAVE_SESION, usuario.id);
     return {ok: true, msg: "iniciaste sesion correctamente"};
 }
 

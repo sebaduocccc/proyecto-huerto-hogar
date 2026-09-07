@@ -1,5 +1,4 @@
 // constantes
-const CLAVE_USUARIOS = "phuertohogar_usuarios";
 const formularioRegistro = document.getElementById('form-registro');
 
 // interaccion css
@@ -39,6 +38,14 @@ document.addEventListener("DOMContentLoaded",() => {
         password:passwordUser,
         telefono:telefonoUser,
         direccion: direccionUser});
+
+    if (!exito.ok){
+        mostrarMensaje('Error', exito.msg);
+        return;
+    }
+
+    mostrarMensaje('Listo', exito.msg);
+    formularioRegistro.reset();
     });
 
     
