@@ -12,12 +12,19 @@ function recordarSesionBoton(){
     return check;
 }
 
+// Devuelve las tres partes por separado para poder editarlas de forma
+// independiente en el perfil.
 function crearDireccion(){
-    const region = document.getElementById('region').value;
-    const comuna = document.getElementById('comuna').value;
-    const direccion = document.getElementById('address').value.trim();
+    return {
+        direccion: document.getElementById('address').value.trim(),
+        comuna: document.getElementById('comuna').value,
+        region: document.getElementById('region').value
+    };
+}
 
-    return direccion + ", " + comuna + ", " + region + "."
+// Une las partes solo cuando hay que mostrar la direccion completa.
+function formatearDireccion({direccion, comuna, region}){
+    return [direccion, comuna, region].filter(Boolean).join(", ") + ".";
 }
 
 function generarId(){
@@ -38,7 +45,7 @@ function obtenerUsuarios(){
     }
 }
 
-function registrarUsuario({nombre, email, password, telefono, direccion}){
+function registrarUsuario({nombre, email, password, telefono, direccion, comuna, region, rut, fechaNacimiento}){
     const usuarios = obtenerUsuarios();
 
     console.log("sampa");
@@ -56,7 +63,11 @@ function registrarUsuario({nombre, email, password, telefono, direccion}){
         email,
         password,
         telefono,
-        direccion
+        direccion,
+        comuna,
+        region,
+        rut,
+        fechaNacimiento
     };  
 
     usuarios.push(nuevoUsuario); // poner usuario al final de la array
