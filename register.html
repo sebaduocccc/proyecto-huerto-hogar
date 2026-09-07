@@ -7,44 +7,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
     <link rel="stylesheet" href="styles/login.css">
+    <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
 
-    <button class="btn btn-primary" onclick="probar()"></button>
+    <!-- NAVIGATION BAR -->
+    <header class="sticky-top bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <a class="navbar-brand fw-bold" href="index.html">HUERTO HOGAR</a>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Site Name</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
- 
- 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link disabled" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="productos.html">Productos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Nosotros</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Blogs</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Contacto</a>
-        </li>                        
-        </ul>
-    </div>
-    </nav>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">Productos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Contacto</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
+                            <i class="fa-solid fa-cart-shopping"></i>Carrito
+                        </button>
+                    </li>        
+                
+                    <li class="nav-item">
+                        <button class="btn btn-primary">Ingresar</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <button class="btn btn-primary" onclick="probar()"></button>
 
     
 
-    <div class="container">
+    <div class="container py-2">
             <div class="row justify-content-center">
-                <div class="card menu-sesion d-flex justify-content-center align-items-center min-vh-50 text-center">
+                <div class="card menu-sesion text-center">
                     <div class="card-body">
 
                         <div class="mb-5"><h2 class="card-title">Registro</h2></div>
@@ -96,11 +110,11 @@
 
                             
 
-                            <button type="submit" class="btn btn-primary">Registrarme</button>
+                            <button type="submit" class="btn btn-primary mb-3">Registrarme</button>
                         </form>
 
                     
-                        <div class="mb-3">
+                        <div class="mb-5">
                             <a href="login.html" class="card-link">¿Ya tienes cuenta? Inicia sesión acá</a>
                         </div>
                     </div>
@@ -128,10 +142,53 @@
         </div>
     </div>
 
+    <!-- FOOTER -->
+    <footer class="border-top pt-5 pb-4">
+        <div class="container"> 
+            <div class="row g-4"> 
+                <div class="col-12 col-md-4"> 
+                    <h5 class="fw-bold mb-3">HUERTO HOGAR</h5> 
+                    <p class="text-secondary small">Tu huerto en casa</p>
+                    <div class="d-flex gap-3 payment-icons fs-4 mt-3">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <h6 class="fw-bold mb-3">Navegación</h6>
+                        <ul class="nav flex-column gap-1"> 
+                            <li class="nav-item mb-2"><a href="index.html" class="nav-link p-0 text-body-secondary">Home</a></li> 
+                            <li class="nav-item mb-2"><a href="productos.html" class="nav-link p-0 text-body-secondary">Productos</a></li> 
+                            <li class="nav-item mb-2"><a href="nosotros.html" class="nav-link p-0 text-body-secondary">Nosotros</a></li> 
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contacto</a></li> 
+                        </ul> 
+                    </div>
+                </div> 
+
+                <div class="col-12 col-md-5"> 
+                    <form> 
+                        <h6 class="fw-bold mb-2">Subscríbete a nuestro boletín</h5> 
+                        <p class="text-secondary small mb-3">Recibe noticias de nuevos productos</p> 
+                        <div class="d-flex gap-2"> 
+                            <input id="newsletter1" type="email" class="form-control" placeholder="Email address"> 
+                            <button class="btn btn-primary" type="button">Subscribirse</button> 
+                        </div> 
+                    </form> 
+                </div> 
+            </div> 
+            
+            <div class="d-flex justify-content-between py-4 my-4 border-top text-secondary small"> 
+                <p class="mb-0">&copy; Ignacio Ponce, Sebastián Saavedra & Cristóbal Spinola</p> 
+            </div>
+        </div>
+    </footer> 
+
     <script src="js/funciones.js"></script>
     <script src="js/interfaz.js"></script>
     <script src="js/direccion.js"></script>
     <script src="js/registro.js"></script>
+    <script src="https://kit.fontawesome.com/064a97935a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

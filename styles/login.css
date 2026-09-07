@@ -2,5 +2,10 @@
 
 .menu-sesion{
     width: 40rem;
-    height: 50rem;
+    height: 54rem;
+}
+
+.menu-login{
+    width: 40rem;
+    height: 33rem;
 }
