@@ -35,7 +35,7 @@ function renderProductCatalog() {
                                 </a>
                             </h5>
                             <p class="product-price fw-bold text-emerald fs-5 mb-3">
-                                $${product.price.toLocalString('es-CL')}
+                                $${product.price.toLocaleString('es-CL')}
                             </p>
                         </div>
                         <button type="button" class="btn btn-primary add-to-cart-btn w-100" onclick="quickAddToCart('${product.sku}')">
@@ -54,10 +54,10 @@ function quickAddToCart(sku) {
     if(!product) return;
 
     const cart=JSON.parse(localStorage.getItem('cart')) || [];
-    const existingIndex=cart.findIndex(item => item.sku === products.sku);
+    const existingIndex=cart.findIndex(item => item.sku === product.sku);
 
     if(existingIndex > -1) {
-        cart[existingIndex].qantity+=1;
+        cart[existingIndex].quantity+=1;
     } else {
         cart.push({
             sku: product.sku,
