@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form=document.getElementById('product-form');
     const cancelBtn=document.getElementById('cancel-btn');
-    /* const resetBtn=document.getElementById('reset-catalog-btn'); */
-
+    
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const sku = document.getElementById('sku-input').value.trim().toUpperCase();
         const name = document.getElementById('name-input').value.trim();
         const category = document.getElementById('category-input').value;
+        const stock = parseInt(document.getElementById('stock-input').value, 10)
         const price = parseInt(document.getElementById('price-input').value);
         const image = document.getElementById('image-input').value.trim() || 'img/not-found.svg';
         const description = document.getElementById('description-input').value.trim();
@@ -23,10 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const existingGallery = catalog[sku]?.gallery;
+        const gallery = (existingGallery && existingGallery.length)
+            ? [image, ...existingGallery.slice(1)]
+            : [image];
+
         catalog[sku] = {
             sku: sku,
             name: name,
             category: category,
+            stock: stock,
             price: price,
             image: image,
             gallery: [image],
@@ -63,6 +69,7 @@ function renderAdminTable() {
                 </div>
             </td>
             <td>${product.category}</td>
+            <td>${product.stock}</td>
             <td>$${product.price.toLocaleString('es-CL')}</td>
             <td class="text-end">
                 <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct('${product.sku}')">Editar</button>
@@ -83,6 +90,7 @@ function editProduct(sku) {
 
     document.getElementById('name-input').value = product.name;
     document.getElementById('category-input').value = product.category;
+    document.getElementById('stock-input').value = product.stock;
     document.getElementById('price-input').value = product.price;
     document.getElementById('image-input').value = product.image;
     document.getElementById('description-input').value = product.description;
