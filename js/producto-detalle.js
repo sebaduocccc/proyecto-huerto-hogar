@@ -20,22 +20,11 @@ function populateProductDetails(product) {
     document.getElementById('breadcrumb-product-name').textContent = product.name;
     document.getElementById('product-title').textContent = product.name;
     document.getElementById('product-sku').textContent = product.sku;
+    document.getElementById('product-stock-badge').textContent = product.stock;
     document.getElementById('product-category').textContent = product.category;
     document.getElementById('product-description').textContent = product.description;
 
     document.getElementById('product-price').textContent = `$${product.price.toLocaleString('es-CL')}`;
-
-/*     if (product.oldPrice) {
-        const oldPriceEl = document.getElementById('product-old-price');
-        oldPriceEl.textContent = `$${product.oldPrice.toLocaleString('es-CL')}`
-        oldPriceEl.classList.remove('d-none');
-    }
-
-    if (product.badge) {
-        const badgeEl = document.getElementById('product-badge');
-        badgeEl.textContent = product.badge;
-        badgeEl.classList.remove('d-none');
-    } */
 
     const mainImg = document.getElementById('product-image');
     mainImg.src = product.image;
