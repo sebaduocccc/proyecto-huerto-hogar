@@ -1,8 +1,7 @@
-const DEFAULT_PRODUCTS = {
-    "manzanas": {
-        id: "manzanas",
-        name: "Manzanas",
+const defaultCatalog = {
+    "FR001": {
         sku: "FR001",
+        name: "Manzanas",        
         category: "Frutas",
         price: 750,
 /*         oldPrice: 1000,
@@ -15,10 +14,9 @@ const DEFAULT_PRODUCTS = {
             "Variedad": "Fuji"
         }
     },
-    "naranjas": {
-        id: "naranjas",
-        name: "Naranjas",
+    "FR002": {
         sku: "FR002",
+        name: "Naranjas",
         category: "Frutas",
         price: 900,
 /*         oldPrice: 1000,
@@ -33,15 +31,15 @@ const DEFAULT_PRODUCTS = {
     }
 };
 
-function getProductsCatalog() {
-    const stored = localStorage.getItem('products_catalog');
+function getCatalog() {
+    const stored = localStorage.getItem('productsCatalog');
     if (!stored) {
-        localStorage.setItem('products_catalog', JSON.stringify(DEFAULT_PRODUCTS));
-        return DEFAULT_PRODUCTS;
+        localStorage.setItem('productsCatalog', JSON.stringify(defaultCatalog));
+        return defaultCatalog;
     }
     return JSON.parse(stored);
 }
 
-function saveProductsCatalgo(catalog) {
-    localStorage.setItem('products_catalog', JSON.stringify(catalog));
+function saveCatalog(catalog) {
+    localStorage.setItem('productsCatalog', JSON.stringify(catalog));
 }

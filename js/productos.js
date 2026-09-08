@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    const productSku = urlParams.get('sku');
 
-    const productsDatabase = getProductsCatalog();
-    const product = productsDatabase[productId];
+    const catalog = getCatalog();
+    const product = catalog[productSku];
 
     if(!product) {
         renderNotFound();
@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     populateProductDetails(product);
-
     setupQuantityControls();
     setupAddToCartForm(product);
 });
@@ -23,7 +22,6 @@ function populateProductDetails(product) {
     document.getElementById('product-sku').textContent = product.sku;
     document.getElementById('product-category').textContent = product.category;
     document.getElementById('product-description').textContent = product.description;
-    document.getElementById('product-long-desc').textContent = product.longDescription;
 
     document.getElementById('product-price').textContent = `$${product.price.toLocaleString('es-CL')}`;
 
@@ -111,12 +109,12 @@ function setupAddToCartForm(product) {
 
         const cart=JSON.parse(localStorage.getItem('cart')) || [];
 
-        const existingIndex=cart.findIndex(item=>item.id === product.id);
+        const existingIndex=cart.findIndex(item=>item.sku === product.sku);
         if (existingIndex > -1) {
             cart[existingIndex].quantity += quantity;
         } else {
             cart.push({
-                id: product.id,
+                sku: product.sku,
                 name: product.name,
                 price: product.price,
                 image: product.image,
