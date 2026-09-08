@@ -5,8 +5,8 @@ const productsDatabase = {
         sku: "FR001",
         category: "Frutas",
         price: 750,
-        oldPrice: 1000,
-        badge: "25% OFF",
+/*         oldPrice: 1000,
+        badge: "25% OFF", */
         image: "img/not-found.svg",
         gallery: ["img/not-found.svg", "img/not-found.svg"],
         description: "Manzanas rojas",
@@ -21,8 +21,8 @@ const productsDatabase = {
         sku: "FR002",
         category: "Frutas",
         price: 900,
-        oldPrice: 1000,
-        badge: "10% OFF",
+/*         oldPrice: 1000,
+        badge: "10% OFF", */
         image: "img/not-found.svg",
         gallery: ["img/not-found.svg", "img/not-found.svg"],
         description: "Naranjas naranjas",
@@ -61,27 +61,27 @@ function populateProductDetails(product) {
 
     document.getElementById('product-price').textContent = `$${product.price.toLocaleString('es-CL')}`;
 
-    if (product.oldPrice) {
+/*     if (product.oldPrice) {
         const oldPriceEl = document.getElementById('product-old-price');
         oldPriceEl.textContent = `$${product.oldPrice.toLocaleString('es-CL')}`
-        oldPriceEl.classList.remove('d-done');
+        oldPriceEl.classList.remove('d-none');
     }
 
     if (product.badge) {
         const badgeEl = document.getElementById('product-badge');
         badgeEl.textContent = product.badge;
-        badgeEl.classList.remove('d-done');
-    }
+        badgeEl.classList.remove('d-none');
+    } */
 
-    const mainImg = document.getElementById('products-image');
+    const mainImg = document.getElementById('product-image');
     mainImg.src = product.image;
     mainImg.alt = product.name;
     
     const thumbnailsContainer = document.getElementById('product-thumbnails');
     if (product.gallery && product.gallery.length > 1) {
         thumbnailsContainer.innerHTML = product.gallery.map((imgSrc, index) => `
-        <button type"button" class"btn p-0 border rounded overflow-hidden thumbnail-btn ${index === 0 ? 'border-primary': ''}" style="width: 70px; height: 70px;">
-            <img src=${imgSrc}" class="w-100 h-100 object-fit-cover" alt="Vista ${index+1}">
+        <button type="button" class"btn p-0 border rounded overflow-hidden thumbnail-btn ${index === 0 ? 'border-primary': ''}" style="width: 70px; height: 70px;">
+            <img src="${imgSrc}" class="w-100 h-100 object-fit-cover" alt="Vista ${index+1}">
         </button>
         `).join('');
 
@@ -91,7 +91,7 @@ function populateProductDetails(product) {
                 mainImg.src = clickedImgSrc;
 
                 thumbnailsContainer.querySelectorAll('.thumbnail-btn').forEach(b => b.classList.remove('border-primary'));
-                btn.classicList.add('border-primary');
+                btn.classList.add('border-primary');
             });
         });
     }
@@ -130,9 +130,7 @@ function setupQuantityControls() {
     
     btnPlus.addEventListener('click', () => {
         const currentValue = parseInt(qtyInput.value) || 1;
-        if (currentValue > 1) {
             qtyInput.value = currentValue + 1;
-        }
     });
 }
 
@@ -156,7 +154,7 @@ function setupAddToCartForm(product) {
                 name: product.name,
                 price: product.price,
                 image: product.image,
-                quantity: product.quantity
+                quantity: quantity
             });
         }
 
