@@ -80,7 +80,7 @@ function populateProductDetails(product) {
     const thumbnailsContainer = document.getElementById('product-thumbnails');
     if (product.gallery && product.gallery.length > 1) {
         thumbnailsContainer.innerHTML = product.gallery.map((imgSrc, index) => `
-        <button type="button" class"btn p-0 border rounded overflow-hidden thumbnail-btn ${index === 0 ? 'border-primary': ''}" style="width: 70px; height: 70px;">
+        <button type="button" class="btn p-0 border rounded overflow-hidden thumbnail-btn ${index === 0 ? 'border-primary': ''}" style="width: 70px; height: 70px;">
             <img src="${imgSrc}" class="w-100 h-100 object-fit-cover" alt="Vista ${index+1}">
         </button>
         `).join('');
@@ -111,7 +111,7 @@ function renderNotFound() {
     <div class="text-center py-5">
         <h2>Producto no encontrado</h2>
         <p class="text-muted">El producto que buscas no existe o fue removido.</p>
-        <a href="productos.html" class="btn btn-primary mt-3"</a>Volver al catálogo
+        <a href="productos.html" class="btn btn-primary mt-3">Volver al catálogo</a>
     </div>   
     `;
 }
