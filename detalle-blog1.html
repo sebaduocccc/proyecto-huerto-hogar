@@ -6,38 +6,43 @@
     <title>Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
+      <link href="css/styles.css" rel="stylesheet">
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-success-subtle">
-    <a class="navbar-brand" href="#">Huerto Hogar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
- 
- 
-    <div class="collapse navbar-collapse bg-success-subtle" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link enabled" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link enabled" href="productos.html">Productos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link enabled" href="#">Nosotros</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link enabled" href="blog.html">Blogs</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link enabled" href="#">Contacto</a>
-        </li>                        
-        </ul>
-    </div>
-    </nav>
-    </nav>
+    <header class="sticky-top bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light container">
+            <a class="navbar-brand fw-bold" href="index.html">HUERTO HOGAR</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-2">
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" >Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacto</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
+                            <i class="fa-solid fa-cart-shopping"></i>Carrito
+                        </button>
+                    </li>        
+                </ul>
+            </div>
+        </nav>
     </header>
     <p title="Titulo"style="font-size:300%;text-align:center">Blog de alimentacion saludable</p>
     <div class="mx-auto px-5" style=" font: size 120px;">
@@ -61,6 +66,45 @@
     </ion-content>
 
     </div>
+    <footer class="border-top pt-5 pb-4">
+        <div class="container"> 
+            <div class="row g-4"> 
+                <div class="col-12 col-md-4"> 
+                    <h5 class="fw-bold mb-3">HUERTO HOGAR</h5> 
+                    <p class="text-secondary small">Tu huerto en casa</p>
+                    <div class="d-flex gap-3 payment-icons fs-4 mt-3">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                    </div>
+                </div> 
+                <div class="col-6 col-md-3">
+                    <h6 class="fw-bold mb-3">Navegación</h6>
+                    <ul class="nav flex-column gap-1"> 
+                        <li class="nav-item mb-2"><a href="index.html" class="nav-link p-0 text-body-secondary">Home</a></li> 
+                        <li class="nav-item mb-2"><a href="productos.html" class="nav-link p-0 text-body-secondary">Productos</a></li> 
+                        <li class="nav-item mb-2"><a href="nosotros.html" class="nav-link p-0 text-body-secondary">Nosotros</a></li> 
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contacto</a></li> 
+                    </ul> 
+                </div>                
+
+                <div class="col-12 col-md-5"> 
+                    <form> 
+                        <h6 class="fw-bold mb-2">Subscríbete a nuestro boletín</h6> 
+                        <p class="text-secondary small mb-3">Recibe noticias de nuevos productos</p> 
+                        <div class="d-flex gap-2"> 
+                            <input id="newsletter1" type="email" class="form-control" placeholder="Email address"> 
+                            <button class="btn btn-primary" type="button">Subscribirse</button> 
+                        </div> 
+                    </form> 
+                </div> 
+            </div> 
+            
+            <div class="d-flex justify-content-between py-4 my-4 border-top text-secondary small"> 
+                <p class="mb-0">&copy; Ignacio Ponce, Sebastián Saavedra & Cristóbal Spinola</p> 
+            </div>
+        </div>
+    </footer> 
     
     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -134,8 +178,5 @@
     });
   </script>
   <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
-  <script>
-    function mensajeBlog(){}
-  </script>
 </body>
 </html>
