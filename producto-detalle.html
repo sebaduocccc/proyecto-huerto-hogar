@@ -77,18 +77,20 @@
                 <div class="col-lg-6">
                     <span id="product-badge" class="badge bg-mustard mb-2 px-3 py-2 fs-6 d-none"></span>
                     <h1 id="product-title" class="display-5 fw-bold mb-2"></h1>
+
                     <p class="text-muted mb-3">
                         SKU: <span id="product-sku"></span> | Categoría: <span id="product-category"></span>
                     </p>
 
                     <div class="d-flex align-items-center gap-3 my-3">
-                        <span id="product-price" class="fs-1 fw-bold text-emerald"></span>
-                        <span id="product-old-price" class="text-decoration-line-through text-muted fs-4 d-none"></span>
+                        <span id="product-price" class="fs-1 fw-bold text-emerald"></span>                
+                    </div>
+                
+                    <div class="mb-3">
+                        Stock: <span id="product-stock-badge" class="mb-3"></span>
                     </div>
 
-                    <p id="product-description" class="lead mb-4">
-
-                    </p>
+                    <p id="product-description" class="lead mb-4"></p>
 
                     <hr class="my-4">
 
@@ -111,21 +113,6 @@
                             </div>
                         </div>
                     </form>
-
-                    <!-- <div class="row text-center g-2 pt-3 border-top">
-                        <div class="col-4">
-                            <small class="d-block text-muted"></small>
-                            <span class="fw-bold fs-7"></span>        
-                        </div>
-                        <div class="col-4 border-start border-end">
-                            <small class="d-block text-muted"></small>
-                            <span class="fw-bold fs-7"></span>        
-                        </div>
-                        <div class="col-4">
-                            <small class="d-block text-muted"></small>
-                            <span class="fw-bold fs-7"></span>        
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </section>
@@ -135,18 +122,10 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-pane" type="button" role="tab">Descripción</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="longdesc-tab" data-bs-toggle="tab" data-bs-target="#longdesc-pane" type="button" role="tab">Información Adicional</button>
-                </li>
             </ul>
             <div class="tab-content p-4 bg-light border border-top-0" id="productTabContent">
                 <div class="tab-pane fade show active" id="desc-pane" role="tabpanel">
                     <p id="product-long-desc" class="mb-0">Sin información adicional disponible.</p>
-                </div>
-                <div class="tab-pane fade" id="nutrition-pane" role="tabpanel">
-                    <ul id="product-nutrition-list" class="list-unstyled mb-0">
-
-                    </ul>
                 </div>
             </div>
         </section>
