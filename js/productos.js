@@ -1,42 +1,8 @@
-const productsDatabase = {
-    "manzanas": {
-        id: "manzanas",
-        name: "Manzanas",
-        sku: "FR001",
-        category: "Frutas",
-        price: 750,
-/*         oldPrice: 1000,
-        badge: "25% OFF", */
-        image: "img/not-found.svg",
-        gallery: ["img/not-found.svg", "img/not-found.svg"],
-        description: "Manzanas rojas",
-        longDescription: {
-            "Origen": "Chile",
-            "Variedad": "Fuji"
-        }
-    },
-    "naranjas": {
-        id: "naranjas",
-        name: "Naranjas",
-        sku: "FR002",
-        category: "Frutas",
-        price: 900,
-/*         oldPrice: 1000,
-        badge: "10% OFF", */
-        image: "img/not-found.svg",
-        gallery: ["img/not-found.svg", "img/not-found.svg"],
-        description: "Naranjas naranjas",
-        longDescription: {
-            "Origen": "Chile",
-            "Variedad": "Valenciana"
-        }
-    }
-};
-
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
+    const productsDatabase = getProductsCatalog();
     const product = productsDatabase[productId];
 
     if(!product) {
