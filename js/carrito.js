@@ -64,6 +64,8 @@ function renderCartTotal(cart){
     document.getElementById('cart-total').textContent = `$${total.toLocaleString('es-CL')}`;
 }
 
-function removeFromCart() {
-
+function removeFromCart(sku) {
+    const cart = getCart().filter(item => item.sku !== sku);
+    saveCart(cart);
+    renderCart();
 }
