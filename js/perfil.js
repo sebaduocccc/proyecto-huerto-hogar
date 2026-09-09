@@ -34,6 +34,23 @@ document.addEventListener("DOMContentLoaded",() => {
 
     formPerfil.addEventListener("submit", (e) => {
         e.preventDefault();
+
+        const usuarioActual = obtenerUsuarioActual();
+
+        usuarioActual.nombre = nombreCompleto.value;
+        usuarioActual.rut = rut.value;
+        usuarioActual.fechaNacimiento = fechaNacimiento.value;
+        usuarioActual.direccion = address.value;
+        usuarioActual.region = selectRegion.value;
+        usuarioActual.comuna = selectComuna.value;
+        usuarioActual.telefono = telefono.value;
+
+        console.log(usuarioActual);
+        
+        const resultado = guardarCambioUsuario(usuarioActual);
+
+        mostrarMensaje(resultado.ok ? 'Exito' : 'Error', resultado.msg);
+
     });
 
 });
