@@ -1,4 +1,7 @@
 
+const CLAVE_USUARIOS = "phuertohogar_usuarios";
+const CLAVE_SESION   = "phuertohogar_session";
+
 function probar(){
     console.log(obtenerUsuarios());
 }
@@ -9,12 +12,19 @@ function recordarSesionBoton(){
     return check;
 }
 
+// Devuelve las tres partes por separado para poder editarlas de forma
+// independiente en el perfil.
 function crearDireccion(){
-    const region = document.getElementById('region').value;
-    const comuna = document.getElementById('comuna').value;
-    const direccion = document.getElementById('address').value.trim();
+    return {
+        direccion: document.getElementById('address').value.trim(),
+        comuna: document.getElementById('comuna').value,
+        region: document.getElementById('region').value
+    };
+}
 
-    return direccion + ", " + comuna + ", " + region + "."
+// Une las partes solo cuando hay que mostrar la direccion completa.
+function formatearDireccion({direccion, comuna, region}){
+    return [direccion, comuna, region].filter(Boolean).join(", ") + ".";
 }
 
 function generarId(){
@@ -35,7 +45,7 @@ function obtenerUsuarios(){
     }
 }
 
-function registrarUsuario({nombre, email, password, telefono, direccion}){
+function registrarUsuario({nombre, email, password, telefono, direccion, comuna, region, rut, fechaNacimiento}){
     const usuarios = obtenerUsuarios();
 
     console.log("sampa");
@@ -53,7 +63,11 @@ function registrarUsuario({nombre, email, password, telefono, direccion}){
         email,
         password,
         telefono,
-        direccion
+        direccion,
+        comuna,
+        region,
+        rut,
+        fechaNacimiento
     };  
 
     usuarios.push(nuevoUsuario); // poner usuario al final de la array
@@ -74,10 +88,65 @@ function iniciarSesion({email,password, recordar}){
         return {ok: false, msg: "Correo o contaseña incorrecta."};
     }
 
-    localStorage.removeItem('session');
-    sessionStorage.removeItem('session');
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
 
     const almacen = recordar ? localStorage : sessionStorage;
-    almacen.setItem('session', usuario.id);
+    almacen.setItem(CLAVE_SESION, usuario.id);
     return {ok: true, msg: "iniciaste sesion correctamente"};
 }
+
+function obtenerIdSesion() {
+    return localStorage.getItem(CLAVE_SESION) ?? sessionStorage.getItem(CLAVE_SESION);
+}
+
+function obtenerUsuarioActual() {
+    const id = obtenerIdSesion();
+    if (!id) return null;
+
+    return obtenerUsuarios().find((u) => u.id === id) || null;
+}
+
+
+function cerrarSesion(){
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
+    location.href = "login.html";
+}
+
+function actualizarPerfil({id_user, ...cambios}){
+    const usuarios = obtenerUsuarios();
+
+    
+    const indice = usuarios.findIndex((u) => u.id === id_user)
+
+        if(indice === -1){
+            return {ok: false, msg: "No se encontró al usuario."};
+        }
+    
+
+    
+        if (cambios.email){
+            cambios.email = cambios.email.trim().toLowerCase();
+
+            const correoOcupado = usuarios.some((u) => u.email === cambios.email && u.id !== id_user);
+
+            if(correoOcupado){
+                return {ok: false, msg: "el correo ya esta en uso."}
+            }
+        }
+
+
+        Object.keys(cambios).forEach((clave) => {
+            if (cambios[clave] === undefined || cambios[clave] === ""){
+                delete cambios[clave];
+            }
+        });
+
+        usuarios[indice] = { ...usuarios[indice], ...cambios};
+
+        guardarUsuarioDB(usuarios)
+
+        return {ok: true, msg: "Perfil actualizado.", usuario: usuarios[indice]};
+}
+

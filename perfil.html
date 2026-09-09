@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Mi Perfil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
     <link rel="stylesheet" href="styles/login.css">
     <link href="css/styles.css" rel="stylesheet">
+    <script src="js/proteger.js"></script>
 </head>
 <body>
 
@@ -45,7 +46,7 @@
                     
                     <li class="nav-item d-none" id="menu-invitado">
                         
-                        <a href="login.html" class="btn btn-primary">Ingresar</a>
+                        <a href="login.html"><button class="btn btn-primary">Ingresar</button></a>
                     </li>
 
                     <li class="nav-item d-none" id="menu-usuario">
@@ -57,7 +58,7 @@
 
                             <ul class="dropdown-menu" aria-labelledby="imageDropdown">
 
-                                <li><a href="perfil.html" class="dropdown-item">Mi Perfil</a></li>
+                                <li><a href="#" class="dropdown-item">Mi Perfil</a></li>
                                 <li><a href="#" class="dropdown-item" id="cerrar-sesion">Cerrar Sesión</a></li>
                             </ul>
                             </div>
@@ -68,89 +69,60 @@
         </nav>
     </header>
 
-
-    <button class="btn btn-primary" onclick="probar()"></button>
-
-    
-
-    <div class="container py-2">
-            <div class="row justify-content-center">
-                <div class="card menu-sesion text-center">
+    <div class="container py-5">
+            <div class="row justify-content-center text-center">
+                <div class="card menu-perfil d-flex justify-content-center align-items-center min-vh-50">
                     <div class="card-body">
 
-                        <div class="mb-5"><h2 class="card-title">Registro</h2></div>
+                        <div class="mb-5"><h2 class="card-title">Mi Perfil</h2></div>
                         
-                        <form action="" id="form-registro">
+                        <form action="" id="form-perfil">
 
-                            <div class="mb-3">
-                                <label for="" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" placeholder="Nombre" id="name" name="nombre">
+                            
+                            
+                            <div class="mb-5">
+                                <label for="nombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre">
                             </div>
                             
-                            <div class="mb-3">
-                                <label for="" class="form-label">Email</label>
-                                <input type="email" class="form-control" placeholder="john_doe@correo.cl" id="mail" name="correo">
+                            <div class="mb-5">
+                                <label for="" class="form-label">RUT</label>
+                                <input type="text" class="form-control" id="rut">
                             </div>
-
-                            <div class="mb-3">
-                                <label for="" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" placeholder="•••••••••••••••" id="password1" name="password1">
-                                <div class="form-text">Asegurate de crear una contraseña segura.</div>
+                            
+                            <div class="mb-5">
+                                <label for="" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="fechaNacimiento">
                             </div>
-
-                            <div class="mb-3">
-                                <label for="" class="form-label">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" placeholder="•••••••••••••••" id="password2" name="password2">
-                                <div class="form-text"></div>
+                            
+                            <div class="mb-5">
+                                <label for="" class="form-label">Telefono de Contacto</label>
+                                <input type="text" class="form-control" id="telefono">
                             </div>
-
-                            <div class="mb-2">
-                                <div class="alert alert-danger">Las contraseñas deben coincidir</div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="" class="form-label">Telefono</label>
-                                <input type="text" class="form-control" placeholder="+56 9 1234 5678" id="phone" name="telefono">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="rut" class="form-label">RUT</label>
-                                <input type="text" class="form-control" placeholder="12.345.678-9" id="rut">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="fecha" class="form-label">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" id="fechaNac">
-                            </div>
-
+                            
                             <div class="row mb-3">
                                 <label for="" class="form-label">Direccion</label>
                                 <div class="col-6"><select name="" id="region" class="form-select" name="region"></select></div>
                                 <div class="col-6"><select name="" id="comuna" class="form-select" name="comuna"></select></div>
                                 
                             </div>
-                            <input type="text" placeholder="Calle" class="form-control mb-3" id="address" name="direccion">
-
+                            <div class="mb-3">
+                                <input type="text" placeholder="Calle" class="form-control mb-3" id="address" name="direccion">
+                            </div>
                             
-
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                            </div>
                             
-
-                            <button type="submit" class="btn btn-primary mb-3">Registrarme</button>
                         </form>
 
-                    
-                        <div class="mb-5">
-                            <a href="login.html" class="card-link">¿Ya tienes cuenta? Inicia sesión acá</a>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
     </div>
 
-
-
-
-
+    <!-- Modal para informacion-->
     <div class="modal fade" tabindex="-1" id="modal1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -166,6 +138,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- FOOTER -->
     <footer class="border-top pt-5 pb-4">
@@ -197,7 +170,7 @@
                         <p class="text-secondary small mb-3">Recibe noticias de nuevos productos</p> 
                         <div class="d-flex gap-2"> 
                             <input id="newsletter1" type="email" class="form-control" placeholder="Email address"> 
-                            <button class="btn btn-primary" type="button">Subscribirse</button> 
+                            <button class="btn btn-primary" type="button" onclick="mostrarMensaje('error','NO se pudo')">Subscribirse</button> 
                         </div> 
                     </form> 
                 </div> 
@@ -211,10 +184,11 @@
 
     <script src="js/funciones.js"></script>
     <script src="js/interfaz.js"></script>
-    <script src="js/direccion.js"></script>
     <script src="js/navbar.js"></script>
-    <script src="js/registro.js"></script>
+    <script src="js/direccion.js"></script>
+    <script src="js/perfil.js"></script>
     <script src="https://kit.fontawesome.com/064a97935a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
 </body>
 </html>

@@ -2,5 +2,15 @@
 
 .menu-sesion{
     width: 40rem;
-    height: 50rem;
+    height: 65rem;
+}
+
+.menu-login{
+    width: 40rem;
+    height: 33rem;
+}
+
+.menu-perfil{
+    width: 40rem;
+    height: 48rem;
 }

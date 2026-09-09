@@ -1,5 +1,4 @@
 // constantes
-const CLAVE_USUARIOS = "phuertohogar_usuarios";
 const formularioRegistro = document.getElementById('form-registro');
 
 // interaccion css
@@ -8,10 +7,6 @@ const formularioRegistro = document.getElementById('form-registro');
 
 
 // funciones
-
-
-
-
 
 
 document.addEventListener("DOMContentLoaded",() => {
@@ -25,7 +20,9 @@ document.addEventListener("DOMContentLoaded",() => {
     const passwordUser = document.getElementById("password1").value;
     const password2User = document.getElementById("password2").value;
     const telefonoUser = document.getElementById("phone").value;
-    const direccionUser = crearDireccion();
+    const rutUser = document.getElementById("rut").value;
+    const {direccion, comuna, region} = crearDireccion();
+    const fechaNacUser = document.getElementById("fechaNac").value;
     
     
     if(passwordUser !== password2User){
@@ -38,7 +35,19 @@ document.addEventListener("DOMContentLoaded",() => {
         email: correoUser,
         password:passwordUser,
         telefono:telefonoUser,
-        direccion: direccionUser});
+        direccion,
+        comuna,
+        region,
+        rut: rutUser,
+        fechaNacimiento: fechaNacUser});
+
+    if (!exito.ok){
+        mostrarMensaje('Error', exito.msg);
+        return;
+    }
+
+    mostrarMensaje('Listo', exito.msg);
+    formularioRegistro.reset();
     });
 
     
