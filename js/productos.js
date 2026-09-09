@@ -23,7 +23,7 @@ function renderProductCatalog() {
                 <div class="card h-100 product-card border-0 shadow-sm text-center">
                     <div class="card-image-wrapper">
                         <a href="producto-detalle.html?sku=${product.sku}">
-                            <img src="${product.image || 'img/not-found.svg'}" class="card-img-top img-fluid" alt="${product.name}" style="height: 100px; object-fit: contain;">
+                            <img src="${product.image || 'img/not-found.svg'}" class="card-img-top img-fluid mt-3" alt="${product.name}" style="height: 100px; object-fit: contain;">
                         </a>
                     </div>
                     <div class="card-body d-flex flex-column justify-content-between">
