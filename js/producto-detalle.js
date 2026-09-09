@@ -31,8 +31,10 @@ function populateProductDetails(product) {
     mainImg.alt = product.name;
     
     const thumbnailsContainer = document.getElementById('product-thumbnails');
-    if (product.gallery && product.gallery.length > 1) {
-        thumbnailsContainer.innerHTML = product.gallery.map((imgSrc, index) => `
+    const galleryImages = [...new Set([product.image, ...arguments(product.gallery || [])])];
+
+    if (galleryImages.length > 1) {
+        thumbnailsContainer.innerHTML = galleryImages.map((imgSrc, index) => `
         <button type="button" class="btn p-0 border rounded overflow-hidden thumbnail-btn ${index === 0 ? 'border-primary': ''}" style="width: 70px; height: 70px;">
             <img src="${imgSrc}" class="w-100 h-100 object-fit-cover" alt="Vista ${index+1}">
         </button>
