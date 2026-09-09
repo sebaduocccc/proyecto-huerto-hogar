@@ -60,7 +60,8 @@ function renderCartTable(cart){
 }
 
 function renderCartTotal(cart){
-
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    document.getElementById('cart-total').textContent = `$${total.toLocaleString('es-CL')}`;
 }
 
 function removeFromCart() {
