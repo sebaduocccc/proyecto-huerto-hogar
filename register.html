@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Huerto Hogar - Registrarse</title>
+
+    <!-- Bootstrap 5.3.8 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
-    <link rel="stylesheet" href="styles/login.css">
+    <!-- Font Awesome Icons -->
+
+
+    <!-- Custom CSS -->
     <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
-
+    
     <!-- NAVIGATION BAR -->
     <header class="sticky-top bg-white shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light container">
@@ -28,24 +33,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="productos.html">Productos</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link active" href="nosotros.html">Nosotros</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Blogs</a>
+                        <a class="nav-link" href="blog.html">Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Contacto</a>
                     </li>
                     <li class="nav-item ms-lg-2">
-                        <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
-                            <i class="fa-solid fa-cart-shopping"></i>Carrito
-                        </button>
-                    </li>   
-                    
-                    <li class="nav-item d-none" id="menu-invitado">
-                        
-                        <a href="login.html" class="btn btn-primary">Ingresar</a>
+                        <a href="carrito.html">
+                            <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
+                                <i class="fa-solid fa-cart-shopping"></i>Carrito
+                            </button>
+                        </a>
+                    </li>                            
+                    <li class="nav-item d-none" id="menu-invitado">                        
+                        <a href="login.html"><button class="btn btn-primary">Ingresar</button></a>
                     </li>
 
                     <li class="nav-item d-none" id="menu-usuario">
@@ -56,7 +61,6 @@
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="imageDropdown">
-
                                 <li><a href="perfil.html" class="dropdown-item">Mi Perfil</a></li>
                                 <li><a href="#" class="dropdown-item" id="cerrar-sesion">Cerrar Sesión</a></li>
                             </ul>
@@ -68,11 +72,8 @@
         </nav>
     </header>
 
-
     <button class="btn btn-primary" onclick="probar()"></button>
-
     
-
     <div class="container py-2">
             <div class="row justify-content-center">
                 <div class="card menu-sesion text-center">
@@ -147,10 +148,6 @@
             </div>
     </div>
 
-
-
-
-
     <div class="modal fade" tabindex="-1" id="modal1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -185,7 +182,7 @@
                             <li class="nav-item mb-2"><a href="index.html" class="nav-link p-0 text-body-secondary">Home</a></li> 
                             <li class="nav-item mb-2"><a href="productos.html" class="nav-link p-0 text-body-secondary">Productos</a></li> 
                             <li class="nav-item mb-2"><a href="nosotros.html" class="nav-link p-0 text-body-secondary">Nosotros</a></li> 
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
+                            <li class="nav-item mb-2"><a href="blog.html" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contacto</a></li> 
                         </ul> 
                     </div>
