@@ -6,12 +6,20 @@ function getCart() {
     return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
-function saveCart() {
+function saveCart(cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function initCart() {
     renderCart();
+
+    const cartTableBody = document.getElementById('cart-table-body');
+    cartTableBody.addEventListener('click', (event) => {
+        const removeBtn = event.target.closest('.remove-item-btn');
+        if (!removeBtn) return;
+
+        removeFromCart(removeBtn.dataset.sku);
+    });
 }
 
 function renderCart() {
@@ -42,7 +50,7 @@ function renderCartTable(cart){
             <tr>
                 <td>
                     <div class="d-flex align-items-center gap-3">
-                        <img src="${item.image || 'img/not-found.svg'}" alt="${item.name}" style="width: 60px; object-fit: contain";>
+                        <img src="${item.image || 'img/not-found.svg'}" alt="${item.name}" style="width: 60px; object-fit: contain;">
                         <span class="fw-bold">${item.name}</span>
                     </div>
                 </td>
@@ -50,7 +58,7 @@ function renderCartTable(cart){
                 <td>${item.quantity}</td>
                 <td class="fw-bold">$${subtotal.toLocaleString('es-CL')}</td>
                 <td class="text-end">
-                    <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" data-sku="{item.sku}" aria-label="Eliminar ${item.name}">
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" data-sku="${item.sku}" aria-label="Eliminar ${item.name}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>
