@@ -69,5 +69,5 @@ function quickAddToCart(sku) {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`1x "${product.name}" añadido al carrito!`)
+    alert(`1 unidad de ${product.name} añadido al carrito.`)
 }
