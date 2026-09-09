@@ -113,3 +113,40 @@ function cerrarSesion(){
     sessionStorage.removeItem(CLAVE_SESION);
     location.href = "login.html";
 }
+
+function actualizarPerfil({id_user, ...cambios}){
+    const usuarios = obtenerUsuarios();
+
+    
+    const indice = usuarios.findIndex((u) => u.id === id_user)
+
+        if(indice === -1){
+            return {ok: false, msg: "No se encontró al usuario."};
+        }
+    
+
+    
+        if (cambios.email){
+            cambios.email = cambios.email.trim().toLowerCase();
+
+            const correoOcupado = usuarios.some((u) => u.email === cambios.email && u.id !== id_user);
+
+            if(correoOcupado){
+                return {ok: false, msg: "el correo ya esta en uso."}
+            }
+        }
+
+
+        Object.keys(cambios).forEach((clave) => {
+            if (cambios[clave] === undefined || cambios[clave] === ""){
+                delete cambios[clave];
+            }
+        });
+
+        usuarios[indice] = { ...usuarios[indice], ...cambios};
+
+        guardarUsuarioDB(usuarios)
+
+        return {ok: true, msg: "Perfil actualizado.", usuario: usuarios[indice]};
+}
+

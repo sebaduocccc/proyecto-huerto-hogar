@@ -8,8 +8,10 @@
     
     <link rel="stylesheet" href="styles/login.css">
     <link href="css/styles.css" rel="stylesheet">
+    <script src="js/proteger.js"></script>
 </head>
 <body>
+
     <!-- NAVIGATION BAR -->
     <header class="sticky-top bg-white shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light container">
@@ -74,38 +76,45 @@
 
                         <div class="mb-5"><h2 class="card-title">Mi Perfil</h2></div>
                         
-                        <form action="" id="form-login">
+                        <form action="" id="form-perfil">
 
                             
-                        </form>
-
-                        <div class="mb-5">
-                            <label for="nombre" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="nombre">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="" class="form-label">RUT</label>
-                            <input type="text" class="form-control" id="rut">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="" class="form-label">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control" id="fechaNacimiento">
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="" class="form-label">Telefono de Contacto</label>
-                            <input type="text" class="form-control" id="telefono">
-                        </div>
-
-                        <div class="row mb-3">
+                            
+                            <div class="mb-5">
+                                <label for="nombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre">
+                            </div>
+                            
+                            <div class="mb-5">
+                                <label for="" class="form-label">RUT</label>
+                                <input type="text" class="form-control" id="rut">
+                            </div>
+                            
+                            <div class="mb-5">
+                                <label for="" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="fechaNacimiento">
+                            </div>
+                            
+                            <div class="mb-5">
+                                <label for="" class="form-label">Telefono de Contacto</label>
+                                <input type="text" class="form-control" id="telefono">
+                            </div>
+                            
+                            <div class="row mb-3">
                                 <label for="" class="form-label">Direccion</label>
                                 <div class="col-6"><select name="" id="region" class="form-select" name="region"></select></div>
                                 <div class="col-6"><select name="" id="comuna" class="form-select" name="comuna"></select></div>
                                 
                             </div>
-                            <input type="text" placeholder="Calle" class="form-control mb-3" id="address" name="direccion">
+                            <div class="mb-3">
+                                <input type="text" placeholder="Calle" class="form-control mb-3" id="address" name="direccion">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                            </div>
+                            
+                        </form>
 
                         
                     </div>

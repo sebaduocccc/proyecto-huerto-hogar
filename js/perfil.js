@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded",() => {
         return;
     }
 
+    const formPerfil = document.getElementById('form-perfil');
     const nombreCompleto = document.getElementById('nombre');
     const rut = document.getElementById('rut');
     const fechaNacimiento = document.getElementById('fechaNacimiento');
@@ -29,4 +30,10 @@ document.addEventListener("DOMContentLoaded",() => {
     if (userData.comuna){
         selectComuna.value = userData.comuna;
     }
+
+
+    formPerfil.addEventListener("submit", (e) => {
+        e.preventDefault();
+    });
+
 });
