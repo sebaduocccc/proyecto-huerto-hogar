@@ -17,9 +17,22 @@ function initCart() {
     const cartTableBody = document.getElementById('cart-table-body');
     cartTableBody.addEventListener('click', (event) => {
         const removeBtn = event.target.closest('.remove-item-btn');
-        if (!removeBtn) return;
+        if (removeBtn) {
+            removeFromCart(removeBtn.dataset.sku);
+            return;
+        }
 
-        removeFromCart(removeBtn.dataset.sku);
+        const minusBtn = event.target.closest('.btn-qty-minus');
+        if (minusBtn) {
+            updateQuantity(minusBtn.dataset.sku, -1);
+            return
+        }
+
+        const plusBtn = event.target.closest('.btn-qty-plus');
+        if (plusBtn) {
+            updateQuantity(plusBtn.dataset.sku, 1);
+            return
+        }
     });
 
     const clearCartBtn = document.getElementById('clear-cart-btn');
@@ -92,6 +105,20 @@ function renderCartTotal(cart){
 
 function removeFromCart(sku) {
     const cart = getCart().filter(item => item.sku !== sku);
+    saveCart(cart);
+    renderCart();
+}
+
+function updateQuantity(sku, delta){
+    const cart = getCart();
+    const item = cart.find(item => item.sku === sku);
+    if (!item) return;
+
+    const newQuantity = item.quantity + delta;
+    if (newQuantity < 1) return;
+
+    item.quantity = newQuantity;
+
     saveCart(cart);
     renderCart();
 }
