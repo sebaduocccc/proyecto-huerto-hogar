@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil</title>
+    <title>Huerto Hogar - Nosotros</title>
+
+    <!-- Bootstrap 5.3.8 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
-    <link rel="stylesheet" href="styles/login.css">
+    <!-- Font Awesome Icons -->
+
+
+    <!-- Custom CSS -->
     <link href="css/styles.css" rel="stylesheet">
-    <script src="js/proteger.js"></script>
 </head>
 <body>
-
+    
     <!-- NAVIGATION BAR -->
     <header class="sticky-top bg-white shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light container">
@@ -29,21 +33,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="productos.html">Productos</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link active" href="nosotros.html">Nosotros</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Blogs</a>
+                        <a class="nav-link" href="blog.html">Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Contacto</a>
                     </li>
                     <li class="nav-item ms-lg-2">
-                        <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
-                            <i class="fa-solid fa-cart-shopping"></i>Carrito
-                        </button>
-                    </li>   
-                    
+                        <a href="carrito.html">
+                            <button class="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
+                                <i class="fa-solid fa-cart-shopping"></i>Carrito
+                            </button>
+                        </a>
+                    </li>                            
                     <li class="nav-item d-none" id="menu-invitado">
                         
                         <a href="login.html"><button class="btn btn-primary">Ingresar</button></a>
@@ -58,7 +63,7 @@
 
                             <ul class="dropdown-menu" aria-labelledby="imageDropdown">
 
-                                <li><a href="#" class="dropdown-item">Mi Perfil</a></li>
+                                <li><a href="perfil.html" class="dropdown-item">Mi Perfil</a></li>
                                 <li><a href="#" class="dropdown-item" id="cerrar-sesion">Cerrar Sesión</a></li>
                             </ul>
                             </div>
@@ -140,6 +145,7 @@
     </div>
 
 
+ 
     <!-- FOOTER -->
     <footer class="border-top pt-5 pb-4">
         <div class="container"> 
@@ -158,7 +164,7 @@
                             <li class="nav-item mb-2"><a href="index.html" class="nav-link p-0 text-body-secondary">Home</a></li> 
                             <li class="nav-item mb-2"><a href="productos.html" class="nav-link p-0 text-body-secondary">Productos</a></li> 
                             <li class="nav-item mb-2"><a href="nosotros.html" class="nav-link p-0 text-body-secondary">Nosotros</a></li> 
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
+                            <li class="nav-item mb-2"><a href="blog.html" class="nav-link p-0 text-body-secondary">Blogs</a></li> 
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contacto</a></li> 
                         </ul> 
                     </div>
@@ -170,7 +176,7 @@
                         <p class="text-secondary small mb-3">Recibe noticias de nuevos productos</p> 
                         <div class="d-flex gap-2"> 
                             <input id="newsletter1" type="email" class="form-control" placeholder="Email address"> 
-                            <button class="btn btn-primary" type="button" onclick="mostrarMensaje('error','NO se pudo')">Subscribirse</button> 
+                            <button class="btn btn-primary" type="button">Subscribirse</button> 
                         </div> 
                     </form> 
                 </div> 
@@ -181,7 +187,7 @@
             </div>
         </div>
     </footer> 
-
+    
     <script src="js/funciones.js"></script>
     <script src="js/interfaz.js"></script>
     <script src="js/navbar.js"></script>
@@ -189,6 +195,5 @@
     <script src="js/perfil.js"></script>
     <script src="https://kit.fontawesome.com/064a97935a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    
 </body>
-</html>
+</html> 
