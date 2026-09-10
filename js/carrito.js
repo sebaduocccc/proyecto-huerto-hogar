@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function getCart() {
-    return JSON.parse(localStorage.getItem('cart')) || [];
+    const stored = JSON.parse(localStorage.getItem('cart')) || [];
+    return Array.isArray(stored) ? stored : [];
 }
 
 function saveCart(cart) {
