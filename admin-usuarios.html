@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Huerto Hogar | Admin Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/login.css">
     <link href="css/styles.css" rel="stylesheet">
-
 </head>
-<body>
+<body class="bg-light">
 
-     <div class="wrapper">
+    <div class="wrapper">
         <aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">HuertoHogar</a>
+                    <a href="admin.html">HuertoHogar</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -34,7 +32,7 @@
                         <span>Usuarios</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-item sidebar-focus">
                     <a href="admin-productos.html" class="sidebar-link">
                         <i class="fa-solid fa-carrot"></i>
@@ -43,116 +41,118 @@
                 </li>
             </ul>
         </aside>
+
         <div class="main-admin container p-3 my-5">
-            
-            <div class="d-flex justify-content-between align-items-center mb-4 text-center">
 
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="fw-bold">Gestión de Usuarios</h1>
-
-
+                <a href="index.html" class="btn btn-outline-secondary">Volver a la Tienda</a>
             </div>
 
             <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-3" id="form-title">Crear Usuario</h5>
-                        <form id="product-form">
+                <div class="col-lg-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3" id="form-title">Crear Usuario</h5>
+                            <form id="user-form">
+                                <input type="hidden" id="editing-id" value="">
 
-                            <div class="mb-3">
-                                <label for="sku-input" class="form-label small fw-bold">Nombre Completo</label>
-                                <input type="text" id="nombre" class="form-control" placeholder="Nombre">
-                            </div>
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label small fw-bold">Nombre Completo</label>
+                                    <input type="text" id="nombre" class="form-control" placeholder="Nombre" required>
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="name-input" class="form-label small fw-bold">Correo</label>
-                                <input type="text" id="correo" class="form-control" placeholder="john_doe@correo.com">                                
-                            </div>
+                                <div class="mb-3">
+                                    <label for="correo" class="form-label small fw-bold">Correo</label>
+                                    <input type="email" id="correo" class="form-control" placeholder="john_doe@correo.com" required>
+                                </div>
 
-                            <div class="d-grid mb-3">
-                                <label for="category-input" class="form-label small fw-bold">Rol</label>                                
-                                <select name="category-input" id="rol">
-                                    <option value="" disabled selected>Selecciona una categoría</option>
-                                    <option value="Orgánicos">Usuario Común</option>
-                                    <option value="Lácteos">Administrador</option>
-                                </select>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="rol" class="form-label small fw-bold">Rol</label>
+                                    <select id="rol" name="rol" class="form-select" required>
+                                        <option value="" disabled selected>Selecciona un rol</option>
+                                        <option value="usuario">Usuario Común</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
 
+                                <div class="mb-3">
+                                    <label for="password" class="form-label small fw-bold">Contraseña</label>
+                                    <input type="password" id="password" class="form-control" placeholder="•••••••••••••••">
+                                    <div class="form-text" id="password-help">Mínimo 4 caracteres.</div>
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="price-input" class="form-label small fw-bold">Contraseña</label>
-                                <input type="password" id="password" class="form-control" min="1" placeholder="•••••••••••••••">                                
-                            </div>
+                                <div class="mb-3">
+                                    <label for="password2" class="form-label small fw-bold">Confirmar Contraseña</label>
+                                    <input type="password" id="password2" class="form-control" placeholder="•••••••••••••••">
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="image-input" class="form-label small fw-bold">Confirmar Contraseña</label>
-                                <input type="password" id="password2" class="form-control" placeholder="•••••••••••••••">           
-                            </div>
+                                <div class="mb-3">
+                                    <label for="rut" class="form-label small fw-bold">RUT</label>
+                                    <input type="text" id="rut" class="form-control" placeholder="12.345.678-9">
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="image-input" class="form-label small fw-bold">RUT</label>
-                                <input type="text" id="rut" class="form-control" placeholder="12.345.678-9">           
-                            </div>
+                                <div class="mb-3">
+                                    <label for="telefono" class="form-label small fw-bold">Telefono</label>
+                                    <input type="text" id="telefono" class="form-control" placeholder="+56 9 1234 5678">
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="image-input" class="form-label small fw-bold">Telefono</label>
-                                <input type="text" id="telefono" class="form-control" placeholder="+56 9 1234 5678">           
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="image-input" class="form-label small fw-bold">Fecha de Nacimiento</label>
-                                <input type="date" id="fechaNacimiento" class="form-control">           
-                            </div>
+                                <div class="mb-3">
+                                    <label for="fechaNacimiento" class="form-label small fw-bold">Fecha de Nacimiento</label>
+                                    <input type="date" id="fechaNacimiento" class="form-control">
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="" class="form-label small fw-bold">Direccion</label>
-                                <div class=""><select name="" id="region" class="form-select" name="region"></select></div>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="region" class="form-label small fw-bold">Región</label>
+                                    <select id="region" name="region" class="form-select"></select>
+                                </div>
 
-                            <div class="mb-3">
-                                <div class=""><select name="" id="comuna" class="form-select" name="comuna"></select></div>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="comuna" class="form-label small fw-bold">Comuna</label>
+                                    <select id="comuna" name="comuna" class="form-select"></select>
+                                </div>
 
-                            <div class="mb-3">
-                                <input type="text" id="direccion" class="form-control" placeholder="Pacotilla #288">     
-                            </div>
-                            
+                                <div class="mb-3">
+                                    <label for="direccion" class="form-label small fw-bold">Dirección</label>
+                                    <input type="text" id="direccion" class="form-control" placeholder="Pacotilla #288">
+                                </div>
 
-                            <div class="d-grid gap-2">
-                                <button type="submit" id="save-btn" class="btn btn-primary">Guardar Producto</button>
-                                <button type="button" id="cancel-btn" class="btn btn-outline-danger">Cancelar</button>
-                            </div>
-                        </form>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" id="save-btn" class="btn btn-primary">Guardar Usuario</button>
+                                    <button type="button" id="cancel-btn" class="btn btn-outline-danger d-none">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-                        
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0">Base de Datos de Usuarios</h5>
+                            <span class="badge text-bg-secondary" id="contador-usuarios">0 usuarios</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Correo</th>
+                                        <th>Rut</th>
+                                        <th>Telefono</th>
+                                        <th>Direccion</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>Rol</th>
+                                        <th class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-table-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-sm p-4">
-                    <h5 class="fw-bold mb-3">Base de Datos de Usuarios</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre Completo</th>
-                                    <th>Correo</th>
-                                    <th>Rut</th>
-                                    <th>Telefono</th>
-                                    <th>Direccion</th>
-                                    <th>Fecha de Nacimiento</th>
-                                    <th>Rol</th>
-                                    <th class="text-end">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-table-body"></tbody>
-                        </table>
-                    </div>  
-                </div>
-            </div>
-        </div>
 
         </div>
     </div>
@@ -174,14 +174,13 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/js/all.min.js" integrity="sha512-2+f4MxT8KwN4tUzw6/hv9kxKiix603S9kmBcix+0y0dBhd6zdaPOV1Thf1DM886pFZG+cAtmshBi8UBpo6m3JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/funciones.js"></script>
     <script src="js/interfaz.js"></script>
     <script src="js/navbar.js"></script>
     <script src="js/direccion.js"></script>
     <script src="js/admin_sidebar.js"></script>
-    <script src="js/admin-usuarios"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/js/all.min.js" integrity="sha512-2+f4MxT8KwN4tUzw6/hv9kxKiix603S9kmBcix+0y0dBhd6zdaPOV1Thf1DM886pFZG+cAtmshBi8UBpo6m3JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/admin-usuarios.js"></script>
 </body>
 </html>
