@@ -150,3 +150,17 @@ function actualizarPerfil({id_user, ...cambios}){
         return {ok: true, msg: "Perfil actualizado.", usuario: usuarios[indice]};
 }
 
+function guardarCambioUsuario(usuarioEditado){
+    const usuarios = obtenerUsuarios();
+
+    const indice = usuarios.findIndex((u) => u.id === usuarioEditado.id);
+
+    if (indice === -1){
+        return {ok: false, msg: "No se encontró a el usuario"}
+    }
+
+    usuarios[indice] = usuarioEditado;
+    guardarUsuarioDB(usuarios)
+
+    return {ok: true, msg: "Perfil actualizado"}
+}
