@@ -1,5 +1,5 @@
 ﻿# Proyecto Huerto Hogar
- Este proyecto, hecho en html, javascript y css, es para proponer una solucion frente a una tienda de alimentacion saludable. Para este proyecto nos ayudamos con bootstrap para hacer el diseño de la pagina web.
+ Este proyecto, hecho en html, javascript y css, es para proponer una solucion frente a una tienda de alimentacion saludable. Para este proyecto nos ayudamos con bootstrap para hacer el diseño de la pagina web y tambien usamos font awesome para implementar iconos a la pagina.
 # Partes de la propuesta
 
 Inicio:Aca se muestra el inicio de la pagina web, donde podremos ver los productos de la tienda 
