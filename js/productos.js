@@ -1,5 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     renderProductCatalog();
+
+    const gridContainer = document.getElementById('products-catalog');
+    gridContainer.addEventListener('click', (event) => {
+        const minusBtn = event.target.closest('.btn-qty-minus');
+        if (minusBtn) {
+            const span = minusBtn.closest('.input-group').querySelector('.quantity-input');
+            const current = parseInt(span.textContent, 10) || 1;
+            if (current > 1) span.textContent = current - 1;
+        }
+
+        const plusBtn = event.target.closest('.btn-qty-plus');
+        if (plusBtn) {
+            const span = plusBtn.closest('.input-group').querySelector('.quantity-input');
+            const current = parseInt(span.textContent, 10) || 1;
+            span.textContent = current + 1;
+        }
+
+        
+    })
 });
 
 function renderProductCatalog() {
@@ -38,36 +57,45 @@ function renderProductCatalog() {
                                 $${product.price.toLocaleString('es-CL')}
                             </p>
                         </div>
-                        <button type="button" class="btn btn-primary add-to-cart-btn w-100" onclick="quickAddToCart('${product.sku}')">
+                        <div class="input-group my-3 align-self-center" style="width: 130px;">
+                            <button type="button" class="btn btn-outline-secondary btn-qty-minus">-</button>
+                            <span class="form-control text-center quantity-input">1</span>
+                            <button type="button" class="btn btn-outline-secondary btn-qty-plus">+</button>
+                        </div>
+                        <button type="button" class="btn btn-primary add-to-cart-btn w-100" onclick="quickAddToCart('${product.sku}', this)">
                             <i class="fa-solid fa-cart-shopping me-2"></i>Añadir al carrito
-                        </button>
+                        </button>                        
                     </div>
                 </div>
             </div>               
         `).join('');
 }
 
-function quickAddToCart(sku) {
+function quickAddToCart(sku, button) {
     const catalog = getCatalog();
     const product = catalog[sku];
 
     if(!product) return;
 
+    const card = button.closest('.product-card');
+    const qtySpan = card.querySelector('.quantity-input');
+    const quantity = parseInt(qtySpan.textContent, 10) || 1;
+
     const cart=JSON.parse(localStorage.getItem('cart')) || [];
     const existingIndex=cart.findIndex(item => item.sku === product.sku);
 
     if(existingIndex > -1) {
-        cart[existingIndex].quantity+=1;
+        cart[existingIndex].quantity += quantity;
     } else {
         cart.push({
             sku: product.sku,
             name: product.name,
             price: product.price,
             image: product.image,
-            quantity: 1
+            quantity
         });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`1x "${product.name}" añadido al carrito!`)
+    alert(`${quantity} unidad(es) de ${product.name} añadido(s) al carrito.`)
 }

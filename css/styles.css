@@ -110,3 +110,18 @@ footer {
 .payment-icons {
     color: var(--accent-brown);
 }
+
+.menu-sesion{
+    width: 40rem;
+    height: 65rem;
+}
+
+.menu-login{
+    width: 40rem;
+    height: 33rem;
+}
+
+.menu-perfil{
+    width: 40rem;
+    height: 48rem;
+}
