@@ -67,7 +67,13 @@ function renderCartTable(cart){
                     </div>
                 </td>
                 <td>$${item.price.toLocaleString('es-CL')}</td>
-                <td>${item.quantity}</td>
+                <td>
+                    <div class="input-group input-group-sm" style="width: 110px;">
+                        <button type="button" class="btn btn-outline-secondary btn-qty-minus" data-sku="${item.sku}" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+                        <input type="number" class="form-control text-center" value="${item.quantity}" data-sku="${item.sku}" min="1"></input>
+                        <button type="button" class="btn btn-outline-secondary btn-qty-plus" data-sku="${item.sku}">+</button>
+                    </div>           
+                </td>
                 <td class="fw-bold">$${subtotal.toLocaleString('es-CL')}</td>
                 <td class="text-end">
                     <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" data-sku="${item.sku}" aria-label="Eliminar ${item.name}">
