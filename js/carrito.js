@@ -83,7 +83,7 @@ function renderCartTable(cart){
                 <td>
                     <div class="input-group input-group-sm" style="width: 110px;">
                         <button type="button" class="btn btn-outline-secondary btn-qty-minus" data-sku="${item.sku}" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-                        <input type="number" class="form-control text-center" value="${item.quantity}" data-sku="${item.sku}" min="1"></input>
+                        <span class="form-control text-center">${item.quantity}</span>
                         <button type="button" class="btn btn-outline-secondary btn-qty-plus" data-sku="${item.sku}">+</button>
                     </div>           
                 </td>
