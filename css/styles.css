@@ -7,6 +7,7 @@
 :root {
     --bg-principal: #f7f7f7;
     --accent-emerald: #2e8b57;
+    --accent-emerald-focused: #40a96e;
     --accent-emerald-hover: #246e44;
     --accent-mustard: #FFD700;
     --accent-brown: #8B4513;
@@ -184,4 +185,12 @@ footer {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     background-color: #fff;
+}
+
+.sidebar-focus:hover{
+    background-color: var(--accent-emerald-hover);
+}
+
+.sidebar-focused-item{
+    background-color: var(--accent-emerald-focused);
 }
