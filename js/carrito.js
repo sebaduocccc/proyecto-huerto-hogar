@@ -21,6 +21,17 @@ function initCart() {
 
         removeFromCart(removeBtn.dataset.sku);
     });
+
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+    clearCartBtn.addEventListener('click', () => {
+        const cart = getCart();
+        if (cart.length === 0) return;
+
+        if (confirm('¿Realmente quieres vaciar tu carrito?')) {
+            saveCart([]);
+            renderCart([]);
+        }
+    });
 }
 
 function renderCart() {
