@@ -1,6 +1,13 @@
+import Navbar from "./Navbar";
+
 function Index(){
     return(
-        <h1>Hola Mundo</h1>
+
+        <div>
+            <Navbar/>
+            <h1>Hola Mundo</h1>
+        </div>
+
     );
 }
 
