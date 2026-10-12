@@ -1,11 +1,16 @@
 import Navbar from "./Navbar";
+import Boton from "./Boton";
 
 function Index(){
-    return(
 
+    const ola = "oladddd";
+
+    return(
         <div>
             <Navbar/>
-            <h1>Hola Mundo</h1>
+            <h1>Hola Mundo {ola}</h1>
+            <Boton/>
+            <Boton/>
         </div>
 
     );
