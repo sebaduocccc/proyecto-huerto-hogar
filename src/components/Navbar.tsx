@@ -1,6 +1,6 @@
 import '../App.css';
 
-function Navbar(){
+export default function Navbar(){
     return(
         <header className="sticky-top bg-white shadow-sm">
         <nav className="navbar navbar-expand-lg navbar-light container">
@@ -58,5 +58,3 @@ function Navbar(){
 
     );
 }
-
-export default Navbar;
