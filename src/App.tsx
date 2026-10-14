@@ -1,19 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./components/Index";
-import Adios from "./components/Adios";
+import Home from "./pages/Home";
 
-function App(){
-
+export default function App(){
   return(
-
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index/>}/>
-        <Route path="/adios" element={<Adios/>}/>
+        <Route path="/" element={<Index/>}>
+          <Route path="/" element={<Home/>}/>
+        </Route>
       </Routes>
     </BrowserRouter>
-
   );
 }
-
-export default App;
