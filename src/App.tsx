@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import Carrito from "./pages/Carrito";
 import Contacto from "./pages/Contacto";
+import Nosotros from "./pages/Nosotros";
 
 export default function App(){
   return(
@@ -14,6 +15,7 @@ export default function App(){
           <Route path="/blog" element={<Blog/>}/>
           <Route path="/carrito" element={<Carrito/>}/>
           <Route path="/contacto" element={<Contacto/>}/>
+          <Route path="/nosotros" element={<Nosotros/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
