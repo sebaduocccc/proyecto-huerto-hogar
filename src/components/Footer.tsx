@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
     return (
         <footer className="border-top pt-5 pb-4">
@@ -16,11 +18,31 @@ export default function Footer() {
                     <div className="col-6 col-md-3">
                         <h6 className="fw-bold mb-3">Navegación</h6>
                         <ul className="nav flex-column gap-1"> 
-                            <li className="nav-item mb-2"><a href="index.html" className="nav-link p-0 text-body-secondary">Home</a></li> 
-                            <li className="nav-item mb-2"><a href="productos.html" className="nav-link p-0 text-body-secondary">Productos</a></li> 
-                            <li className="nav-item mb-2"><a href="nosotros.html" className="nav-link p-0 text-body-secondary">Nosotros</a></li> 
-                            <li className="nav-item mb-2"><a href="blog.html" className="nav-link p-0 text-body-secondary">Blogs</a></li> 
-                            <li className="nav-item mb-2"><a href="contacto.html" className="nav-link p-0 text-body-secondary">Contacto</a></li> 
+                            <li className="nav-item mb-2">
+                                <Link to="/" className="nav-link p-0 text-body-secondary">
+                                    Home
+                                </Link >
+                            </li> 
+                            <li className="nav-item mb-2">
+                                <Link to="productos" className="nav-link p-0 text-body-secondary">
+                                    Productos
+                                </Link >
+                            </li> 
+                            <li className="nav-item mb-2">
+                                <Link to="nosotros" className="nav-link p-0 text-body-secondary">
+                                    Nosotros
+                                </Link >
+                            </li> 
+                            <li className="nav-item mb-2">
+                                <Link to="blog" className="nav-link p-0 text-body-secondary">
+                                    Blogs
+                                </Link >
+                            </li> 
+                            <li className="nav-item mb-2">
+                                <Link to="contacto" className="nav-link p-0 text-body-secondary">
+                                    Contacto
+                                </Link >
+                            </li> 
                         </ul> 
                     </div>                
 
