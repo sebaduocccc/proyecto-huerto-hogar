@@ -8,9 +8,8 @@ function Index(){
     return(
         <div>
             <Navbar/>
-            <h1>Hola Mundo {ola}</h1>
             <Boton/>
-            <Boton/>
+            
         </div>
 
     );
