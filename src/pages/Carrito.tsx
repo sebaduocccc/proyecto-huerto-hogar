@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+
 export default function Carrito() {
     return(
         <>
@@ -83,13 +86,16 @@ export default function Carrito() {
                                 <div id="coupon-message" className="form-text mt-1"></div>
                             </form>
 
-                            <button 
+                            <Link to='pago'>
+                                <button 
                                 type="button" 
                                 id="checkout-btn" 
                                 className="btn btn-primary btn-lg w-100"
-                            >
+                                >
                                 Pagar
-                            </button>
+                                </button>
+                            </Link>
+
                         </div>
                     </div>
                 </div>

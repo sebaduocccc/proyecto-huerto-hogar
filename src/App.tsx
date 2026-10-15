@@ -7,6 +7,8 @@ import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
 import Productos from "./pages/Productos";
 import ProductosDetalles from "./pages/ProductosDetalles";
+import Pago from "./pages/Pago";
+import PagoCorrecto from "./pages/PagoCorrecto";
 
 export default function App(){
   return(
@@ -20,6 +22,8 @@ export default function App(){
           <Route path="/nosotros" element={<Nosotros/>}/>
           <Route path="/productos" element={<Productos/>}/>
           <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
+          <Route path="/carrito/pago" element={<Pago/>}/>
+          <Route path="/carrito/pago/pagocorrecto" element={<PagoCorrecto/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
