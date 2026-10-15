@@ -23,3 +23,8 @@ ProductosDetalles JavaScript
 Carrito JavaScript
 
 Admin View (everything)
+
+AdminProductos
+Dashboard (Figura 9)
+
+Add Searchbar to Navbar
