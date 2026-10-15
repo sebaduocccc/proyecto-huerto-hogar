@@ -6,6 +6,7 @@ import Carrito from "./pages/Carrito";
 import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
 import Productos from "./pages/Productos";
+import ProductosDetalles from "./pages/ProductosDetalles";
 
 export default function App(){
   return(
@@ -18,6 +19,7 @@ export default function App(){
           <Route path="/contacto" element={<Contacto/>}/>
           <Route path="/nosotros" element={<Nosotros/>}/>
           <Route path="/productos" element={<Productos/>}/>
+          <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
