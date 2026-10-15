@@ -9,6 +9,8 @@ import Productos from "./pages/Productos";
 import ProductosDetalles from "./pages/ProductosDetalles";
 import Pago from "./pages/Pago";
 import PagoCorrecto from "./pages/PagoCorrecto";
+import DetalleBlog1 from "./pages/DetalleBlog1";
+import DetalleBlog2 from "./pages/DetalleBlog2";
 
 export default function App(){
   return(
@@ -24,6 +26,9 @@ export default function App(){
           <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
           <Route path="/carrito/pago" element={<Pago/>}/>
           <Route path="/carrito/pago/pagocorrecto" element={<PagoCorrecto/>}/>
+          <Route path="/blog/alimentacion-saludable" element={<DetalleBlog1/>}/>
+          <Route path="/blog/sostenibilidad" element={<DetalleBlog2/>}/>
+
         </Route>
       </Routes>
     </BrowserRouter>
