@@ -1,0 +1,13 @@
+Pages: 
+
+blog.html -> Blog.tsx 
+carrito.html -> Carrito.tsx 
+contacto.html -> Contacto.tsx 
+nosotros.html -> Nosotros.tsx 
+productos.html -> Productos.tsx
+producto-detalle.html -> ProductosDetalles.tsx
+
+JavaScript:
+
+productos.js -> /components/ProductoCard.tsx
+catalogo.js -> /data/Catalogo.ts
