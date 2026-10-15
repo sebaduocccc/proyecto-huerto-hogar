@@ -12,7 +12,7 @@ export type Producto = {
 
 export type Catalogo = Record<string, Producto>;
 
-const STORAGE_KEY = "productsCatalog";
+const STORAGE_KEY = "CatalogoProductos";
 
 const defaultCatalog: Catalogo = {
     "FR001": {
@@ -150,4 +150,12 @@ export function getCatalog(): Catalogo {
         return defaultCatalog;
     }
     return JSON.parse(stored) as Catalogo;
+}
+
+export function getProductos(): Producto[] {
+    return Object.values(getCatalog());
+}
+
+export function getProducto(sku: string): Producto | undefined {
+    return getCatalog()[sku];
 }
