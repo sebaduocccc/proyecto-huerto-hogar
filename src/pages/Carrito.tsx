@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom';
+
+
 export default function Carrito() {
     return(
         <>
             <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
-
+            
             <div id="empty-cart-msg" className="text-center py-5 d-none">
                 <div className="mb-3">
                     <span className="fs-1 text-muted"></span>
@@ -83,13 +86,16 @@ export default function Carrito() {
                                 <div id="coupon-message" className="form-text mt-1"></div>
                             </form>
 
-                            <button 
+                            <Link to='pago'>
+                                <button 
                                 type="button" 
                                 id="checkout-btn" 
                                 className="btn btn-primary btn-lg w-100"
-                            >
+                                >
                                 Pagar
-                            </button>
+                                </button>
+                            </Link>
+
                         </div>
                     </div>
                 </div>

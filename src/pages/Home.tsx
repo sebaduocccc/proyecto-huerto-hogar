@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 export default function Home() {
     return (
         <>
@@ -8,12 +9,12 @@ export default function Home() {
                     <div className="col-lg-6 text-center text-lg-start order-2 order-lg-1">
                         <h1 className="display-5 fw-bold">Huerto Hogar</h1>
                         <p className="lead">Revisa nuestros productos de temporada</p>
-                        <a href="productos.html" className="btn btn-primary btn-lg px-4">Ver Productos</a>
+                        <a href="/productos" className="btn btn-primary btn-lg px-4">Ver Productos</a>
                     </div>
                     <div className="col-lg-6 text-center order-1 order-lg-2">
                         <Link to="/productos">
                             <img 
-                                src="img/huerto-hogar.webp" 
+                                src={'src/assets/huerto-hogar.webp'} 
                                 className="img-fluid shadow-sm 
                                 rounded" alt="Huerto Hogar"
                             />

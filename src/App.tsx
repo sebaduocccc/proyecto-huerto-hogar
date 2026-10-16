@@ -7,6 +7,12 @@ import Contacto from "./pages/Contacto";
 import Nosotros from "./pages/Nosotros";
 import Productos from "./pages/Productos";
 import ProductosDetalles from "./pages/ProductosDetalles";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Pago from "./pages/Pago";
+import PagoCorrecto from "./pages/PagoCorrecto";
+import DetalleBlog1 from "./pages/DetalleBlog1";
+import DetalleBlog2 from "./pages/DetalleBlog2";
 
 export default function App(){
   return(
@@ -20,6 +26,13 @@ export default function App(){
           <Route path="/nosotros" element={<Nosotros/>}/>
           <Route path="/productos" element={<Productos/>}/>
           <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/carrito/pago" element={<Pago/>}/>
+          <Route path="/carrito/pago/pagocorrecto" element={<PagoCorrecto/>}/>
+          <Route path="/blog/alimentacion-saludable" element={<DetalleBlog1/>}/>
+          <Route path="/blog/sostenibilidad" element={<DetalleBlog2/>}/>
+
         </Route>
       </Routes>
     </BrowserRouter>
