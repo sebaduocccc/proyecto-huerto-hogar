@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function AdminProductos() {
     return (
         <>            
-            <div className="wrapper">
+{/*             <div className="wrapper">
                 <aside id="sidebar">
                     <div className="d-flex">
                         <button id="toggle-btn" type="button">
@@ -30,7 +30,7 @@ export default function AdminProductos() {
                     </ul>
                 </aside>
             </div>
-
+ */}
             <div className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h1 className="fw-bold">Panel de Administración de Productos</h1>
