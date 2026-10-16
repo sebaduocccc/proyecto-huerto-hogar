@@ -13,11 +13,14 @@ import Pago from "./pages/Pago";
 import PagoCorrecto from "./pages/PagoCorrecto";
 import DetalleBlog1 from "./pages/DetalleBlog1";
 import DetalleBlog2 from "./pages/DetalleBlog2";
+import AdminProductos from "./pages/AdminProductos";
 
 export default function App(){
   return(
     <BrowserRouter>
       <Routes>
+
+        {/* User view */}
         <Route element={<Layout/>}>
           <Route path="/" element={<Home/>}/>
           <Route path="/blog" element={<Blog/>}/>
@@ -32,7 +35,11 @@ export default function App(){
           <Route path="/carrito/pago/pagocorrecto" element={<PagoCorrecto/>}/>
           <Route path="/blog/alimentacion-saludable" element={<DetalleBlog1/>}/>
           <Route path="/blog/sostenibilidad" element={<DetalleBlog2/>}/>
+        </Route>
 
+        {/* Admin view */}
+        <Route element={<Layout/>}> {/* placeholder */}
+          <Route path="/admin" element={<AdminProductos/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
