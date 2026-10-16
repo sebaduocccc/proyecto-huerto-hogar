@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function AdminProductos() {
     return (
-        <>
-            <body className="bg-light"/>
-
+        <>            
             <div className="wrapper">
                 <aside id="sidebar">
                     <div className="d-flex">
@@ -24,18 +22,19 @@ export default function AdminProductos() {
                         </li>
                         
                         <li className="sidebar-item sidebar-focused-item">
-                            <a href="admin-productos.html" className="sidebar-link">
+                            <Link to="admin-productos.html" className="sidebar-link">
                                 <i className="fa-solid fa-carrot"></i>
                                 <span>Productos</span>
-                            </a>
+                            </Link >
                         </li>
                     </ul>
                 </aside>
+            </div>
 
             <div className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h1 className="fw-bold">Panel de Administración de Productos</h1>
-                    <a href="index.html" className="btn btn-outline-secondary">Volver a la Tienda</a>
+                    <Link to="index.html" className="btn btn-outline-secondary">Volver a la Tienda</Link >
                 </div>
 
                 <div className="row g-4">
@@ -121,5 +120,5 @@ export default function AdminProductos() {
                 </div>
             </div>
         </>
-    )
+    );
 }
