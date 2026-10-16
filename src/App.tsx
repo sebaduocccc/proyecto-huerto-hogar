@@ -14,6 +14,7 @@ import PagoCorrecto from "./pages/PagoCorrecto";
 import DetalleBlog1 from "./pages/DetalleBlog1";
 import DetalleBlog2 from "./pages/DetalleBlog2";
 import AdminProductos from "./pages/AdminProductos";
+import AdminHome from "./pages/AdminHome";
 
 export default function App(){
   return(
@@ -39,7 +40,8 @@ export default function App(){
 
         {/* Admin view */}
         <Route element={<Layout/>}> {/* placeholder */}
-          <Route path="/admin" element={<AdminProductos/>}/>
+          <Route path="/admin" element={<AdminHome/>}/>
+          <Route path="/admin/productos" element={<AdminProductos/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
