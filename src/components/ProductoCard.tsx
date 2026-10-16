@@ -17,7 +17,7 @@ export default function ProductoCard({ producto, onAdd }: Props) {
                 <div className="card-image-wrapper">
                     <Link to={`/productos/${producto.sku}`}>
                         <img 
-                            src={producto.image} 
+                            src={producto.image}
                             className="card-img-top img-fluid mt-3" 
                             alt={producto.name} 
                             style={{height: '100px', objectFit: 'contain'}}

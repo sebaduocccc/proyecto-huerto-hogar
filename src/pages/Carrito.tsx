@@ -5,7 +5,7 @@ export default function Carrito() {
     return(
         <>
             <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
-
+            
             <div id="empty-cart-msg" className="text-center py-5 d-none">
                 <div className="mb-3">
                     <span className="fs-1 text-muted"></span>
