@@ -1,5 +1,4 @@
 import Navbar from "./Navbar";
-import Boton from "./Boton";
 
 function Index(){
 
