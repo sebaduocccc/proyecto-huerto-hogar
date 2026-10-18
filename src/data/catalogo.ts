@@ -13,7 +13,7 @@ export type Catalogo = Record<string, Producto>;
 
 const STORAGE_KEY = "CatalogoProductos";
 
-const defaultCatalog: Catalogo = {
+const defaultCatalogo: Catalogo = {
     "FR001": {
         sku: "FR001",
         name: "Manzanas Fuji",        
@@ -134,19 +134,35 @@ const defaultCatalog: Catalogo = {
     }    
 };
 
-export function getCatalog(): Catalogo {
+export function getCatalogo(): Catalogo {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultCatalog));
-        return defaultCatalog;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultCatalogo));
+        return defaultCatalogo;
     }
     return JSON.parse(stored) as Catalogo;
 }
 
+export function saveCatalogo(catalogo: Catalogo): void {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(catalogo));
+}
+
+export function saveProducto(producto: Producto): void {
+    const catalogo = getCatalogo();
+    catalogo[producto.sku] = producto;
+    saveCatalogo(catalogo);
+}
+
+export function deleteProducto(sku: string): void {
+    const catalogo = getCatalogo();
+    delete catalogo[sku];
+    saveCatalogo(catalogo);
+}
+
 export function getProductos(): Producto[] {
-    return Object.values(getCatalog());
+    return Object.values(getCatalogo());
 }
 
 export function getProducto(sku: string): Producto | undefined {
-    return getCatalog()[sku];
+    return getCatalogo()[sku];
 }
