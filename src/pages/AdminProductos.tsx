@@ -3,38 +3,10 @@ import { Link } from "react-router-dom";
 export default function AdminProductos() {
     return (
         <>            
-{/*             <div className="wrapper">
-                <aside id="sidebar">
-                    <div className="d-flex">
-                        <button id="toggle-btn" type="button">
-                            <i className="fa-solid fa-bars"></i>
-                        </button>
-                        <div className="sidebar-logo">
-                            <a href="#">HuertoHogar</a>
-                        </div>
-                    </div>
-                    <ul className="sidebar-nav">
-                        <li className="sidebar-item sidebar-focus">
-                            <Link to="admin-usuarios.html" className="sidebar-link">
-                                <i className="fa-solid fa-users-rectangle"></i>
-                                <span>Usuarios</span>
-                            </Link >
-                        </li>
-                        
-                        <li className="sidebar-item sidebar-focused-item">
-                            <Link to="admin-productos.html" className="sidebar-link">
-                                <i className="fa-solid fa-carrot"></i>
-                                <span>Productos</span>
-                            </Link >
-                        </li>
-                    </ul>
-                </aside>
-            </div>
- */}
             <div className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h1 className="fw-bold">Panel de Administración de Productos</h1>
-                    <Link to="index.html" className="btn btn-outline-secondary">Volver a la Tienda</Link >
+                    <Link to="/" className="btn btn-outline-secondary">Volver a la Tienda</Link >
                 </div>
 
                 <div className="row g-4">

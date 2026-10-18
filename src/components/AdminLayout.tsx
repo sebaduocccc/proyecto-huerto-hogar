@@ -13,20 +13,20 @@ export default function AdminLayout() {
                         <i className="fa-solid fa-bars"></i>
                     </button>
                     <div className="sidebar-logo">
-                        <Link to="/admin">Huerto Hogar</Link>
+                        <Link to="/admin" className="navbar-brand fw-bold">Huerto Hogar</Link>
                     </div>
-
-                    <ul className="sidebar-nav">
-                        {adminLinks.map((l) => (
-                            <li key={l.to} className="sidebar-item">
-                                <NavLink to={l.to} className="sidebar-link">
-                                    <i className={`fa-solid ${l.icon}`}></i>
-                                    <span>{l.label}</span>
-                                </NavLink>
-                            </li>
-                        ))}
-                    </ul>
                 </div>
+
+                <ul className="sidebar-nav">
+                    {adminLinks.map((l) => (
+                        <li key={l.to} className="sidebar-item">
+                            <NavLink to={l.to} className="sidebar-link">
+                                <i className={`fa-solid ${l.icon}`}></i>
+                                <span>{l.label}</span>
+                            </NavLink>
+                        </li>
+                    ))}
+                </ul>                
             </aside>
 
             <div className="main-admin">
