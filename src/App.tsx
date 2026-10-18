@@ -29,7 +29,7 @@ export default function App(){
           <Route path="/contacto" element={<Contacto/>}/>
           <Route path="/nosotros" element={<Nosotros/>}/>
           <Route path="/productos" element={<Productos/>}/>
-          <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
+          <Route path="/productos/:sku" element={<ProductosDetalles/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/carrito/pago" element={<Pago/>}/>
