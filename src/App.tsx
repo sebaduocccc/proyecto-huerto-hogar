@@ -15,6 +15,7 @@ import DetalleBlog1 from "./pages/DetalleBlog1";
 import DetalleBlog2 from "./pages/DetalleBlog2";
 import AdminProductos from "./pages/AdminProductos";
 import AdminHome from "./pages/AdminHome";
+import AdminLayout from "./components/AdminLayout";
 
 export default function App(){
   return(
@@ -39,7 +40,7 @@ export default function App(){
         </Route>
 
         {/* Admin view */}
-        <Route element={<Layout/>}> {/* placeholder */}
+        <Route element={<AdminLayout/>}>
           <Route path="/admin" element={<AdminHome/>}/>
           <Route path="/admin/productos" element={<AdminProductos/>}/>
         </Route>
