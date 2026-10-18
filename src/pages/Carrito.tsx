@@ -6,7 +6,7 @@ export default function Carrito() {
     const { items, total, updateQuantity, removeItem, clearCarrito } = useCarrito();
 
     const handleClear = () => {
-        if (confirm("¿Realmente quieres vaciar to carrito?")) {
+        if (confirm("¿Realmente quieres vaciar tu carrito?")) {
             clearCarrito();
         }
     };
@@ -47,9 +47,9 @@ export default function Carrito() {
                                 {items.map((item) => (
                                     <tr key={item.sku}>
                                         <td>
-                                            <div className='d-flex align-itmes-center gap-3'>
+                                            <div className='d-flex align-items-center gap-3'>
                                                 <img 
-                                                    src={item.image || "/img/not-found.svg"}
+                                                    src={item.image || "/src/assets/not-found.svg"}
                                                     alt={item.name}
                                                     style={{ width: "60px", objectFit: "contain" }}
                                                 />
@@ -83,7 +83,7 @@ export default function Carrito() {
                                         <td className='text-end'>
                                             <button
                                                 type="button"
-                                                className='btn btn-outline-dange btn-sm'
+                                                className='btn btn-outline-danger btn-sm'
                                                 onClick={() => removeItem(item.sku)}
                                                 aria-label={`Eliminar ${item.name}`}
                                             >

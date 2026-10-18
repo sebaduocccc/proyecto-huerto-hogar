@@ -44,7 +44,7 @@ export default function AdminProductos() {
         const sku = form.sku.trim().toUpperCase();
 
         if (!isEditing && getProducto(sku)) {
-            alert(`"{sku}" ya existe.`)
+            alert(`"${sku}" ya existe.`)
             return;
         }
 
@@ -56,7 +56,7 @@ export default function AdminProductos() {
             category: form.category,
             stock: Number(form.stock),
             price: Number(form.price),
-            image: form.image.trim() || "/img/not-found.svg",
+            image: form.image.trim() || "/src/assets/not-found.svg",
             description: form.description.trim(),
             longDescription: existing?.longDescription ?? { Origen: "Chile" },
         });
@@ -119,7 +119,7 @@ export default function AdminProductos() {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="sku-input" className="form-label small fw-bold">Nombre</label>
+                                        <label htmlFor="name-input" className="form-label small fw-bold">Nombre</label>
                                         <input 
                                             id="name-input"  
                                             name="name"
@@ -243,7 +243,7 @@ export default function AdminProductos() {
                                                 <tr key = {p.sku}>
                                                     <td>{p.sku}</td>
                                                     <td>
-                                                        <div className="d-flex aling-items-center gap-2">
+                                                        <div className="d-flex align-items-center gap-2">
                                                             <img src={p.image} alt=""
                                                                 style={{ width: 35, height: 35, objectFit: "contain"}}/>
                                                                 <span>{p.name}</span>
