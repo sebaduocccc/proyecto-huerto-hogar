@@ -1,19 +1,33 @@
 import { Link } from 'react-router-dom';
+import { useCarrito } from '../context/CarritoContext';
 
 
 export default function Carrito() {
+    const { items, total, updateQuantity, removeItem, clearCarrito } = useCarrito();
+
+    const handleClear = () => {
+        if (confirm("¿Realmente quieres vaciar to carrito?")) {
+            clearCarrito();
+        }
+    };
+
+    if(items.length === 0) {
+        return (
+            <>
+                <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
+                    <div className="text-center py-5">
+                    <h3>Tu carrito está vacío</h3>
+                    <p className="text-muted">No has añadido ningún producto.</p>
+                    <Link to="/productos" className="btn btn-primary btn-lg mt-2">
+                        Ir a ver productos
+                    </Link >
+                </div>            
+            </>
+        )
+    }
     return(
         <>
-            <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
-            
-            <div id="empty-cart-msg" className="text-center py-5 d-none">
-                <div className="mb-3">
-                    <span className="fs-1 text-muted"></span>
-                </div>
-                <h3>Tu carrito está vacío</h3>
-                <p className="text-muted">No has añadido ningún producto.</p>
-                <a href="productos.html" className="btn btn-primary btn-lg mt-2">Ir a ver productos</a>
-            </div>
+            <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>                  
 
             <div id="cart-content" className="row g-4">
 
@@ -29,17 +43,68 @@ export default function Carrito() {
                                     <th scope="col" className="text-end">Eliminar</th>
                                 </tr>
                             </thead>
-                            <tbody id="cart-table-body">
-
+                            <tbody>
+                                {items.map((item) => (
+                                    <tr key={item.sku}>
+                                        <td>
+                                            <div className='d-flex align-itmes-center gap-3'>
+                                                <img 
+                                                    src={item.image || "/img/not-found.svg"}
+                                                    alt={item.name}
+                                                    style={{ width: "60px", objectFit: "contain" }}
+                                                />
+                                                <span className='fw-bold'>{item.name}</span>
+                                            </div>
+                                        </td>
+                                        <td>${item.price.toLocaleString("es-CL")}</td>
+                                        <td>
+                                            <div className='input-group input-group-sm' style={{ width: "110px"}}>
+                                                <button
+                                                    type='button'
+                                                    className='btn btn-outline-secondary'
+                                                    onClick={() => updateQuantity(item.sku, -1)}
+                                                    disabled={item.quantity <= 1}
+                                                >
+                                                    -
+                                                </button>
+                                                <span className='form-control text-center'>{item.quantity}</span>
+                                                <button
+                                                    type='button'
+                                                    className='btn btn-outline-secondary'
+                                                    onClick={() => updateQuantity(item.sku, 1)}                                                    
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td className='fw-bold'>
+                                            ${(item.price * item.quantity).toLocaleString("es-CL")}
+                                        </td>
+                                        <td className='text-end'>
+                                            <button
+                                                type="button"
+                                                className='btn btn-outline-dange btn-sm'
+                                                onClick={() => removeItem(item.sku)}
+                                                aria-label={`Eliminar ${item.name}`}
+                                            >
+                                                <i className='fa-solid fa-trash'></i>
+                                            </button>
+                                        </td>
+                                    </tr>                        
+                                ))}
                             </tbody>
                         </table>
                     </div>
                     
-                    <div className="d-flex justify-content-between align-items-center mt-3">
-                        <a href="productos.html" className="btn btn-outline-secondary">
+                    <div className="d-flex justify-content-between align-item-center mt-3">
+                        <Link to="/productos" className="btn btn-outline-secondary">
                             &larr; Seguir Comprando
-                        </a>
-                        <button id="clear-cart-btn" className="btn btn-outline-danger btn-sm">
+                        </Link >
+                        <button 
+                            type="button" 
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={handleClear}
+                        >
                             Vaciar Carrito
                         </button>
                     </div>
@@ -49,20 +114,12 @@ export default function Carrito() {
                     <div className="card border-0 shadow-sm position-sticky" style={{top: '2rem'}}>
                         <div className="card-body p-4">
                             <h5 className="fw-bold mb-3">Resumen del Pedido</h5>
-                            {/* <div className="d-flex justify-content-between mb-2">
-                                <span className="text-muted">Subtotal</span>
-                                <span id="cart-subtotal" className="fw-bold"></span>
-                            </div> -->
-                            <!-- <div className="d-flex justify-content-between mb-2">
-                                <span className="text-muted">Envío</span>
-                                <span id="cart-shipping" className="fw-bold"></span>
-                            </div> */}
 
                             <hr className="my-3" />
 
                             <div className="d-flex justify-content-between mb-2">
                                 <span>Total</span>
-                                <span id="cart-total" className="fw-bold"></span>
+                                <span id="cart-total" className="fw-bold">${total.toLocaleString("es-CL")}</span>
                             </div>
 
                             <form id="coupon-form" className="mb-3">
@@ -86,7 +143,7 @@ export default function Carrito() {
                                 <div id="coupon-message" className="form-text mt-1"></div>
                             </form>
 
-                            <Link to='pago'>
+                            <Link to='/carrito/pago'>
                                 <button 
                                 type="button" 
                                 id="checkout-btn" 
