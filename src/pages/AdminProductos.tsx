@@ -231,7 +231,41 @@ export default function AdminProductos() {
                                             <th className="text-end">Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="admin-table-body"></tbody>
+                                    <tbody>
+                                        {productos.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={6} className="text-center text-muted py-4">
+                                                    El catálogo está vacío
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            productos.map((p) => (
+                                                <tr key = {p.sku}>
+                                                    <td>{p.sku}</td>
+                                                    <td>
+                                                        <div className="d-flex aling-items-center gap-2">
+                                                            <img src={p.image} alt=""
+                                                                style={{ width: 35, height: 35, objectFit: "contain"}}/>
+                                                                <span>{p.name}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>{p.category}</td>
+                                                    <td>{p.stock}</td>
+                                                    <td>${p.price.toLocaleString("es-CL")}</td>
+                                                    <td className="text-end">
+                                                        <button 
+                                                            className="btn btn-sm btn-primary me-1" 
+                                                            onClick={() => handleEdit(p)}
+                                                        >Editar</button>
+                                                        <button 
+                                                            className="btn btn-sm btn-danger me-1" 
+                                                            onClick={() => handleDelete(p.sku)}
+                                                        >Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
                                 </table>
                             </div>  
                         </div>
