@@ -7,7 +7,6 @@ function Index(){
     return(
         <div>
             <Navbar/>
-            <Boton/>
             
         </div>
 
