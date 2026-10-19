@@ -1,21 +1,51 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getProducto } from "../data/catalogo";
+import { useCarrito } from "../context/CarritoContext";
 
 export default function ProductosDetalles() {
+    const {sku} = useParams<{sku: string}>();
+    const {addItem} = useCarrito();
+
+    const producto = sku ? getProducto(sku) : undefined;
+
+    const [cantidad, setCantidad] = useState(1);    
+
+    if (!producto) {
+        return(
+            <div className="text-center py-5">
+                <h2>Producto no encontrado</h2>
+                <p className="text-muted">El producto que buscas no existe o fue removido</p>                
+                <Link to="/productos" className="btn btn-primary mt-3">
+                    &larr; Volver al catálogo
+                </Link >
+            </div>
+        );
+    }    
+
+    const handleSubmit = (e: React.SubmitEvent) => {
+        e.preventDefault();
+        addItem(producto, cantidad);
+        alert(`Añadido ${cantidad}x "${producto.name}" al carrito!`);
+    }
+
     return(
         <>
             <nav aria-label="breadcrumb" className="mb-4">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item">
-                        <Link to="index.html" className="link-secondary text-decoration-none">
+                        <Link to="/" className="link-secondary text-decoration-none">
                             Inicio
                         </Link >
                     </li>
                     <li className="breadcrumb-item">
-                        <Link to="productos.html" className="link-secondary text-decoration-none">
+                        <Link to="/productos" className="link-secondary text-decoration-none">
                             Productos
                         </Link >
                     </li>
-                    <li className="breadcrumb-item active" id="breadcrumb-product-name" aria-current="page"/>
+                    <li className="breadcrumb-item active" aria-current="page">
+                        {producto.name}
+                    </li>
                 </ol>
             </nav>
 
@@ -25,37 +55,36 @@ export default function ProductosDetalles() {
                     <div className="col-lg-6">
                         <div className="card border-0 bg-light p-4 mb-3 text-center shadow-sm">
                             <img 
-                                id="product-image" 
-                                src="img/not-found.svg" 
+                                src={producto.image}
                                 className="img-fluid" 
-                                alt="Cargando producto" 
+                                alt={producto.name}
                                 style={{maxHeight: "400px", objectFit: "contain"}}
                             />
-                        </div>
-                        <div id="product-thumbnails" className="d-flex gap-2"></div>
+                        </div>                        
                     </div>
 
-                    <div className="col-lg-6">
-                        <span id="product-badge" className="badge bg-mustard mb-2 px-3 py-2 fs-6 d-none"></span>
-                        <h1 id="product-title" className="display-5 fw-bold mb-2"></h1>
+                    <div className="col-lg-6">                        
+                        <h1 className="display-5 fw-bold mb-2">{producto.name}</h1>
 
                         <p className="text-muted mb-3">
-                            SKU: <span id="product-sku"></span> | Categoría: <span id="product-category"></span>
+                            SKU: {producto.sku} | Categoría: {producto.category}
                         </p>
 
                         <div className="d-flex align-items-center gap-3 my-3">
-                            <span id="product-price" className="fs-1 fw-bold text-emerald"></span>                
+                            <span className="fs-1 fw-bold text-emerald">
+                                ${producto.price.toLocaleString("es-CL")}
+                            </span>                
                         </div>
                     
                         <div className="mb-3">
-                            Stock: <span id="product-stock-badge" className="mb-3"></span>
+                            Stock: {producto.stock}
                         </div>
 
-                        <p id="product-description" className="lead mb-4"></p>
+                        <p className="lead mb-4">{producto.description}</p>
 
                         <hr className="my-4"/>
 
-                        <form id="add-to-cart-form" className="mb-4">
+                        <form className="mb-4" onSubmit={handleSubmit}>
                             <div className="row g-3 align-items-center">
                                 <div className="col-auto">
                                     <label htmlFor="quantity-input" className="col-form-label fw-bold">Cantidad:</label>
@@ -65,7 +94,7 @@ export default function ProductosDetalles() {
                                         <button 
                                             type="button" 
                                             className="btn btn-outline-secondary" 
-                                            id="btn-minus"
+                                            onClick={() => setCantidad((c) => Math.max(1, c-1))}
                                         >
                                             -
                                         </button>
@@ -73,12 +102,14 @@ export default function ProductosDetalles() {
                                             type="number" 
                                             id="quantity-input" 
                                             className="form-control text-center" 
-                                            value="1" min="1"
+                                            value={cantidad}
+                                            min={1}
+                                            onChange={(e) => setCantidad(parseInt(e.target.value) || 1)}
                                         />
                                         <button 
                                             type="button" 
                                             className="btn btn-outline-secondary" 
-                                            id="btn-plus"
+                                            onClick={() => setCantidad((c) => (c+1))}
                                         >
                                             +
                                         </button>
@@ -86,8 +117,7 @@ export default function ProductosDetalles() {
                                 </div>
                                 <div className="col-12 col-sm-auto flex-grow-1">
                                     <button 
-                                        type="submit" 
-                                        id="add-to-cart-btn" 
+                                        type="submit"                                         
                                         className="btn btn-primary btn-lg w-100"
                                     >
                                         Añadir al Carrito
@@ -100,25 +130,26 @@ export default function ProductosDetalles() {
             </section>
 
             <section className="my-5">
-                <ul className="nav nav-tabs" id="productTab" role="tablist">
-                    <li className="nav-item" role="presentation">
-                        <button 
-                            className="nav-link active" 
-                            id="desc-tab" 
-                            data-bs-toggle="tab" 
-                            data-bs-target="#desc-pane" 
-                            type="button" role="tab"
-                        >
+                <ul className="nav nav-tabs">
+                    <li className="nav-item">
+                        <span className="nav-link active">
                             Descripción
-                        </button>
+                        </span>               
                     </li>
                 </ul>
-                <div className="tab-content p-4 bg-light border border-top-0" id="productTabContent">
-                    <div className="tab-pane fade show active" id="desc-pane" role="tabpanel">
-                        <p id="product-long-desc" className="mb-0">
-                            Sin información adicional disponible.
-                        </p>
-                    </div>
+                <div className="tab-content p-4 bg-light border border-top-0">
+                    {producto.longDescription ? (
+                        <ul className="list-unstyled mb-0">
+                            {Object.entries(producto.longDescription).map(([clave, valor]) => (
+                                <li key={clave} className="py-1 border-bottom">
+                                    <strong className="text-dark">{clave}:</strong>{" "}
+                                    <span className="text-secondary">{valor}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="mb-0">Sin información adicional disponible.</p>
+                    )}                    
                 </div>
             </section>
         </>
