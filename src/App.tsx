@@ -16,6 +16,7 @@ import DetalleBlog2 from "./pages/DetalleBlog2";
 import AdminProductos from "./pages/AdminProductos";
 import AdminHome from "./pages/AdminHome";
 import AdminLayout from "./components/AdminLayout";
+import Perfil from "./pages/Perfil";
 
 export default function App(){
   return(
@@ -33,6 +34,7 @@ export default function App(){
           <Route path="/productos/:sku" element={<ProductosDetalles/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/carrito/pago" element={<Pago/>}/>
           <Route path="/carrito/pago/pagocorrecto" element={<PagoCorrecto/>}/>
           <Route path="/blog/alimentacion-saludable" element={<DetalleBlog1/>}/>

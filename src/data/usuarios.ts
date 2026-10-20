@@ -77,3 +77,34 @@ export function iniciarSesion(email: string, password: string, recordar: boolean
 
     return { ok: true, msg: "Iniciaste sesion correctamente." };
 }
+
+export function obtenerIdSesion(): string | null {
+    return localStorage.getItem(CLAVE_SESION) ?? sessionStorage.getItem(CLAVE_SESION);
+}
+
+export function obtenerUsuarioActual(): Usuario | null {
+    const id = obtenerIdSesion();
+    if (!id) return null;
+
+    return obtenerUsuarios().find((u) => u.id === id) || null;
+}
+
+export function cerrarSesion(): void {
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
+}
+
+export function guardarCambioUsuario(usuarioEditado: Usuario): Resultado {
+    const usuarios = obtenerUsuarios();
+
+    const indice = usuarios.findIndex((u) => u.id === usuarioEditado.id);
+
+    if (indice === -1) {
+        return { ok: false, msg: "No se encontró al usuario" };
+    }
+
+    usuarios[indice] = usuarioEditado;
+    guardarUsuarioDB(usuarios);
+
+    return { ok: true, msg: "Perfil actualizado" };
+}

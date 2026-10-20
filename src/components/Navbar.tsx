@@ -1,7 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../App.css';
+import { obtenerUsuarioActual, cerrarSesion } from '../data/usuarios';
 
 export default function Navbar(){
+    // useLocation hace que el navbar se vuelva a renderizar al cambiar de pagina
+    // asi se actualiza despues de iniciar sesion
+    useLocation();
+    const navigate = useNavigate();
+
+    const usuario = obtenerUsuarioActual();
+
+    const salir = (e: React.MouseEvent) => {
+        e.preventDefault();
+        cerrarSesion();
+        navigate("/login");
+    };
+
     return(
         <header className="sticky-top bg-white shadow-sm">
         <nav className="navbar navbar-expand-lg navbar-light container">
@@ -45,18 +59,21 @@ export default function Navbar(){
                             </button>
                         </Link >
                     </li>   
-                    <li className="nav-item d-none" id="menu-invitado">                        
+                    {!usuario && (
+                    <li className="nav-item" id="menu-invitado">
                         <Link to="login">
                             <button className="btn btn-primary">
                                 Ingresar
                             </button>
                         </Link >
                     </li>
+                    )}
 
-                    <li className="nav-item d-none" id="menu-usuario">
+                    {usuario && (
+                    <li className="nav-item" id="menu-usuario">
                         <div className="dropdown">
                             <a className="btn dropdown-toggle d-flex align-items-center" href="#" role="button" id="imageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Mi Cuenta
+                                    Hola, {usuario.nombre}
                             </a>
 
                             <ul className="dropdown-menu" aria-labelledby="imageDropdown">
@@ -66,13 +83,14 @@ export default function Navbar(){
                                     </Link >
                                 </li>
                                 <li>
-                                    <Link to="#" className="dropdown-item" id="cerrar-sesion">
+                                    <a href="#" className="dropdown-item" id="cerrar-sesion" onClick={salir}>
                                         Cerrar Sesión
-                                    </Link >
+                                    </a>
                                 </li>
                             </ul>
                             </div>
                     </li>
+                    )}
 
                 </ul>
             </div>
