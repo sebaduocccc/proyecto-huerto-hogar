@@ -1,4 +1,32 @@
+import { use, useState } from "react";
+import { useNavigate,Link } from "react-router-dom";
+import { regiones } from "../data/ubicaciones";
+
+
+const registarUsuario = () => {
+
+    const [nombre, setNombre] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmarPassword, setConfirmarPassword] = useState('');
+    const [telefono, setTelefono] = useState('');
+    const [rut, setRut] = useState('');
+    const [fechaNacimiento, setFechaNacimiento] = useState('');
+
+}
+
 export default function Register(){
+    const [region, setRegion] = useState(regiones[0].region);
+    const [comuna, setComuna] = useState(regiones[0].comunas[0]);
+
+    const comunas = regiones.find(r => r.region === region)?.comunas ?? [];
+
+    // Al cambiar de región se selecciona la primera comuna de la nueva región
+    const cambiarRegion = (nuevaRegion: string) => {
+        setRegion(nuevaRegion);
+        setComuna(regiones.find(r => r.region === nuevaRegion)?.comunas[0] ?? '');
+    };
+
     return(
         <div className="container py-2">
             <div className="row justify-content-center">
@@ -52,8 +80,20 @@ export default function Register(){
 
                             <div className="row mb-3">
                                 <label className="form-label">Direccion</label>
-                                <div className="col-6"><select name="" id="region" className="form-select"></select></div>
-                                <div className="col-6"><select name="" id="comuna" className="form-select"></select></div>
+                                <div className="col-6">
+                                    <select name="region" id="region" className="form-select" value={region} onChange={e => cambiarRegion(e.target.value)}>
+                                        {regiones.map(r => (
+                                            <option key={r.region} value={r.region}>{r.region}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-6">
+                                    <select name="comuna" id="comuna" className="form-select" value={comuna} onChange={e => setComuna(e.target.value)}>
+                                        {comunas.map(c => (
+                                            <option key={c} value={c}>{c}</option>
+                                        ))}
+                                    </select>
+                                </div>
                                 
                             </div>
                             <input type="text" placeholder="Calle" className="form-control mb-3" id="address" name="direccion"/>
