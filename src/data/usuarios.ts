@@ -52,3 +52,28 @@ export function registrarUsuario(datos: NuevoUsuario): Resultado {
 
     return { ok: true, msg: "Cuenta creada con exito." };
 }
+
+const CLAVE_SESION = "phuertohogar_session";
+
+export function iniciarSesion(email: string, password: string, recordar: boolean): Resultado {
+    const usuarios = obtenerUsuarios();
+    const correo = email.trim().toLowerCase();
+
+    const usuario = usuarios.find((u) => u.email === correo && u.password === password);
+
+    if (!usuario) {
+        return { ok: false, msg: "Correo o contraseña incorrecta." };
+    }
+
+    localStorage.removeItem(CLAVE_SESION);
+    sessionStorage.removeItem(CLAVE_SESION);
+
+    // si marca recordar se guarda en localStorage, si no en sessionStorage
+    if (recordar) {
+        localStorage.setItem(CLAVE_SESION, usuario.id);
+    } else {
+        sessionStorage.setItem(CLAVE_SESION, usuario.id);
+    }
+
+    return { ok: true, msg: "Iniciaste sesion correctamente." };
+}
