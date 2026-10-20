@@ -40,7 +40,7 @@ export function guardarUsuarioDB(usuarios: Usuario[]): void {
     console.log('usuario guardado: ' + JSON.stringify(usuarios));
 }
 
-export function registrarUsuario(datos: NuevoUsuario): Resultado {
+export function registrarUsuario(datos: NuevoUsuario, rol: string = "usuario"): Resultado {
     const usuarios = obtenerUsuarios();
     const email = datos.email.trim().toLowerCase();
 
@@ -48,7 +48,7 @@ export function registrarUsuario(datos: NuevoUsuario): Resultado {
         return { ok: false, msg: "Ya existe ese correo." };
     }
 
-    usuarios.push({ ...datos, email, id: generarId(), rol: "usuario" });
+    usuarios.push({ ...datos, email, id: generarId(), rol: rol });
     guardarUsuarioDB(usuarios);
 
     return { ok: true, msg: "Cuenta creada con exito." };
@@ -132,4 +132,9 @@ export function guardarCambioUsuario(usuarioEditado: Usuario): Resultado {
     guardarUsuarioDB(usuarios);
 
     return { ok: true, msg: "Perfil actualizado" };
+}
+
+export function eliminarUsuario(id: string): void {
+    const usuarios = obtenerUsuarios();
+    guardarUsuarioDB(usuarios.filter((u) => u.id !== id));
 }

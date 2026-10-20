@@ -15,6 +15,7 @@ import DetalleBlog1 from "./pages/DetalleBlog1";
 import DetalleBlog2 from "./pages/DetalleBlog2";
 import AdminProductos from "./pages/AdminProductos";
 import AdminHome from "./pages/AdminHome";
+import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminLayout from "./components/AdminLayout";
 import Perfil from "./pages/Perfil";
 import Proteger from "./components/Proteger";
@@ -49,6 +50,7 @@ export default function App(){
           <Route element={<AdminLayout/>}>
             <Route path="/admin" element={<AdminHome/>}/>
             <Route path="/admin/productos" element={<AdminProductos/>}/>
+            <Route path="/admin/usuarios" element={<AdminUsuarios/>}/>
           </Route>
         </Route>
       </Routes>

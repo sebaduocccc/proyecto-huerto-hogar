@@ -82,6 +82,13 @@ export default function Navbar(){
                                         Mi Perfil
                                     </Link >
                                 </li>
+                                {usuario.rol === "admin" && (
+                                <li>
+                                    <Link to="/admin" className="dropdown-item">
+                                        Panel Admin
+                                    </Link >
+                                </li>
+                                )}
                                 <li>
                                     <a href="#" className="dropdown-item" id="cerrar-sesion" onClick={salir}>
                                         Cerrar Sesión
