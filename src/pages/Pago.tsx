@@ -1,6 +1,27 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useCreditCardValidator } from 'react-creditcard-validator';
 
 export default function Pago(){
+        const navigate = useNavigate();
+    const {
+        getCardNumberProps,
+        getExpiryDateProps,
+    getCVCProps,
+        meta: { erroredInputs },
+    } = useCreditCardValidator();
+
+        function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+                event.preventDefault();
+
+                const hasCardErrors = Object.values(erroredInputs).some(Boolean);
+
+                if (event.currentTarget.checkValidity() && !hasCardErrors) {
+                        navigate('pagocorrecto');
+                } else if (hasCardErrors) {
+                        navigate('pagoincorrecto');
+                }
+        }
+  
     return(
         <>
                 <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
@@ -39,61 +60,55 @@ export default function Pago(){
                 <div className="col-lg-4">
                     <div className="card border-0 shadow-sm position-sticky" style={{top: '2rem'}}>
                         <div className="card-body p-4">
-                            <h5 className="fw-bold mb-3">Resumen del Pedido</h5>
-                            {/* <div className="d-flex justify-content-between mb-2">
-                                <span className="text-muted">Subtotal</span>
-                                <span id="cart-subtotal" className="fw-bold"></span>
-                            </div> -->
-                            <!-- <div className="d-flex justify-content-between mb-2">
-                                <span className="text-muted">Envío</span>
-                                <span id="cart-shipping" className="fw-bold"></span>
-                            </div> */}
+                            <h5 className="fw-bold mb-3">Datos de la compra</h5>
 
-                            <hr className="my-3" />
-
-                            <div className="d-flex justify-content-between mb-2">
-                                <span>Total</span>
-                                <span id="cart-total" className="fw-bold"></span>
-                            </div>
-
-                            <form id="coupon-form" className="mb-3">
-                                <h1>Introduzca los datos de su tarjeta </h1>
-                                    <input type="text"/> Numero de Tarjeta
-                                <h1/>
-    
-                                <input type="text" name="fechaTarjeta" id="dateCard" />Fecha de Vencimiento
-                                <h1/>
-                                <input type="text" name="cvv" id="cvv" />CVV
-                                <label htmlFor="coupon-input" className="form-label small fw-bold text-muted">Ingresa tu cupón</label>
-                                <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        id="coupon-input" 
-                                        className="form-control text-uppercase disabled" 
-                                        placeholder="No hay cupones disponibles" 
-                                        aria-label="Código de descuento"
-                                    />
-                                    <button 
-                                        type="submit" 
-                                        id="apply-coupon-btn" 
-                                        className="btn btn-outline-secondary disabled"
-                                    >
-                                        Aplicar
-                                    </button>
+                            <form id="card-form" className="mb-3" onSubmit={handleSubmit}>
+                                <label>Introduzca los datos de su tarjeta</label>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="Nombre del titular de la tarjeta" required />
                                 </div>
-                                <div id="coupon-message" className="form-text mt-1"></div>
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getCardNumberProps()} />
+                                    <small>{erroredInputs.cardNumber && erroredInputs.cardNumber}</small>
+                                </div>
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getExpiryDateProps()} />
+                                    <small>{erroredInputs.expiryDate && erroredInputs.expiryDate}</small>
+                                </div>
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getCVCProps()} />
+                                    <small>{erroredInputs.cvc && erroredInputs.cvc}</small>
+                                </div>
+
+                                <label>Introduzca su dirección de envío</label>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="Dirección de envío" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="Ciudad" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="Código Postal" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" className="form-control" placeholder="País" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="email" className="form-control" placeholder="Correo electrónico" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="tel" className="form-control" placeholder="Teléfono de contacto" required />
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100">
+                                    Finalizar Compra
+                                </button>
                             </form>
 
-                            <Link to='pagocorrecto'>
-                                <button 
-                                type="button" 
-                                id="checkout-btn" 
-                                className="btn btn-primary btn-lg w-100"
-                                >
-                                Pagar
-                                </button>
-                            </Link>
+                            
+                            
 
+
+                            
                         </div>
                     </div>
                 </div>
