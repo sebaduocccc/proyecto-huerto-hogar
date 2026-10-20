@@ -9,9 +9,10 @@ export type Usuario = {
     region: string;
     rut: string;
     fechaNacimiento: string;
+    rol: string; // "admin" o "usuario"
 };
 
-export type NuevoUsuario = Omit<Usuario, "id">;
+export type NuevoUsuario = Omit<Usuario, "id" | "rol">;
 
 export type Resultado = {
     ok: boolean;
@@ -47,10 +48,34 @@ export function registrarUsuario(datos: NuevoUsuario): Resultado {
         return { ok: false, msg: "Ya existe ese correo." };
     }
 
-    usuarios.push({ ...datos, email, id: generarId() });
+    usuarios.push({ ...datos, email, id: generarId(), rol: "usuario" });
     guardarUsuarioDB(usuarios);
 
     return { ok: true, msg: "Cuenta creada con exito." };
+}
+
+// crea el usuario admin si no existe, se llama al iniciar la pagina en main.tsx
+export function crearAdminPorDefecto(): void {
+    const usuarios = obtenerUsuarios();
+
+    if (usuarios.some((u) => u.email === "admin@huertohogar.com")) {
+        return;
+    }
+
+    usuarios.push({
+        id: generarId(),
+        nombre: "Administrador",
+        email: "admin@huertohogar.cl",
+        password: "admin",
+        telefono: "",
+        direccion: "",
+        comuna: "",
+        region: "",
+        rut: "",
+        fechaNacimiento: "",
+        rol: "admin"
+    });
+    guardarUsuarioDB(usuarios);
 }
 
 const CLAVE_SESION = "phuertohogar_session";
