@@ -11,13 +11,25 @@ const normalize = (s: string) =>
 export default function Productos() {
     const[productos] = useState(() => getProductos());
     const { addItem } = useCarrito();
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const q = searchParams.get("q")?.trim() ?? "";
+    const categoria = searchParams.get("categoria") ?? "";
 
-    const filtered = q
-        ? productos.filter((p) => normalize(p.name).includes(normalize(q)))
-        : productos;
+    const categorias = [...new Set(productos.map((p) => p.category))].sort();
+
+    const filtered = productos.filter(
+        (p) =>
+            (!q || normalize(p.name).includes(normalize(q))) &&
+            (!categoria || p.category === categoria)        
+    );
+
+    const handleCategoria = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const next = new URLSearchParams(searchParams);
+        if (e.target.value) next.set("categoria", e.target.value);
+        else next.delete("categoria");
+        setSearchParams(next);
+    };
 
     const handleAdd = (producto: Producto, cantidad: number) => {
         addItem(producto, cantidad);
@@ -30,6 +42,25 @@ export default function Productos() {
             <h1 className="fw-bold">
                 {q ? `Resultados para "${q}"`: "Nuestros Productos" }
             </h1>
+
+            <div className="row my-3">
+                <div className="col-12 col-sm-6 col-lg-4">
+                    <label htmlFor="categoria-select" className="form-label small fw-bold">
+                        Categoría
+                    </label>
+                    <select
+                        id="categoria-select"
+                        className="form-select"
+                        value={categoria}
+                        onChange={handleCategoria}
+                    >
+                        <option value="">Todas las categorías</option>
+                        {categorias.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
             
             {filtered.length === 0 ? (
                 <div className="text-center py-5">
