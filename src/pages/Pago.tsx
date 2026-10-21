@@ -1,6 +1,41 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useCreditCardValidator } from 'react-creditcard-validator';
+
+const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
 
 export default function Pago(){
+        const navigate = useNavigate();
+    const {
+        getCardNumberProps,
+        getExpiryDateProps,
+    getCVCProps,
+        meta: { erroredInputs },
+    } = useCreditCardValidator();
+
+        function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+                event.preventDefault();
+
+                const hasCardErrors = Object.values(erroredInputs).some(Boolean);
+
+                if (event.currentTarget.checkValidity() && !hasCardErrors) {
+                    const formData = new FormData(event.currentTarget);
+                    const checkoutDetails = {
+                        nombre: formData.get('nombre'),
+                        direccion: formData.get('direccion'),
+                        ciudad: formData.get('ciudad'),
+                        codigoPostal: formData.get('codigoPostal'),
+                        pais: formData.get('pais'),
+                        correo: formData.get('correo'),
+                        telefono: formData.get('telefono'),
+                        fechaCompra: new Date().toISOString(),
+                    };
+                    localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(checkoutDetails));
+                        navigate('pagocorrecto');
+                } else if (hasCardErrors) {
+                        navigate('pagoincorrecto');
+                }
+        }
+  
     return(
         <>
             <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
@@ -33,82 +68,55 @@ export default function Pago(){
                 <div className="col-lg-4">
                     <div className="card border-0 shadow-sm position-sticky" style={{top: '2rem'}}>
                         <div className="card-body p-4">
-                            <h5 className="fw-bold mb-3">Resumen del Pedido</h5>
-                            <hr className="my-3" />
-                            <div className="d-flex justify-content-between mb-2">
-                                <span>Total</span>
-                                <span id="cart-total" className="fw-bold"></span>
-                            </div>
-                            <hr className="my-3" />
-                            <form>
-                                <label htmlFor="card-number-input" className="form-label small fw-bold text-muted">Número de Tarjeta</label>
-                                <div className="input-group mb-3">
-                                    <input 
-                                        type="text" 
-                                        id="card-number-input" 
-                                        inputMode='numeric'
-                                        pattern='[0-9]*'
-                                        maxLength={16}
-                                        className="form-control" 
-                                        placeholder="0000 0000 0000 0000"                                                                             
-                                    />
-                                </div>
-                                <label htmlFor="card-date-input" className="form-label small fw-bold text-muted">Fecha de Vencimiento</label>
-                                <div className="input-group mb-3">
-                                    <input 
-                                        type="text" 
-                                        id="card-date-input" 
-                                        inputMode='numeric'
-                                        pattern='[0-9]*'
-                                        maxLength={4}
-                                        className="form-control" 
-                                        placeholder="MMAA"                                                                              
-                                    />
-                                </div>
-                                <label htmlFor="card-cvv-input" className="form-label small fw-bold text-muted">Código de Verificación</label>
-                                <div className="input-group mb-3">
-                                    <input 
-                                        type="text" 
-                                        id="card-cvv-input" 
-                                        inputMode='numeric'
-                                        pattern='[0-9]*'
-                                        maxLength={3}
-                                        className="form-control" 
-                                        placeholder="000"                                                                           
-                                    />
-                                </div>                                
-                            </form>                                                
-                            <hr className="my-3" />
-                            <form id="coupon-form" className="mb-3">                              
+                            <h5 className="fw-bold mb-3">Datos de la compra</h5>
 
-                                <label htmlFor="coupon-input" className="form-label small fw-bold text-muted">Ingresa tu cupón</label>
-                                <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        id="coupon-input" 
-                                        className="form-control text-uppercase disabled" 
-                                        placeholder="No hay cupones disponibles"                                         
-                                    />
-                                    <button 
-                                        type="submit" 
-                                        id="apply-coupon-btn" 
-                                        className="btn btn-outline-secondary disabled"
-                                    >
-                                        Aplicar
-                                    </button>
+                            <form id="card-form" className="mb-3" onSubmit={handleSubmit}>
+                                <label>Introduzca los datos de su tarjeta</label>
+                                <div className="mb-3">
+                                    <input type="text" name="nombre" className="form-control" placeholder="Nombre del titular de la tarjeta" required />
                                 </div>
-                                <div id="coupon-message" className="form-text mt-1"></div>
-                            </form>
-                            <Link to='pagocorrecto'>
-                                <button 
-                                type="button" 
-                                id="checkout-btn" 
-                                className="btn btn-primary btn-lg w-100"
-                                >
-                                Pagar
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getCardNumberProps()} />
+                                    <small>{erroredInputs.cardNumber && erroredInputs.cardNumber}</small>
+                                </div>
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getExpiryDateProps()} />
+                                    <small>{erroredInputs.expiryDate && erroredInputs.expiryDate}</small>
+                                </div>
+                                <div className="mb-3">
+                                    <input className="form-control" required {...getCVCProps()} />
+                                    <small>{erroredInputs.cvc && erroredInputs.cvc}</small>
+                                </div>
+
+                                <label>Introduzca su dirección de envío</label>
+                                <div className="mb-3">
+                                    <input type="text" name="direccion" className="form-control" placeholder="Dirección de envío" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" name="ciudad" className="form-control" placeholder="Ciudad" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" name="codigoPostal" className="form-control" placeholder="Código Postal" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="text" name="pais" className="form-control" placeholder="País" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="email" name="correo" className="form-control" placeholder="Correo electrónico" required />
+                                </div>
+                                <div className="mb-3">
+                                    <input type="tel" name="telefono" className="form-control" placeholder="Teléfono de contacto" required />
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100">
+                                    Finalizar Compra
                                 </button>
-                            </Link>
+                            </form>
 
+                            
+                            
+
+
+                            
                         </div>
                     </div>
                 </div>
