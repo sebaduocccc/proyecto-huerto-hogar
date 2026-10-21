@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
 
+const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
+
 export default function Pago(){
         const navigate = useNavigate();
     const {
@@ -16,6 +18,18 @@ export default function Pago(){
                 const hasCardErrors = Object.values(erroredInputs).some(Boolean);
 
                 if (event.currentTarget.checkValidity() && !hasCardErrors) {
+                    const formData = new FormData(event.currentTarget);
+                    const checkoutDetails = {
+                        nombre: formData.get('nombre'),
+                        direccion: formData.get('direccion'),
+                        ciudad: formData.get('ciudad'),
+                        codigoPostal: formData.get('codigoPostal'),
+                        pais: formData.get('pais'),
+                        correo: formData.get('correo'),
+                        telefono: formData.get('telefono'),
+                        fechaCompra: new Date().toISOString(),
+                    };
+                    localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(checkoutDetails));
                         navigate('pagocorrecto');
                 } else if (hasCardErrors) {
                         navigate('pagoincorrecto');
@@ -65,7 +79,7 @@ export default function Pago(){
                             <form id="card-form" className="mb-3" onSubmit={handleSubmit}>
                                 <label>Introduzca los datos de su tarjeta</label>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" placeholder="Nombre del titular de la tarjeta" required />
+                                    <input type="text" name="nombre" className="form-control" placeholder="Nombre del titular de la tarjeta" required />
                                 </div>
                                 <div className="mb-3">
                                     <input className="form-control" required {...getCardNumberProps()} />
@@ -82,22 +96,22 @@ export default function Pago(){
 
                                 <label>Introduzca su dirección de envío</label>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" placeholder="Dirección de envío" required />
+                                    <input type="text" name="direccion" className="form-control" placeholder="Dirección de envío" required />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" placeholder="Ciudad" required />
+                                    <input type="text" name="ciudad" className="form-control" placeholder="Ciudad" required />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" placeholder="Código Postal" required />
+                                    <input type="text" name="codigoPostal" className="form-control" placeholder="Código Postal" required />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="text" className="form-control" placeholder="País" required />
+                                    <input type="text" name="pais" className="form-control" placeholder="País" required />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="email" className="form-control" placeholder="Correo electrónico" required />
+                                    <input type="email" name="correo" className="form-control" placeholder="Correo electrónico" required />
                                 </div>
                                 <div className="mb-3">
-                                    <input type="tel" className="form-control" placeholder="Teléfono de contacto" required />
+                                    <input type="tel" name="telefono" className="form-control" placeholder="Teléfono de contacto" required />
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100">
                                     Finalizar Compra
