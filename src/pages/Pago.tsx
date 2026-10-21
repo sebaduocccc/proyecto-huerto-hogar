@@ -38,8 +38,7 @@ export default function Pago(){
   
     return(
         <>
-                <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
-
+            <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
             <div id="empty-cart-msg" className="text-center py-5 d-none">
                 <div className="mb-3">
                     <span className="fs-1 text-muted"></span>
@@ -48,9 +47,7 @@ export default function Pago(){
                 <p className="text-muted">No has añadido ningún producto.</p>
                 <a href="productos.html" className="btn btn-primary btn-lg mt-2">Ir a ver productos</a>
             </div>
-
             <div id="cart-content" className="row g-4">
-
                 <div className="col-lg-8">
                     <div className="table-responsive shadow-sm border bg-white">
                         <table className="table table-hover align-middle mb-0">
@@ -67,10 +64,7 @@ export default function Pago(){
                             </tbody>
                         </table>
                     </div>
-                    
-                    
                 </div>
-
                 <div className="col-lg-4">
                     <div className="card border-0 shadow-sm position-sticky" style={{top: '2rem'}}>
                         <div className="card-body p-4">

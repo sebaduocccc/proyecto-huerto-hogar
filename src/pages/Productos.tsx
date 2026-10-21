@@ -2,12 +2,15 @@ import { useState } from "react";
 import ProductoCard from "../components/ProductoCard";
 import { getProductos } from "../data/catalogo";
 import type { Producto } from "../data/catalogo";
+import { useCarrito } from "../context/CarritoContext";
 
 export default function Productos() {
     const[productos] = useState(() => getProductos());
+    const { addItem } = useCarrito();
 
     const handleAdd = (producto: Producto, cantidad: number) => {
-        console.log("add", producto.name, cantidad);
+        addItem(producto, cantidad);
+        alert(`${cantidad} unidad(es) de ${producto.name} añadido(s) al carrito.`);
     };
 
 

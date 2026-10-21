@@ -14,11 +14,16 @@ import PagoCorrecto from "./pages/PagoCorrecto";
 import PagoIncorrecto from "./pages/PagoIncorrecto";
 import DetalleBlog1 from "./pages/DetalleBlog1";
 import DetalleBlog2 from "./pages/DetalleBlog2";
+import AdminProductos from "./pages/AdminProductos";
+import AdminHome from "./pages/AdminHome";
+import AdminLayout from "./components/AdminLayout";
 
 export default function App(){
   return(
     <BrowserRouter>
       <Routes>
+
+        {/* User view */}
         <Route element={<Layout/>}>
           <Route path="/" element={<Home/>}/>
           <Route path="/blog" element={<Blog/>}/>
@@ -26,7 +31,7 @@ export default function App(){
           <Route path="/contacto" element={<Contacto/>}/>
           <Route path="/nosotros" element={<Nosotros/>}/>
           <Route path="/productos" element={<Productos/>}/>
-          <Route path="/productosdetalles" element={<ProductosDetalles/>}/>
+          <Route path="/productos/:sku" element={<ProductosDetalles/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/carrito/pago" element={<Pago/>}/>
@@ -34,7 +39,12 @@ export default function App(){
           <Route path="/carrito/pago/pagoincorrecto" element={<PagoIncorrecto/>}/>
           <Route path="/blog/alimentacion-saludable" element={<DetalleBlog1/>}/>
           <Route path="/blog/sostenibilidad" element={<DetalleBlog2/>}/>
+        </Route>
 
+        {/* Admin view */}
+        <Route element={<AdminLayout/>}>
+          <Route path="/admin" element={<AdminHome/>}/>
+          <Route path="/admin/productos" element={<AdminProductos/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

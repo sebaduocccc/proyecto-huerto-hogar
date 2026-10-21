@@ -44,9 +44,9 @@ export default function ProductoCard({ producto, onAdd }: Props) {
                             -
                         </button>
                         <span className="form-control text-center quantity-input">
-                            1
+                            {cantidad}
                         </span>
-                        <button type="button" className="btn btn-outline-secondary btn-qty-plus">
+                        <button type="button" className="btn btn-outline-secondary btn-qty-plus" onClick={() => setCantidad((c) => c + 1)}>
                             +
                         </button>
                     </div>
