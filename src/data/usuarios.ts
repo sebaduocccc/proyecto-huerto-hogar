@@ -58,7 +58,7 @@ export function registrarUsuario(datos: NuevoUsuario, rol: string = "usuario"): 
 export function crearAdminPorDefecto(): void {
     const usuarios = obtenerUsuarios();
 
-    if (usuarios.some((u) => u.email === "admin@huertohogar.com")) {
+    if (usuarios.some((u) => u.email === "admin@huertohogar.cl")) {
         return;
     }
 
