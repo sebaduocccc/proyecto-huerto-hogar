@@ -1,7 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../App.css';
+import { obtenerUsuarioActual, cerrarSesion } from '../data/usuarios';
+import SearchBar from './SearchBar';
 
 export default function Navbar(){
+    // useLocation hace que el navbar se vuelva a renderizar al cambiar de pagina
+    // asi se actualiza despues de iniciar sesion
+    useLocation();
+    const navigate = useNavigate();
+
+    const usuario = obtenerUsuarioActual();
+
+    const salir = (e: React.MouseEvent) => {
+        e.preventDefault();
+        cerrarSesion();
+        navigate("/login");
+    };
+
     return(
         <header className="sticky-top bg-white shadow-sm">
         <nav className="navbar navbar-expand-lg navbar-light container">
@@ -38,6 +53,9 @@ export default function Navbar(){
                             Contacto
                         </Link >
                     </li>
+                    <li className='nav-item'>
+                        <SearchBar />
+                    </li>
                     <li className="nav-item ms-lg-2">
                         <Link to="carrito">
                             <button className="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
@@ -45,18 +63,21 @@ export default function Navbar(){
                             </button>
                         </Link >
                     </li>   
-                    <li className="nav-item d-none" id="menu-invitado">                        
+                    {!usuario && (
+                    <li className="nav-item" id="menu-invitado">
                         <Link to="login">
                             <button className="btn btn-primary">
                                 Ingresar
                             </button>
                         </Link >
                     </li>
+                    )}
 
-                    <li className="nav-item d-none" id="menu-usuario">
+                    {usuario && (
+                    <li className="nav-item" id="menu-usuario">
                         <div className="dropdown">
                             <a className="btn dropdown-toggle d-flex align-items-center" href="#" role="button" id="imageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Mi Cuenta
+                                    Hola, {usuario.nombre}
                             </a>
 
                             <ul className="dropdown-menu" aria-labelledby="imageDropdown">
@@ -65,14 +86,22 @@ export default function Navbar(){
                                         Mi Perfil
                                     </Link >
                                 </li>
+                                {usuario.rol === "admin" && (
                                 <li>
-                                    <Link to="#" className="dropdown-item" id="cerrar-sesion">
-                                        Cerrar Sesión
+                                    <Link to="/admin" className="dropdown-item">
+                                        Panel Admin
                                     </Link >
+                                </li>
+                                )}
+                                <li>
+                                    <a href="#" className="dropdown-item" id="cerrar-sesion" onClick={salir}>
+                                        Cerrar Sesión
+                                    </a>
                                 </li>
                             </ul>
                             </div>
                     </li>
+                    )}
 
                 </ul>
             </div>

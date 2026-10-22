@@ -5,7 +5,7 @@ import React,
 
 function App() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(3);
+    const [itemsPerPage] = useState(3);
 
     const data = [
         {id:1,name:"El mensaje número 10 de las Guías Alimentarias para Chile, elaborado por el Instituto de Nutrición y Tecnología de los Alimentos de la Universidad de Chile, destaca la necesidad de proteger el planeta, cuidar el agua, evitar el desperdicio de alimentos, separar los residuos y reciclar. "}
