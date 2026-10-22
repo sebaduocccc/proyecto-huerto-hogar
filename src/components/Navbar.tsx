@@ -52,6 +52,9 @@ export default function Navbar(){
                             Contacto
                         </Link >
                     </li>
+                    <li className='nav-item'>
+                        <SearchBar />
+                    </li>
                     <li className="nav-item ms-lg-2">
                         <Link to="carrito">
                             <button className="btn btn-outline-emerald d-flex align-items-center gap-2" type="button">
