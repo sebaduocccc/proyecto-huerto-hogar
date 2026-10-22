@@ -59,22 +59,22 @@ export default function Carrito() {
                                         <td>${item.price.toLocaleString("es-CL")}</td>
                                         <td>
                                             <div className='input-group input-group-sm' style={{ width: "110px"}}>
-                                                <button
+                                                {/* <button
                                                     type='button'
                                                     className='btn btn-outline-secondary'
                                                     onClick={() => updateQuantity(item.sku, -1)}
                                                     disabled={item.quantity <= 1}
                                                 >
                                                     -
-                                                </button>
+                                                </button> */}
                                                 <span className='form-control text-center'>{item.quantity}</span>
-                                                <button
+                                                {/* <button
                                                     type='button'
                                                     className='btn btn-outline-secondary'
                                                     onClick={() => updateQuantity(item.sku, 1)}                                                    
                                                 >
                                                     +
-                                                </button>
+                                                </button> */}
                                             </div>
                                         </td>
                                         <td className='fw-bold'>

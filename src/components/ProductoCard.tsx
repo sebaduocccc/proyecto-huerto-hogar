@@ -4,7 +4,7 @@ import type { Producto } from "../data/catalogo";
 
 type Props = {
     producto: Producto;
-    onAdd: (producto: Producto, cantidad: number) => void;
+    onAdd: (producto: Producto, cantidad: number) => void;    
 };
 
 
@@ -46,7 +46,9 @@ export default function ProductoCard({ producto, onAdd }: Props) {
                         <span className="form-control text-center quantity-input">
                             {cantidad}
                         </span>
-                        <button type="button" className="btn btn-outline-secondary btn-qty-plus" onClick={() => setCantidad((c) => c + 1)}>
+                        <button type="button" className="btn btn-outline-secondary btn-qty-plus"                         
+                            onClick={() => setCantidad((c) => c + 1)}
+                            disabled={cantidad>=producto.stock}>
                             +
                         </button>
                     </div>

@@ -19,7 +19,7 @@ const defaultCatalogo: Catalogo = {
         name: "Manzanas Fuji",        
         category: "Frutas",
         price: 1200,
-        stock: 150,
+        stock: 10,
         image: "/src/assets/productos/manzana-fuji.jpg",
         description: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule. Perfectas para meriendas saludables o como ingrediente en postres. Estas manzanas son conocidas por su textura firme y su sabor equilibrado entre dulce y ácido.",
         longDescription: {
@@ -32,7 +32,7 @@ const defaultCatalogo: Catalogo = {
         name: "Naranjas Valencia",
         category: "Frutas",
         price: 1000,
-        stock: 200,
+        stock: 10,
         image: "/src/assets/productos/naranjas-valencia.png",
         description: "Jugosas y ricas en vitamina C, estas naranjas Valencia son ideales para zumos frescos y refrescantes. Cultivadas en condiciones climáticas óptimas que aseguran su dulzura y jugosidad.",
         longDescription: {
@@ -45,7 +45,7 @@ const defaultCatalogo: Catalogo = {
         name: "Plátanos Cavendish",
         category: "Frutas",
         price: 800,
-        stock: 250,
+        stock: 10,
         image: "/src/assets/productos/platano-cavendish.jpg",
         description: "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético. Estos plátanos son ricos en potasio y vitaminas, ideales para mantener una dieta equilibrada.",
         longDescription: {
@@ -58,7 +58,7 @@ const defaultCatalogo: Catalogo = {
         name: "Zanahorias Orgánicas",
         category: "Verduras",
         price: 900,
-        stock: 100,
+        stock: 10,
         image: "/src/assets/productos/zanahoria-organica.jpg",
         description: "Zanahorias crujientes cultivadas sin pesticidas en la Región de O'Higgins. Excelente fuente de vitamina A y fibra, ideales para ensaladas, jugos o como snack saludable.",
         longDescription: {
@@ -71,7 +71,7 @@ const defaultCatalogo: Catalogo = {
         name: "Espinacas Frescas",
         category: "Verduras",
         price: 700,
-        stock: 80,
+        stock: 10,
         image: "/src/assets/productos/espinaca-fresca.jpg",
         description: "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes. Estas espinacas son cultivadas bajo prácticas orgánicas que garantizan su calidad y valor nutricional.",
         longDescription: {
@@ -84,7 +84,7 @@ const defaultCatalogo: Catalogo = {
         name: "Pimientos Tricolores",
         category: "Verduras",
         price: 1500,
-        stock: 120,
+        stock: 10,
         image: "/src/assets/productos/pimientos-tricolores.jpg",
         description: "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos. Ricos en antioxidantes y vitaminas, estos pimientos añaden un toque vibrante y saludable a cualquier receta.",
         longDescription: {
@@ -97,7 +97,7 @@ const defaultCatalogo: Catalogo = {
         name: "Miel Orgánica",
         category: "Orgánicos",
         price: 5000,
-        stock: 50,
+        stock: 10,
         image: "/src/assets/productos/miel-organica.webp",
         description: "Miel pura y orgánica producida por apicultores locales. Rica en antioxidantes y con un sabor inigualable, perfecta para endulzar de manera natural tus comidas y bebidas.",
         longDescription: {
@@ -110,7 +110,7 @@ const defaultCatalogo: Catalogo = {
         name: "Quinoa Orgánica",
         category: "Orgánicos",
         price: 3000,
-        stock: 3,
+        stock: 10,
         image: "/src/assets/productos/quinoa-organica.jpg",
         
         description: "Quinoa orgánica.",
@@ -124,7 +124,7 @@ const defaultCatalogo: Catalogo = {
         name: "Leche Entera",
         category: "Lácteos",
         price: 1000,
-        stock: 3,
+        stock: 10,
         image: "/src/assets/productos/leche-entera.webp",
         description: "Leche de vaca entera.",
         longDescription: {

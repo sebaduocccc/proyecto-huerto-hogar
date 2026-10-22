@@ -98,18 +98,14 @@ export default function ProductosDetalles() {
                                         >
                                             -
                                         </button>
-                                        <input 
-                                            type="number" 
-                                            id="quantity-input" 
-                                            className="form-control text-center" 
-                                            value={cantidad}
-                                            min={1}
-                                            onChange={(e) => setCantidad(parseInt(e.target.value) || 1)}
-                                        />
+                                        <span className="form-control text-center quantity-input">
+                                            {cantidad}
+                                        </span>
                                         <button 
                                             type="button" 
                                             className="btn btn-outline-secondary" 
                                             onClick={() => setCantidad((c) => (c+1))}
+                                            disabled={cantidad>=producto.stock}                                        
                                         >
                                             +
                                         </button>
