@@ -26,7 +26,7 @@ export default function ProductosDetalles() {
     const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
         addItem(producto, cantidad);
-        alert(`Añadido ${cantidad}x "${producto.name}" al carrito!`);
+        alert(`Carrito actualizado.`);
     }
 
     return(
@@ -115,6 +115,7 @@ export default function ProductosDetalles() {
                                     <button 
                                         type="submit"                                         
                                         className="btn btn-primary btn-lg w-100"
+                                        disabled={cantidad>producto.stock}
                                     >
                                         Añadir al Carrito
                                     </button>

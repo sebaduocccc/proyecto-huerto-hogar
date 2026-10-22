@@ -13,7 +13,7 @@ export default function Home() {
 
     const handleAdd = (producto: Producto, cantidad: number) => {
         addItem(producto, cantidad);
-        alert(`${cantidad} unidad(es) de ${producto.name} añadido(s) al carrito.`);
+        alert(`Carrito actualizado.`);
     };
 
     return (

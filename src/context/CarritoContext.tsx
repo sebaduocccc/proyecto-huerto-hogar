@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import type { Producto } from "../data/catalogo";
+import { getProducto, type Producto } from "../data/catalogo";
 
 export type CarritoItem = {
     sku: string;
@@ -14,6 +14,7 @@ type CarritoContextValue = {
     items: CarritoItem[];
     total: number;
     count: number;
+    getStock: (sku: string) => number;
     addItem: (producto: Producto, cantidad: number) => void;
     removeItem: (sku: string) => void;
     updateQuantity: (sku: string, delta: number) => void;
@@ -21,6 +22,8 @@ type CarritoContextValue = {
 };
 
 const STORAGE_KEY = "carrito";
+
+const getStock = (sku: string) => getProducto(sku)?.stock ?? 0;
 
 function loadCarrito(): CarritoItem[] {
     try {
@@ -43,38 +46,38 @@ export function CarritoProvider({ children }: {children: ReactNode}) {
     const addItem = (producto: Producto, cantidad: number) => {
         setItems((prev) => {
             const existing = prev.find((i) => i.sku === producto.sku);
-            if (existing) {
+            const quantity = Math.min(
+                (existing?.quantity ?? 0) + cantidad,
+                getStock(producto.sku)
+            );
+            
+            if (quantity <= 0) return prev;
+            
+            if (existing){
                 return prev.map((i) =>
-                    i.sku === producto.sku ? { ...i, quantity: i.quantity + cantidad } : i
+                    (i.sku === producto.sku ? { ...i, quantity } : i)
                 );
             }
-            return [
-                ...prev,
-                {
-                    sku: producto.sku,
-                    name: producto.name,
-                    price: producto.price,
-                    image: producto.image,
-                    quantity: cantidad,
-                },
-            ];
+            const {sku, name, price, image } = producto;
+            return [...prev, {sku, name, price, image, quantity }];
         });
     };
 
-    const removeItem = (sku: string) => {
-        setItems((prev) => prev.filter((i) => i.sku !== sku));
-    };
+    
 
-    const updateQuantity = (sku: string, delta: number) => {
+    const updateQuantity = (sku: string, delta: number) => {        
         setItems((prev) =>
             prev.map((i) =>
-                i.sku === sku && i.quantity + delta >= 1
-                    ? { ...i, quantity: i.quantity + delta }
+                i.sku === sku
+                    ? { ...i, quantity: Math.max(1, Math.min(i.quantity + delta, getStock(sku))) }
                     : i
             )
         );
     };
 
+    const removeItem = (sku: string) => 
+        setItems((prev) => prev.filter((i) => i.sku !== sku));    
+    
     const clearCarrito = () => setItems ([]);
 
     const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
@@ -82,7 +85,7 @@ export function CarritoProvider({ children }: {children: ReactNode}) {
 
     return (
         <CarritoContext.Provider
-            value={{ items, total, count, addItem, removeItem, updateQuantity, clearCarrito }}
+            value={{ items, total, count, getStock, addItem, removeItem, updateQuantity, clearCarrito }}
         >
             { children }
         </CarritoContext.Provider>

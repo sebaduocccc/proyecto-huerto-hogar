@@ -38,6 +38,7 @@ export default function ProductoCard({ producto, onAdd }: Props) {
                         <p className="producto-price fw-bold text-emerald fs-5 mb-3">
                             ${producto.price.toLocaleString('es-CL')}
                         </p>
+                        <span className="producto-stock text-secondary">Stock: {producto.stock}</span>
                     </div>
                     <div className="input-group my-3 align-self-center" style={{width: '130px'}}>
                         <button type="button" className="btn btn-outline-secondary btn-qty-minus" onClick={() => setCantidad((c) => Math.max(1, c - 1))}>
@@ -52,7 +53,7 @@ export default function ProductoCard({ producto, onAdd }: Props) {
                             +
                         </button>
                     </div>
-                    <button type="button" className="btn btn-primary add-to-cart-btn w-100" onClick={() => onAdd(producto, cantidad)}>
+                    <button type="button" className="btn btn-primary add-to-cart-btn w-100" onClick={() => onAdd(producto, cantidad) } disabled={cantidad>producto.stock}>
                         <i className="fa-solid fa-cart-shopping me-2"></i>Añadir al carrito
                     </button>                        
                 </div>
