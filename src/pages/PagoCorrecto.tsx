@@ -63,6 +63,50 @@ export default function PagoCorrecto(){
                     <div className="col-12">
                         <section className="card border-0 shadow-sm">
                             <div className="card-body p-4">
+                                <h2 className="h5 fw-bold mb-3">Productos comprados</h2>
+                                {details.items?.length ? (
+                                    <div className="table-responsive">
+                                        <table className="table align-middle mb-0">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th scope="col">Producto</th>
+                                                    <th scope="col">Precio</th>
+                                                    <th scope="col">Cantidad</th>
+                                                    <th scope="col">Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {details.items.map((item) => (
+                                                    <tr key={item.sku}>
+                                                        <td>
+                                                            <div className="d-flex align-items-center gap-3">
+                                                                <img src={item.image || '/src/assets/not-found.svg'} alt={item.name} style={{ width: '52px', objectFit: 'contain' }} />
+                                                                <span className="fw-semibold">{item.name}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>${item.price.toLocaleString('es-CL')}</td>
+                                                        <td>{item.quantity}</td>
+                                                        <td>${(item.price * item.quantity).toLocaleString('es-CL')}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot className="table-light">
+                                                <tr>
+                                                    <th scope="row" colSpan={3} className="text-end">Total pagado</th>
+                                                    <td className="fw-bold">${details.total.toLocaleString('es-CL')}</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p className="text-secondary mb-0">No hay productos guardados en este pedido.</p>
+                                )}
+                            </div>
+                        </section>
+                    </div>
+                    <div className="col-12">
+                        <section className="card border-0 shadow-sm">
+                            <div className="card-body p-4">
                                 <h2 className="h5 fw-bold mb-3">Dirección de envío</h2>
                                 <p className="mb-0">
                                     {details.direccion}, {details.ciudad}, {details.codigoPostal}, {details.pais}

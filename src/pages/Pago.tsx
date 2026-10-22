@@ -2,12 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
 import { saveCheckoutDetails } from '../data/checkout';
 import { useCarrito } from '../context/CarritoContext';
-import { guardarVenta } from '../data/ventas';
-import { obtenerIdSesion } from '../data/usuarios';
 
 export default function Pago(){
-        const navigate = useNavigate();
-        const { items, total } = useCarrito();
+    const navigate = useNavigate();
+    const { items, total } = useCarrito();
     const {
         getCardNumberProps,
         getExpiryDateProps,
@@ -17,14 +15,13 @@ export default function Pago(){
 
         function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
                 event.preventDefault();
+                if (items.length === 0) return;
 
                 const hasCardErrors = Object.values(erroredInputs).some(Boolean);
 
                 if (event.currentTarget.checkValidity() && !hasCardErrors) {
                     const formData = new FormData(event.currentTarget);
-                    const details = saveCheckoutDetails(formData);
-                    // para el panel de admin
-                    guardarVenta(details, items, total, obtenerIdSesion());
+                    saveCheckoutDetails(formData, items);
                     navigate('pagocorrecto');
                 } else if (hasCardErrors) {
                         navigate('pagoincorrecto');
@@ -34,14 +31,14 @@ export default function Pago(){
     return(
         <>
             <h1 className="fw-bold mb-4">Mi Carrito de Compras</h1>
-            <div id="empty-cart-msg" className="text-center py-5 d-none">
+            {items.length === 0 && <div id="empty-cart-msg" className="text-center py-5">
                 <div className="mb-3">
                     <span className="fs-1 text-muted"></span>
                 </div>
                 <h3>Tu carrito está vacío</h3>
                 <p className="text-muted">No has añadido ningún producto.</p>
-                <a href="productos.html" className="btn btn-primary btn-lg mt-2">Ir a ver productos</a>
-            </div>
+                <a href="/productos" className="btn btn-primary btn-lg mt-2">Ir a ver productos</a>
+            </div>}
             <div id="cart-content" className="row g-4">
                 <div className="col-lg-8">
                     <div className="table-responsive shadow-sm border bg-white">
@@ -55,8 +52,26 @@ export default function Pago(){
                                 </tr>
                             </thead>
                             <tbody id="cart-table-body">
-
+                                {items.map((item) => (
+                                    <tr key={item.sku}>
+                                        <td>
+                                            <div className="d-flex align-items-center gap-3">
+                                                <img src={item.image || '/src/assets/not-found.svg'} alt={item.name} style={{ width: '60px', objectFit: 'contain' }} />
+                                                <span className="fw-bold">{item.name}</span>
+                                            </div>
+                                        </td>
+                                        <td>${item.price.toLocaleString('es-CL')}</td>
+                                        <td>{item.quantity}</td>
+                                        <td className="fw-bold">${(item.price * item.quantity).toLocaleString('es-CL')}</td>
+                                    </tr>
+                                ))}
                             </tbody>
+                            {items.length > 0 && <tfoot className="table-light">
+                                <tr>
+                                    <th scope="row" colSpan={3} className="text-end">Total</th>
+                                    <td className="fw-bold">${total.toLocaleString('es-CL')}</td>
+                                </tr>
+                            </tfoot>}
                         </table>
                     </div>
                 </div>
@@ -102,7 +117,7 @@ export default function Pago(){
                                 <div className="mb-3">
                                     <input type="tel" name="telefono" className="form-control" placeholder="Teléfono de contacto" required />
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">
+                                <button type="submit" className="btn btn-primary w-100" disabled={items.length === 0}>
                                     Finalizar Compra
                                 </button>
                             </form>
