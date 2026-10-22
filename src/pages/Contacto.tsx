@@ -7,7 +7,7 @@ export default function Contacto () {
                 </div>
 
                 <div className="card-body">
-                    <form name="FormularioContacto" action="/" method="post" >
+                    <form name="FormularioContacto" action="/" method="get" >
 
                         <div className="mb-3">
                             <label htmlFor="nombre" className="form-label">Nombre:</label>
