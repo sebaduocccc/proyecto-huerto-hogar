@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { adminLinks } from "../data/adminLinks";
 import { obtenerUsuarios } from "../data/usuarios";
 import { getProductos } from "../data/catalogo";
+import { obtenerVentas } from "../data/ventas";
 
 type Dato = {
     nombre: string;
@@ -79,6 +80,13 @@ export default function AdminHome() {
     const productosPorCategoria = contar(productos.map((p) => p.category));
     const usuariosPorRegion = contar(usuarios.map((u) => u.region || "Sin región"));
 
+    // ventas, las mas nuevas primero
+    const ventas = obtenerVentas().reverse();
+    const ingresosTotales = ventas.reduce((suma, v) => suma + v.total, 0);
+    const productosVendidos = ventas.reduce(
+        (suma, v) => suma + v.productos.reduce((s, p) => s + p.quantity, 0), 0
+    );
+
     return(
         <div className="container my-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -109,6 +117,63 @@ export default function AdminHome() {
                 </div>
                 <div className="col-12 col-lg-6">
                     <GraficoBarras titulo="Usuarios por región" datos={usuariosPorRegion}/>
+                </div>
+            </div>
+
+            <h4 className="fw-bold mb-3">Resumen de Ventas</h4>
+
+            <div className="row g-3 mb-4">
+                <div className="col-12 col-md-4">
+                    <Tarjeta titulo="Ventas realizadas" valor={ventas.length} icono="fa-receipt"/>
+                </div>
+                <div className="col-12 col-md-4">
+                    <Tarjeta titulo="Ingresos totales ($)" valor={ingresosTotales} icono="fa-sack-dollar"/>
+                </div>
+                <div className="col-12 col-md-4">
+                    <Tarjeta titulo="Productos vendidos" valor={productosVendidos} icono="fa-basket-shopping"/>
+                </div>
+            </div>
+
+            <div className="card border-0 shadow-sm p-4 mb-5">
+                <h5 className="fw-bold mb-3">Historial de compras</h5>
+                <div className="table-responsive">
+                    <table className="table table-hover align-middle">
+                        <thead className="table-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Correo</th>
+                                <th>Productos</th>
+                                <th className="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {ventas.length === 0 ? (
+                                <tr>
+                                    <td colSpan={5} className="text-center text-muted py-4">
+                                        Todavía no hay ventas registradas.
+                                    </td>
+                                </tr>
+                            ) : (
+                                ventas.map((v) => (
+                                    <tr key={v.id}>
+                                        <td className="text-nowrap">{new Date(v.fecha).toLocaleString("es-CL")}</td>
+                                        <td className="fw-semibold">
+                                            {v.nombre}
+                                            {v.idUsuario === null && <span className="badge text-bg-secondary ms-2">Invitado</span>}
+                                        </td>
+                                        <td className="text-body-secondary">{v.correo}</td>
+                                        <td className="small">
+                                            {v.productos.length === 0
+                                                ? "--"
+                                                : v.productos.map((p) => `${p.quantity}x ${p.name}`).join(", ")}
+                                        </td>
+                                        <td className="text-end fw-semibold">${v.total.toLocaleString("es-CL")}</td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
