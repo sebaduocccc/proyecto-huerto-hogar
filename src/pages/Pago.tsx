@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
-
-const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
+import { saveCheckoutDetails } from '../data/checkout';
 
 export default function Pago(){
         const navigate = useNavigate();
@@ -19,18 +18,8 @@ export default function Pago(){
 
                 if (event.currentTarget.checkValidity() && !hasCardErrors) {
                     const formData = new FormData(event.currentTarget);
-                    const checkoutDetails = {
-                        nombre: formData.get('nombre'),
-                        direccion: formData.get('direccion'),
-                        ciudad: formData.get('ciudad'),
-                        codigoPostal: formData.get('codigoPostal'),
-                        pais: formData.get('pais'),
-                        correo: formData.get('correo'),
-                        telefono: formData.get('telefono'),
-                        fechaCompra: new Date().toISOString(),
-                    };
-                    localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(checkoutDetails));
-                        navigate('pagocorrecto');
+                    saveCheckoutDetails(formData);
+                    navigate('pagocorrecto');
                 } else if (hasCardErrors) {
                         navigate('pagoincorrecto');
                 }

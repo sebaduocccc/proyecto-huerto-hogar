@@ -1,17 +1,5 @@
 import { Link } from 'react-router-dom';
-
-type CheckoutDetails = {
-    nombre: string;
-    direccion: string;
-    ciudad: string;
-    codigoPostal: string;
-    pais: string;
-    correo: string;
-    telefono: string;
-    fechaCompra: string;
-};
-
-const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
+import { CHECKOUT_STORAGE_KEY, type CheckoutDetails } from '../data/checkout';
 
 export default function PagoCorrecto(){
     const savedDetails = localStorage.getItem(CHECKOUT_STORAGE_KEY);
