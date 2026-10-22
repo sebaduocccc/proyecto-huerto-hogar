@@ -117,3 +117,21 @@ Luego, con tu terminal dentro de la carpeta que contiene el repositorio utiliza:
 ```
 npm test
 ```
+
+## Coverage Report
+
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------|---------|----------|---------|---------|-------------------
+All files            |   87.35 |    71.42 |   80.64 |   90.72 |                   
+ components          |   71.42 |      100 |   66.66 |      80 |                   
+  ProductoCard.tsx   |   71.42 |      100 |   66.66 |      80 | 43                
+ context             |   66.66 |    35.71 |   47.05 |   75.86 |                   
+  CarritoContext.tsx |   66.66 |    35.71 |   47.05 |   75.86 | 30,47-48,65,69-71 
+ data                |   97.19 |    78.57 |     100 |   97.91 |                   
+  catalogo.ts        |     100 |      100 |     100 |     100 |                   
+  checkout.ts        |     100 |    56.25 |     100 |     100 | 25-31             
+  usuarios.ts        |   98.21 |       92 |     100 |   97.91 | 26                
+  validaciones.ts    |    93.1 |    76.92 |     100 |   96.15 | 47                
+ pages               |   79.16 |    78.57 |   88.88 |   80.95 |                   
+  Productos.tsx      |   79.16 |    78.57 |   88.88 |   80.95 | 28-31             
+
