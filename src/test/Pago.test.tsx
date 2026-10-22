@@ -16,8 +16,9 @@ describe('saveCheckoutDetails', () => {
 
 		const storage = { setItem: vi.fn() };
 		const purchaseDate = new Date('2026-10-21T12:00:00.000Z');
+		const items = [{ sku: 'FR001', name: 'Manzanas Fuji', price: 1200, image: '/manzanas.jpg', quantity: 2 }];
 
-		const details = saveCheckoutDetails(formData, storage, purchaseDate);
+		const details = saveCheckoutDetails(formData, items, storage, purchaseDate);
 
 		expect(storage.setItem).toHaveBeenCalledOnce();
 		expect(storage.setItem).toHaveBeenCalledWith(
@@ -31,8 +32,12 @@ describe('saveCheckoutDetails', () => {
 				correo: 'vicentito@example.com',
 				telefono: '+56912345678',
 				fechaCompra: '2026-10-21T12:00:00.000Z',
+				items,
+				total: 2400,
 			}),
 		);
+		expect(details.items).toEqual(items);
+		expect(details.total).toBe(2400);
 		expect(details).not.toHaveProperty('cardNumber');
 		expect(details).not.toHaveProperty('cvc');
 	});
