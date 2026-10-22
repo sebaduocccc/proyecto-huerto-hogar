@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../App.css';
 import { obtenerUsuarioActual, cerrarSesion } from '../data/usuarios';
+import SearchBar from './SearchBar';
 
 export default function Navbar(){
     // useLocation hace que el navbar se vuelva a renderizar al cambiar de pagina
