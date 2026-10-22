@@ -54,7 +54,7 @@ export function registrarUsuario(datos: NuevoUsuario, rol: string = "usuario"): 
     return { ok: true, msg: "Cuenta creada con exito." };
 }
 
-// crea el usuario admin si no existe, se llama al iniciar la pagina en main.tsx
+// crea el usuario admin si no existe
 export function crearAdminPorDefecto(): void {
     const usuarios = obtenerUsuarios();
 
@@ -93,7 +93,7 @@ export function iniciarSesion(email: string, password: string, recordar: boolean
     localStorage.removeItem(CLAVE_SESION);
     sessionStorage.removeItem(CLAVE_SESION);
 
-    // si marca recordar se guarda en localStorage, si no en sessionStorage
+    // si marca recordar se guarda en localStorage si no en sessionStorage
     if (recordar) {
         localStorage.setItem(CLAVE_SESION, usuario.id);
     } else {

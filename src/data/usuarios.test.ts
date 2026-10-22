@@ -3,13 +3,12 @@ import {
     obtenerUsuarioActual, cerrarSesion, guardarCambioUsuario, eliminarUsuario
 } from "./usuarios";
 
-// usuario de prueba para no repetir los datos en cada test
 const datosPrueba = {
-    nombre: "Juan Perez",
-    email: "juan@correo.cl",
+    nombre: "Rodridovich",
+    email: "juan@bluexpress.cl",
     password: "1234",
     telefono: "+56 9 1111 2222",
-    direccion: "Calle Falsa 123",
+    direccion: "Manuela Montes #666",
     comuna: "Santiago",
     region: "Región Metropolitana de Santiago",
     rut: "11.111.111-1",

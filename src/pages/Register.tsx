@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { regiones } from "../data/ubicaciones";
 import { registrarUsuario, type Resultado } from "../data/usuarios";
+import { validarRut, validarTelefono, validarEmail, calcularEdad } from "../data/validaciones";
 
 
 export default function Register(){
@@ -41,8 +42,31 @@ export default function Register(){
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // evitar que el formulario recargue la pagina
 
-        if (password !== confirmarPassword){
-            setMensaje({ ok: false, msg: 'Las contraseñas no coinciden.' });
+        // comprobaciones antes de registrar
+        let error = '';
+
+        if (nombre.trim().length < 3){
+            error = 'El nombre debe tener al menos 3 letras.';
+        } else if (!validarEmail(email)){
+            error = 'El correo no es válido.';
+        } else if (password.length < 4){
+            error = 'La contraseña debe tener al menos 4 caracteres.';
+        } else if (password !== confirmarPassword){
+            error = 'Las contraseñas no coinciden.';
+        } else if (!validarTelefono(telefono)){
+            error = 'El teléfono debe ser +56 9 seguido de 8 dígitos (ej: +56 9 1234 5678).';
+        } else if (!validarRut(rut)){
+            error = 'El RUT no es válido (ej: 12.345.678-5).';
+        } else if (fechaNacimiento === ''){
+            error = 'Debes ingresar tu fecha de nacimiento.';
+        } else if (calcularEdad(fechaNacimiento) < 18){
+            error = 'Debes ser mayor de 18 años para registrarte.';
+        } else if (direccion.trim() === ''){
+            error = 'Debes ingresar tu dirección.';
+        }
+
+        if (error !== ''){
+            setMensaje({ ok: false, msg: error });
             return;
         }
 
