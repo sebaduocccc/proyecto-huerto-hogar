@@ -61,15 +61,15 @@ it("crea el admin por defecto solo una vez", () => {
 
 it("inicia sesion con datos correctos", () => {
     registrarUsuario(datosPrueba);
-    const resultado = iniciarSesion("juan@correo.cl", "1234", false);
+    const resultado = iniciarSesion("juan@bluexpress.cl", "1234", false);
 
     expect(resultado.ok).toBe(true);
-    expect(obtenerUsuarioActual()?.nombre).toBe("Juan Perez");
+    expect(obtenerUsuarioActual()?.nombre).toBe("Rodridovich");
 });
 
 it("no inicia sesion con contraseña incorrecta", () => {
     registrarUsuario(datosPrueba);
-    const resultado = iniciarSesion("juan@correo.cl", "mala", false);
+    const resultado = iniciarSesion("juan@bluexpress.cl", "mala", false);
 
     expect(resultado.ok).toBe(false);
     expect(obtenerUsuarioActual()).toBeNull();
@@ -78,18 +78,18 @@ it("no inicia sesion con contraseña incorrecta", () => {
 it("con recordar guarda la sesion en localStorage y sin recordar en sessionStorage", () => {
     registrarUsuario(datosPrueba);
 
-    iniciarSesion("juan@correo.cl", "1234", true);
+    iniciarSesion("juan@bluexpress.cl", "1234", true);
     expect(localStorage.getItem("phuertohogar_session")).not.toBeNull();
     expect(sessionStorage.getItem("phuertohogar_session")).toBeNull();
 
-    iniciarSesion("juan@correo.cl", "1234", false);
+    iniciarSesion("juan@bluexpress.cl", "1234", false);
     expect(localStorage.getItem("phuertohogar_session")).toBeNull();
     expect(sessionStorage.getItem("phuertohogar_session")).not.toBeNull();
 });
 
 it("cierra la sesion", () => {
     registrarUsuario(datosPrueba);
-    iniciarSesion("juan@correo.cl", "1234", true);
+    iniciarSesion("juan@bluexpress.cl", "1234", true);
     cerrarSesion();
 
     expect(obtenerUsuarioActual()).toBeNull();

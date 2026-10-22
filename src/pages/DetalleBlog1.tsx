@@ -5,7 +5,7 @@ import React,
 
 function App() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(3);
+    const [itemsPerPage] = useState(3);
 
     const data = [
         {id:1,name:"Para que la alimentación sea saludable, debe ser inocua, es decir, no contener contaminantes microbianos y químicos"}
