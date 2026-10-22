@@ -91,6 +91,11 @@ Clona el repositorio en tu dispositivo local con:
 git clone https://github.com/sebaduocccc/proyecto-huerto-hogar
 ```
 
+O descárgalo en:
+``` 
+https://github.com/sebaduocccc/proyecto-huerto-hogar/archive/refs/heads/main.zip
+```
+
 Luego, con tu terminal dentro de la carpeta que contiene el repositorio utiliza:
 
 ```
