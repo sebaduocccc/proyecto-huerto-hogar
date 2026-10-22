@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
 import { saveCheckoutDetails } from '../data/checkout';
 import { useCarrito } from '../context/CarritoContext';
+import { guardarVenta } from '../data/ventas';
+import { obtenerIdSesion } from '../data/usuarios';
 
 export default function Pago(){
     const navigate = useNavigate();
@@ -21,7 +23,8 @@ export default function Pago(){
 
                 if (event.currentTarget.checkValidity() && !hasCardErrors) {
                     const formData = new FormData(event.currentTarget);
-                    saveCheckoutDetails(formData, items);
+                    const details = saveCheckoutDetails(formData, items); // va para el recuento de panel admin
+                    guardarVenta(details, details.items, details.total, obtenerIdSesion());
                     navigate('pagocorrecto');
                 } else if (hasCardErrors) {
                         navigate('pagoincorrecto');
