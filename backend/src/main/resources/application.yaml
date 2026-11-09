@@ -1,3 +1,32 @@
 spring:
   application:
-    name: backend
+    name: huerto-hogar-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/huerto_hogar?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Santiago}
+    username: ${DB_USER:huerto}
+    password: ${DB_PASSWORD:huerto}
+
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      # el esquema lo maneja Flyway; Hibernate solo valida que las entidades calcen con las tablas
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: America/Santiago
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
