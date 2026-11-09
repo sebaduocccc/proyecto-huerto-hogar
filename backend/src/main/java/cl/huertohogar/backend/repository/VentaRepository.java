@@ -17,6 +17,10 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
     @EntityGraph(attributePaths = {"detalles", "usuario"})
     List<Venta> findAllByOrderByFechaDesc();
 
+    /** Ultimas 5 ventas para el resumen del panel admin. */
+    @EntityGraph(attributePaths = {"detalles", "usuario"})
+    List<Venta> findTop5ByOrderByFechaDesc();
+
     /** Historial de compras del usuario logueado. */
     @EntityGraph(attributePaths = {"detalles"})
     List<Venta> findByUsuarioIdOrderByFechaDesc(Long usuarioId);
