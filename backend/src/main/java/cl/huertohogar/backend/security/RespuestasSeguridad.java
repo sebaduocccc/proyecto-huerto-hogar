@@ -25,17 +25,17 @@ public class RespuestasSeguridad implements AuthenticationEntryPoint, AccessDeni
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex)
             throws IOException {
-        escribir(response, request, HttpStatus.UNAUTHORIZED, "Debes iniciar sesión");
+        escribir(request, response, HttpStatus.UNAUTHORIZED, "Debes iniciar sesión");
     }
 
     /** 403: hay sesion, pero sin permiso. */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex)
             throws IOException {
-        escribir(response, request, HttpStatus.FORBIDDEN, "No tienes permisos para realizar esta acción");
+        escribir(request, response, HttpStatus.FORBIDDEN, "No tienes permisos para realizar esta acción");
     }
 
-    private void escribir(HttpServletResponse response, HttpServletRequest request, HttpStatus status, String mensaje)
+    public void escribir(HttpServletRequest request, HttpServletResponse response, HttpStatus status, String mensaje)
             throws IOException {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

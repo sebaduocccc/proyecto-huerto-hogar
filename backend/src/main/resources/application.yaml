@@ -30,3 +30,18 @@ server:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+app:
+  jwt:
+    # base64, minimo 256 bits. EN PRODUCCION definir JWT_SECRET (openssl rand -base64 48)
+    secret: ${JWT_SECRET:zUhpqqZMANHW/r+pjL429frlIFlbinN/zOtMAmP1IywzCCBY0hcVKBU+223F4CzV}
+    issuer: huerto-hogar
+    access-ttl: ${JWT_ACCESS_TTL:15m}
+    refresh-ttl: ${JWT_REFRESH_TTL:7d}
+    # si dos pestañas renuevan al mismo tiempo, la segunda no se trata como robo de token
+    refresh-reuse-grace: 20s
+    cookie-name: hh_refresh
+    # true en produccion (HTTPS)
+    cookie-secure: ${JWT_COOKIE_SECURE:false}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}

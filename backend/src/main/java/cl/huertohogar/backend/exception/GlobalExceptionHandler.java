@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
         return respuesta(HttpStatus.NOT_FOUND, ex.getMessage(), req, null);
     }
 
+    @ExceptionHandler(SesionInvalidaException.class)
+    public ResponseEntity<ErrorResponse> sesionInvalida(SesionInvalidaException ex, HttpServletRequest req) {
+        return respuesta(HttpStatus.UNAUTHORIZED, ex.getMessage(), req, null);
+    }
+
     @ExceptionHandler(ConflictoException.class)
     public ResponseEntity<ErrorResponse> conflicto(ConflictoException ex, HttpServletRequest req) {
         return respuesta(HttpStatus.CONFLICT, ex.getMessage(), req, null);

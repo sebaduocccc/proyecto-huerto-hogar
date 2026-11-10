@@ -6,6 +6,7 @@ import cl.huertohogar.backend.exception.RecursoNoEncontradoException;
 import cl.huertohogar.backend.exception.ReglaNegocioException;
 import cl.huertohogar.backend.model.Rol;
 import cl.huertohogar.backend.model.Usuario;
+import cl.huertohogar.backend.repository.RefreshTokenRepository;
 import cl.huertohogar.backend.repository.RolRepository;
 import cl.huertohogar.backend.repository.UsuarioRepository;
 import cl.huertohogar.backend.util.Rut;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +30,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     // ------------------------------------------------------------------ registro publico
 
@@ -88,6 +91,7 @@ public class UsuarioService {
             throw new ReglaNegocioException("La contraseña actual no es correcta");
         }
         usuario.setPassword(passwordEncoder.encode(req.passwordNueva()));
+        cerrarSesiones(usuarioId);   // las sesiones abiertas con la clave antigua dejan de servir
     }
 
     // ------------------------------------------------------------------ administracion
@@ -115,10 +119,13 @@ public class UsuarioService {
     public UsuarioResponse actualizarPorAdmin(Long id, UsuarioAdminRequest req, Long solicitanteId) {
         Usuario usuario = buscar(id);
         boolean eraAdminActivo = esAdminActivo(usuario);
+        Long rolAnterior = usuario.getRol().getId();
+        boolean estabaActivo = usuario.isActivo();
 
         aplicarDatosAdmin(usuario, req);
         if (req.activo() != null) usuario.setActivo(req.activo());
-        if (!Textos.estaVacio(req.password())) {
+        boolean cambiaPassword = !Textos.estaVacio(req.password());
+        if (cambiaPassword) {
             if (req.password().length() < 4) {
                 throw new ReglaNegocioException("La contraseña debe tener al menos 4 caracteres");
             }
@@ -134,6 +141,11 @@ public class UsuarioService {
         }
 
         validarUnicidad(usuario.getEmail(), usuario.getRut(), id);
+
+        // si cambian sus permisos o su acceso, debe volver a iniciar sesion para obtener un token nuevo
+        if (cambiaPassword || !rolAnterior.equals(usuario.getRol().getId()) || (estabaActivo && !usuario.isActivo())) {
+            cerrarSesiones(id);
+        }
         return UsuarioResponse.desde(usuario);
     }
 
@@ -163,6 +175,11 @@ public class UsuarioService {
         usuario.setRegion(Textos.limpiar(req.region()));
         usuario.setComuna(Textos.limpiar(req.comuna()));
         usuario.setDireccion(Textos.limpiar(req.direccion()));
+    }
+
+    private void cerrarSesiones(Long usuarioId) {
+        int revocadas = refreshTokenRepository.revocarTodosDeUsuario(usuarioId, LocalDateTime.now());
+        if (revocadas > 0) log.info("Se cerraron {} sesiones del usuario id={}", revocadas, usuarioId);
     }
 
     private boolean esAdminActivo(Usuario u) {

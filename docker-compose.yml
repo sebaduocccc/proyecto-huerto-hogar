@@ -36,6 +36,10 @@ services:
       DB_URL: jdbc:mysql://db:3306/${DB_NAME:-huerto_hogar}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Santiago
       DB_USER: ${DB_USER:-huerto}
       DB_PASSWORD: ${DB_PASSWORD:-huerto}
+      # secreto de DESARROLLO por defecto; en produccion definir JWT_SECRET en .env
+      JWT_SECRET: ${JWT_SECRET:-zUhpqqZMANHW/r+pjL429frlIFlbinN/zOtMAmP1IywzCCBY0hcVKBU+223F4CzV}
+      JWT_COOKIE_SECURE: ${JWT_COOKIE_SECURE:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
       TZ: America/Santiago
     ports:
       - "${BACKEND_PORT:-8080}:8080"
