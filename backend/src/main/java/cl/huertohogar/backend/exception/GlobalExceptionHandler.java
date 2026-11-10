@@ -7,6 +7,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -66,6 +71,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> rutaNoExiste(NoResourceFoundException ex, HttpServletRequest req) {
         return respuesta(HttpStatus.NOT_FOUND, "Ruta no encontrada", req, null);
+    }
+
+    /**
+     * Un @PreAuthorize rechazado: 401 si es un invitado (debe iniciar sesion),
+     * 403 si tiene sesion pero su rol no tiene el permiso.
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> accesoDenegado(AccessDeniedException ex, HttpServletRequest req) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
+            return respuesta(HttpStatus.UNAUTHORIZED, "Debes iniciar sesión", req, null);
+        }
+        return respuesta(HttpStatus.FORBIDDEN, "No tienes permisos para realizar esta acción", req, null);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> noAutenticado(AuthenticationException ex, HttpServletRequest req) {
+        return respuesta(HttpStatus.UNAUTHORIZED, ex.getMessage(), req, null);
     }
 
     @ExceptionHandler(Exception.class)
