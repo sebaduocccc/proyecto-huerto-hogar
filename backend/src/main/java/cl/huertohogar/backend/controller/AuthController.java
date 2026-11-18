@@ -29,16 +29,16 @@ import java.time.Duration;
 /**
  * Autenticacion con dos tokens:
  * - accessToken (JWT, 15 min) en el cuerpo: el frontend lo guarda en memoria y lo manda en "Authorization: Bearer".
- * - refreshToken (7 dias) en cookie httpOnly + SameSite=Strict, limitada a /api/auth: JavaScript no puede leerla
+ * - refreshToken (7 dias) en cookie httpOnly + SameSite=Strict, limitada a /api/v1/auth: JavaScript no puede leerla
  *   (protege contra XSS) y permite recuperar la sesion al recargar la pagina llamando a /refresh.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Autenticación")
 public class AuthController {
 
-    private static final String RUTA_COOKIE = "/api/auth";
+    private static final String RUTA_COOKIE = "/api/v1/auth";
 
     private final UsuarioService usuarioService;
     private final AuthService authService;

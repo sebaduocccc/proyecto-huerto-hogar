@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Lee "Authorization: Bearer <token>", lo valida y deja al usuario autenticado en el SecurityContext.
  * - Sin header: la peticion sigue como invitado (las reglas de SecurityConfig deciden).
- * - Token invalido o expirado: 401 inmediato, para que el frontend renueve con /api/auth/refresh.
+ * - Token invalido o expirado: 401 inmediato, para que el frontend renueve con /api/v1/auth/refresh.
  *   (Asi una compra con sesion vencida no se registra por error como compra de invitado.)
  * No es @Component a proposito: solo debe ejecutarse dentro de la cadena de Spring Security.
  */
@@ -34,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /** Los endpoints de autenticacion no usan el access token (refresh se llama justo cuando expiro). */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getRequestURI().startsWith("/api/auth/");
+        return request.getRequestURI().startsWith("/api/v1/auth/");
     }
 
     @Override

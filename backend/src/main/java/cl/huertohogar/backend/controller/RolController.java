@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Roles y permisos")
 @SecurityRequirement(name = OpenApiConfig.BEARER)

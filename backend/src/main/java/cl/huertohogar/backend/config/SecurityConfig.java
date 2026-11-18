@@ -51,9 +51,9 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()   // preflight CORS
                         // invitado: ver catalogo
-                        .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/productos/**", "/api/v1/categorias/**").permitAll()
                         // invitado: registrarse / login / refresh / logout / comprar
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/ventas").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**", "/api/v1/ventas").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(respuestas)
@@ -73,7 +73,7 @@ public class SecurityConfig {
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/api/v1/**", config);
         return source;
     }
 

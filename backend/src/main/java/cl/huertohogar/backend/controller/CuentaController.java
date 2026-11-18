@@ -27,7 +27,7 @@ import java.util.List;
  * nunca de la URL, asi nadie puede ver o editar la cuenta de otro.
  */
 @RestController
-@RequestMapping("/api/cuenta")
+@RequestMapping("/api/v1/cuenta")
 @RequiredArgsConstructor
 @Tag(name = "Mi cuenta")
 @SecurityRequirement(name = OpenApiConfig.BEARER)
