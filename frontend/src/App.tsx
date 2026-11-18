@@ -20,6 +20,7 @@ import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminLayout from "./components/AdminLayout";
 import Perfil from "./pages/Perfil";
 import Proteger from "./components/Proteger";
+import AdminVentas from "./pages/AdminVentas";
 
 export default function App(){
   return(
@@ -53,6 +54,7 @@ export default function App(){
             <Route path="/admin" element={<AdminHome/>}/>
             <Route path="/admin/productos" element={<AdminProductos/>}/>
             <Route path="/admin/usuarios" element={<AdminUsuarios/>}/>
+            <Route path="/admin/ventas" element={<AdminVentas/>}/>
           </Route>
         </Route>
       </Routes>
