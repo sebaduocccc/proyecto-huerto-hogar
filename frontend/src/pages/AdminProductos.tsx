@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { obtenerProductos, obtenerCategorias, guardarProducto, eliminarProducto } from "../data/catalogo";
 import type { Producto, Categoria } from "../data/catalogo";
 import { mensajeError } from "../data/api";
+import { useAuth } from "../context/AuthContext";
+import { tienePermiso } from "../data/adminLinks";
 
 type FormState = {
     sku: string;
@@ -19,6 +21,9 @@ const emptyForm: FormState = {
 };
 
 export default function AdminProductos() {
+    // el vendedor (PRODUCTOS_VER) solo puede mirar: se esconden el formulario y los botones
+    const { usuario } = useAuth();
+    const puedeEditar = tienePermiso(usuario, "PRODUCTOS_GESTIONAR");
     const [productos, setProductos] = useState<Producto[]>([]);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [form, setForm] = useState<FormState>(emptyForm);
@@ -114,13 +119,14 @@ export default function AdminProductos() {
         <>            
             <div className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h1 className="fw-bold">Panel de Administración de Productos</h1>
+                    <h1 className="fw-bold">{puedeEditar ? "Panel de Administración de Productos" : "Productos"}</h1>
                     <Link to="/" className="btn btn-outline-secondary">Volver a la Tienda</Link >
                 </div>
 
                 {error && <div className="alert alert-danger">{error}</div>}
 
                 <div className="row g-4">
+                    {puedeEditar && (
                     <div className="col-lg-4">
                         <div className="card shadow-sm border-0">
                             <div className="card-body p-4">
@@ -239,8 +245,9 @@ export default function AdminProductos() {
                             </div>
                         </div>
                     </div>
+                    )}
 
-                    <div className="col-lg-8">
+                    <div className={puedeEditar ? "col-lg-8" : "col-12"}>
                         <div className="card border-0 shadow-sm p-4">
                             <h5 className="fw-bold mb-3">Inventario Actual</h5>
                             <div className="table-responsive">
@@ -252,13 +259,13 @@ export default function AdminProductos() {
                                             <th>Categoría</th>
                                             <th>Stock</th>
                                             <th>Precio</th>
-                                            <th className="text-end">Acciones</th>
+                                            {puedeEditar && <th className="text-end">Acciones</th>}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {productos.length === 0 ? (
                                             <tr>
-                                                <td colSpan={6} className="text-center text-muted py-4">
+                                                <td colSpan={puedeEditar ? 6 : 5} className="text-center text-muted py-4">
                                                     El catálogo está vacío
                                                 </td>
                                             </tr>
@@ -276,6 +283,7 @@ export default function AdminProductos() {
                                                     <td>{p.category}</td>
                                                     <td>{p.stock}</td>
                                                     <td>${p.price.toLocaleString("es-CL")}</td>
+                                                    {puedeEditar && (
                                                     <td className="text-end">
                                                         <button 
                                                             className="btn btn-sm btn-primary me-1" 
@@ -286,6 +294,7 @@ export default function AdminProductos() {
                                                             onClick={() => handleDelete(p.sku)}
                                                         >Eliminar</button>
                                                     </td>
+                                                    )}
                                                 </tr>
                                             ))
                                         )}

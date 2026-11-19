@@ -43,7 +43,23 @@ class ApiIT {
     RequestPostProcessor admin() {
         Long id = usuarioRepository.findByEmail("admin@huertohogar.cl").orElseThrow().getId();
         return como(id, "ADMIN", "PERFIL_PROPIO", "COMPRAS_PROPIAS", "PRODUCTOS_GESTIONAR", "CATEGORIAS_GESTIONAR",
-                "USUARIOS_GESTIONAR", "ROLES_GESTIONAR", "VENTAS_GESTIONAR");
+                "USUARIOS_GESTIONAR", "ROLES_GESTIONAR", "VENTAS_GESTIONAR", "PRODUCTOS_VER", "VENTAS_VER");
+    }
+
+    @Test
+    void vendedorSoloVeProductosYOrdenes() throws Exception {
+        var vendedor = como(999L, "VENDEDOR", "PRODUCTOS_VER", "VENTAS_VER", "PERFIL_PROPIO", "COMPRAS_PROPIAS");
+        // puede ver
+        mvc.perform(get("/api/v1/ventas").with(vendedor)).andExpect(status().isOk());
+        mvc.perform(get("/api/v1/productos/stock-bajo").with(vendedor)).andExpect(status().isOk());
+        // no puede modificar productos ni ordenes
+        mvc.perform(delete("/api/v1/productos/FR001").with(vendedor)).andExpect(status().isForbidden());
+        mvc.perform(patch("/api/v1/ventas/1/estado").with(vendedor).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"estado\":\"ENVIADA\"}")).andExpect(status().isForbidden());
+        // ni entrar a las otras secciones del panel
+        mvc.perform(get("/api/v1/usuarios").with(vendedor)).andExpect(status().isForbidden());
+        mvc.perform(get("/api/v1/roles").with(vendedor)).andExpect(status().isForbidden());
+        mvc.perform(get("/api/v1/admin/resumen").with(vendedor)).andExpect(status().isForbidden());
     }
 
     static final String REGISTRO = """
@@ -210,7 +226,7 @@ class ApiIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.permisos", contains("PRODUCTOS_GESTIONAR")));
 
-        mvc.perform(get("/api/v1/permisos").with(admin())).andExpect(jsonPath("$", hasSize(7)));
+        mvc.perform(get("/api/v1/permisos").with(admin())).andExpect(jsonPath("$", hasSize(9)));
     }
 
     @Test

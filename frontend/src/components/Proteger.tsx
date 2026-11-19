@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { tienePermiso } from "../data/adminLinks";
 
 // Reemplaza a proteger.js: si no hay sesion manda al login.
-// Con soloAdmin ademas revisa que el usuario tenga rol ADMIN.
-export default function Proteger({ soloAdmin = false }: { soloAdmin?: boolean }){
+// Con permisos ademas exige tener alguno de ellos (los mismos que revisa el backend).
+export default function Proteger({ permisos }: { permisos?: string[] }){
     const { usuario, cargando } = useAuth();
 
     // al recargar la pagina hay que esperar a que el backend diga si hay sesion,
@@ -20,7 +21,7 @@ export default function Proteger({ soloAdmin = false }: { soloAdmin?: boolean })
         return <Navigate to="/login" replace/>;
     }
 
-    if (soloAdmin && usuario.rol !== "ADMIN"){
+    if (permisos && !tienePermiso(usuario, ...permisos)){
         return <Navigate to="/" replace/>;
     }
 

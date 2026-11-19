@@ -20,6 +20,7 @@ import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminLayout from "./components/AdminLayout";
 import Perfil from "./pages/Perfil";
 import Proteger from "./components/Proteger";
+import { permisosDe } from "./data/adminLinks";
 import AdminVentas from "./pages/AdminVentas";
 
 export default function App(){
@@ -48,13 +49,21 @@ export default function App(){
           <Route path="/blog/sostenibilidad" element={<DetalleBlog2/>}/>
         </Route>
 
-        {/* Admin view */}
-        <Route element={<Proteger soloAdmin/>}>
+        {/* Admin view: cada seccion exige sus permisos (el vendedor solo entra a productos y ventas) */}
+        <Route element={<Proteger/>}>
           <Route element={<AdminLayout/>}>
-            <Route path="/admin" element={<AdminHome/>}/>
-            <Route path="/admin/productos" element={<AdminProductos/>}/>
-            <Route path="/admin/usuarios" element={<AdminUsuarios/>}/>
-            <Route path="/admin/ventas" element={<AdminVentas/>}/>
+            <Route element={<Proteger permisos={permisosDe("/admin")}/>}>
+              <Route path="/admin" element={<AdminHome/>}/>
+            </Route>
+            <Route element={<Proteger permisos={permisosDe("/admin/productos")}/>}>
+              <Route path="/admin/productos" element={<AdminProductos/>}/>
+            </Route>
+            <Route element={<Proteger permisos={permisosDe("/admin/usuarios")}/>}>
+              <Route path="/admin/usuarios" element={<AdminUsuarios/>}/>
+            </Route>
+            <Route element={<Proteger permisos={permisosDe("/admin/ventas")}/>}>
+              <Route path="/admin/ventas" element={<AdminVentas/>}/>
+            </Route>
           </Route>
         </Route>
       </Routes>

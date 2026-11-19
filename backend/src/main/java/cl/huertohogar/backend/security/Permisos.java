@@ -16,6 +16,9 @@ public final class Permisos {
     public static final String USUARIOS = "hasAuthority('USUARIOS_GESTIONAR')";
     public static final String ROLES = "hasAuthority('ROLES_GESTIONAR')";
     public static final String VENTAS = "hasAuthority('VENTAS_GESTIONAR')";
+    /** Ver productos u ordenes en el panel: los gestiona el admin y el vendedor solo los ve. */
+    public static final String PRODUCTOS_LECTURA = "hasAnyAuthority('PRODUCTOS_GESTIONAR','PRODUCTOS_VER')";
+    public static final String VENTAS_LECTURA = "hasAnyAuthority('VENTAS_GESTIONAR','VENTAS_VER')";
     /** Para asignar un rol a un usuario hay que poder listar los roles. */
     public static final String ROLES_O_USUARIOS = "hasAnyAuthority('ROLES_GESTIONAR','USUARIOS_GESTIONAR')";
     /** Cualquier permiso de administracion da acceso al panel. */

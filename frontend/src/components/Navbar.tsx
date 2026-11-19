@@ -2,12 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../App.css';
 import { useAuth } from '../context/AuthContext';
 import SearchBar from './SearchBar';
+import { linksPermitidos } from '../data/adminLinks';
 
 export default function Navbar(){
     const navigate = useNavigate();
 
     // el contexto avisa cuando cambia el usuario, asi el navbar se actualiza solo
     const { usuario, logout } = useAuth();
+
+    // secciones del panel que puede ver (admin: todas, vendedor: productos y ventas)
+    const panel = linksPermitidos(usuario);
 
     const salir = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -84,10 +88,10 @@ export default function Navbar(){
                                         Mi Perfil
                                     </Link >
                                 </li>
-                                {usuario.rol === "ADMIN" && (
+                                {panel.length > 0 && (
                                 <li>
-                                    <Link to="/admin" className="dropdown-item">
-                                        Panel Admin
+                                    <Link to={panel[0].to} className="dropdown-item">
+                                        {usuario.rol === "ADMIN" ? "Panel Admin" : "Panel Vendedor"}
                                     </Link >
                                 </li>
                                 )}

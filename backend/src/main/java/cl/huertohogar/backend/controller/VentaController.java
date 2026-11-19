@@ -45,17 +45,17 @@ public class VentaController {
     }
 
     @GetMapping
-    @PreAuthorize(Permisos.VENTAS)
+    @PreAuthorize(Permisos.VENTAS_LECTURA)
     @SecurityRequirement(name = OpenApiConfig.BEARER)
-    @Operation(summary = "Listar todas las ventas", description = "Requiere VENTAS_GESTIONAR. Filtro opcional por estado.")
+    @Operation(summary = "Listar todas las ventas", description = "Requiere VENTAS_GESTIONAR o VENTAS_VER (vendedor). Filtro opcional por estado.")
     public List<VentaResponse> listar(@RequestParam(required = false) EstadoVenta estado) {
         return ventaService.listarTodas(estado);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize(Permisos.VENTAS)
+    @PreAuthorize(Permisos.VENTAS_LECTURA)
     @SecurityRequirement(name = OpenApiConfig.BEARER)
-    @Operation(summary = "Detalle de cualquier venta", description = "Requiere VENTAS_GESTIONAR.")
+    @Operation(summary = "Detalle de cualquier venta", description = "Requiere VENTAS_GESTIONAR o VENTAS_VER (vendedor).")
     public VentaResponse obtener(@PathVariable Long id) {
         return ventaService.obtener(id);
     }

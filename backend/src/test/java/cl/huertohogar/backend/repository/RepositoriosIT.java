@@ -35,6 +35,15 @@ class RepositoriosIT {
     }
 
     @Test
+    void rolVendedorSoloVeProductosYOrdenes() {
+        Rol vendedor = rolRepository.findByNombre(Rol.VENDEDOR).orElseThrow();
+
+        assertThat(vendedor.isSistema()).isTrue();
+        assertThat(vendedor.getPermisos()).extracting(Permiso::getNombre)
+                .containsExactlyInAnyOrder("PRODUCTOS_VER", "VENTAS_VER", "PERFIL_PROPIO", "COMPRAS_PROPIAS");
+    }
+
+    @Test
     void sePuedeCrearUnRolNuevoConPermisos() {
         Rol bodeguero = Rol.builder().nombre("BODEGUERO").descripcion("Gestiona stock").build();
         bodeguero.getPermisos().addAll(permisoRepository.findByNombreIn(List.of("PRODUCTOS_GESTIONAR")));

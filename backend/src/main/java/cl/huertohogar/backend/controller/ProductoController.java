@@ -46,9 +46,9 @@ public class    ProductoController {
     // ---------- administracion ----------
 
     @GetMapping("/stock-bajo")
-    @PreAuthorize(Permisos.PRODUCTOS)
+    @PreAuthorize(Permisos.PRODUCTOS_LECTURA)
     @SecurityRequirement(name = OpenApiConfig.BEARER)
-    @Operation(summary = "Productos con stock bajo", description = "Requiere PRODUCTOS_GESTIONAR.")
+    @Operation(summary = "Productos con stock bajo", description = "Requiere PRODUCTOS_GESTIONAR o PRODUCTOS_VER (vendedor).")
     public List<ProductoResponse> stockBajo(@RequestParam(defaultValue = "" + ProductoService.STOCK_BAJO) int umbral) {
         return productoService.stockBajo(umbral);
     }

@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { obtenerVentas, cambiarEstadoVenta, ESTADOS_VENTA, NOMBRE_ESTADO } from "../data/ventas";
 import type { Venta, EstadoVenta } from "../data/ventas";
 import { mensajeError } from "../data/api";
+import { useAuth } from "../context/AuthContext";
+import { tienePermiso } from "../data/adminLinks";
 
 const INTERVALO_REFRESCO = 15000; /* 15 segundos */
 const COLOR_ESTADO: Record<EstadoVenta, string> = {
@@ -14,6 +16,9 @@ const COLOR_ESTADO: Record<EstadoVenta, string> = {
 };
 
 export default function AdminVentas() {
+    // el vendedor (VENTAS_VER) solo ve los pedidos, no puede cambiar su estado
+    const { usuario } = useAuth();
+    const puedeCambiarEstado = tienePermiso(usuario, "VENTAS_GESTIONAR");
     const [ventas, setVentas] = useState<Venta[]>([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -54,7 +59,7 @@ export default function AdminVentas() {
     return (
         <div className="container my-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1 className="fw-bold">Gestión de Ventas</h1>
+                <h1 className="fw-bold">{puedeCambiarEstado ? "Gestión de Ventas" : "Pedidos"}</h1>
                 <Link to="/" className="btn btn-outline-secondary">Volver a la Tienda</Link>
             </div>
 
@@ -145,6 +150,7 @@ export default function AdminVentas() {
                                         </td>
                                         <td className="text-nowrap">
                                             <span className={`${COLOR_ESTADO[v.estado]} me-2`}>{NOMBRE_ESTADO[v.estado]}</span>
+                                            {puedeCambiarEstado && (
                                             <select
                                                 aria-label={`Estado del pedido ${v.id}`}
                                                 className="form-select form-select-sm d-inline-block w-auto"
@@ -155,6 +161,7 @@ export default function AdminVentas() {
                                                     <option key={e} value={e}>{NOMBRE_ESTADO[e]}</option>
                                                 ))}
                                             </select>
+                                            )}
                                         </td>
                                     </tr>
                                 ))

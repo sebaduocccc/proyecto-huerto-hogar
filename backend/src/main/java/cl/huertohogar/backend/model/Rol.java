@@ -21,6 +21,7 @@ public class Rol {
 
     public static final String ADMIN = "ADMIN";
     public static final String USUARIO = "USUARIO";
+    public static final String VENDEDOR = "VENDEDOR";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
