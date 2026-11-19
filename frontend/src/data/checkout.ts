@@ -3,6 +3,7 @@ import api from './api';
 import type { VentaApi } from './ventas';
 
 export const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
+// deben ser las mismas reglas que usa el backend (VentaService), que es quien registra el total
 export const TASA_IVA = 0.19;
 export const COSTO_ENVIO_BASE = 3990;
 export const ENVIO_GRATIS_DESDE = 30000;

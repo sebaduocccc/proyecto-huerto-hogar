@@ -6,7 +6,10 @@ import cl.huertohogar.backend.model.Venta;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/** Boleta / detalle de una venta. usuarioId es null si fue una compra como invitado. */
+/**
+ * Boleta / detalle de una venta. usuarioId es null si fue una compra como invitado.
+ * total = subtotal + iva + envio.
+ */
 public record VentaResponse(
         Long id,
         LocalDateTime fecha,
@@ -18,6 +21,9 @@ public record VentaResponse(
         String ciudad,
         String codigoPostal,
         String pais,
+        Integer subtotal,
+        Integer iva,
+        Integer envio,
         Integer total,
         EstadoVenta estado,
         List<DetalleVentaResponse> items
@@ -26,7 +32,7 @@ public record VentaResponse(
         return new VentaResponse(v.getId(), v.getFecha(),
                 v.getUsuario() == null ? null : v.getUsuario().getId(),
                 v.getNombre(), v.getCorreo(), v.getTelefono(), v.getDireccion(), v.getCiudad(),
-                v.getCodigoPostal(), v.getPais(), v.getTotal(), v.getEstado(),
+                v.getCodigoPostal(), v.getPais(), v.getSubtotal(), v.getIva(), v.getEnvio(), v.getTotal(), v.getEstado(),
                 v.getDetalles().stream().map(DetalleVentaResponse::desde).toList());
     }
 }

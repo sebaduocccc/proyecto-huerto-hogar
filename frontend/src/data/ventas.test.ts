@@ -18,7 +18,10 @@ const ventaApi: VentaApi = {
     ciudad: "Santiago",
     codigoPostal: "8320000",
     pais: "Chile",
-    total: 2400,
+    subtotal: 2400,
+    iva: 456,
+    envio: 3990,
+    total: 6846,
     estado: "CONFIRMADA",
     items: [
         { sku: "FR001", nombreProducto: "Manzanas Fuji", imagen: null, precioUnitario: 1200, cantidad: 2, subtotal: 2400 },
@@ -35,6 +38,10 @@ it("convierte la venta del backend al formato del frontend", () => {
     expect(venta.id).toBe(7);
     expect(venta.idUsuario).toBeNull(); // compra de invitado
     expect(venta.estado).toBe("CONFIRMADA");
+    expect(venta.subtotal).toBe(2400);
+    expect(venta.iva).toBe(456);
+    expect(venta.envio).toBe(3990);
+    expect(venta.total).toBe(6846);
     expect(venta.productos).toEqual([
         { sku: "FR001", name: "Manzanas Fuji", price: 1200, image: "/not-found.svg", quantity: 2 },
     ]);
@@ -47,7 +54,7 @@ it("obtiene las ventas del backend", async () => {
 
     expect(api.get).toHaveBeenCalledWith("/ventas");
     expect(ventas).toHaveLength(1);
-    expect(ventas[0].total).toBe(2400);
+    expect(ventas[0].total).toBe(6846);
 });
 
 it("cambia el estado de la venta indicada", async () => {

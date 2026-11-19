@@ -134,7 +134,15 @@ export default function AdminVentas() {
                                                 ? "--"
                                                 : v.productos.map((p) => `${p.quantity}x ${p.name}`).join(", ")}
                                         </td>
-                                        <td className="text-end fw-semibold">${v.total.toLocaleString("es-CL")}</td>
+                                        <td className="text-end text-nowrap">
+                                            <div className="fw-semibold">${v.total.toLocaleString("es-CL")}</div>
+                                            {/* desglose: subtotal + IVA + envio = total */}
+                                            <div className="small text-muted">
+                                                Subtotal ${v.subtotal.toLocaleString("es-CL")}<br/>
+                                                IVA ${v.iva.toLocaleString("es-CL")}<br/>
+                                                Envío {v.envio === 0 ? "gratis" : `$${v.envio.toLocaleString("es-CL")}`}
+                                            </div>
+                                        </td>
                                         <td className="text-nowrap">
                                             <span className={`${COLOR_ESTADO[v.estado]} me-2`}>{NOMBRE_ESTADO[v.estado]}</span>
                                             <select

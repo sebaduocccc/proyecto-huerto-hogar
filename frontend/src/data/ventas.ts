@@ -26,7 +26,10 @@ export type VentaApi = {
     ciudad: string;
     codigoPostal: string | null;
     pais: string;
-    total: number;
+    subtotal: number; // suma de productos
+    iva: number;      // 19% del subtotal
+    envio: number;    // 0 si fue gratis
+    total: number;    // subtotal + iva + envio
     estado: EstadoVenta;
     items: {
         sku: string;
@@ -46,6 +49,9 @@ export type Venta = {
     correo: string;
     idUsuario: number | null; // si no inicio sesion entonces null
     productos: CarritoItem[];
+    subtotal: number;
+    iva: number;
+    envio: number;
     total: number;
     estado: EstadoVenta;
 };
@@ -69,6 +75,9 @@ export function ventaDesdeApi(v: VentaApi): Venta {
         correo: v.correo,
         idUsuario: v.usuarioId,
         productos: productosDeVenta(v),
+        subtotal: v.subtotal,
+        iva: v.iva,
+        envio: v.envio,
         total: v.total,
         estado: v.estado,
     };

@@ -104,7 +104,11 @@ class ApiIT {
         mvc.perform(post("/api/v1/ventas").contentType(MediaType.APPLICATION_JSON).content(VENTA))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.usuarioId").value(nullValue()))
-                .andExpect(jsonPath("$.total").value(2 * 1200 + 1000))
+                // subtotal 3400 + IVA 19% (646) + envio 3990 (menos de $30.000)
+                .andExpect(jsonPath("$.subtotal").value(2 * 1200 + 1000))
+                .andExpect(jsonPath("$.iva").value(646))
+                .andExpect(jsonPath("$.envio").value(3990))
+                .andExpect(jsonPath("$.total").value(3400 + 646 + 3990))
                 .andExpect(jsonPath("$.estado").value("CONFIRMADA"))
                 .andExpect(jsonPath("$.items", hasSize(2)));
 

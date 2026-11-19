@@ -53,6 +53,22 @@ public class Venta {
     @Column(nullable = false, length = 60)
     private String pais;
 
+    /** suma de los productos (precio x cantidad) */
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer subtotal = 0;
+
+    /** IVA calculado sobre el subtotal */
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer iva = 0;
+
+    /** costo de envio (0 si el envio es gratis) */
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer envio = 0;
+
+    /** subtotal + iva + envio: lo que paga el cliente */
     @Column(nullable = false)
     private Integer total;
 

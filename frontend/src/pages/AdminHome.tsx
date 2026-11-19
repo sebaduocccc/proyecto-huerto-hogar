@@ -97,7 +97,8 @@ export default function AdminHome() {
 
     // las ventas canceladas no cuentan como ingresos ni productos vendidos
     const ventasValidas = ventas.filter((v) => v.estado !== "CANCELADA");
-    const ingresosTotales = ventasValidas.reduce((suma, v) => suma + v.total, 0);
+    const ingresosTotales = ventasValidas.reduce((suma, v) => suma + v.total, 0); // incluye IVA y envio
+    const ivaRecaudado = ventasValidas.reduce((suma, v) => suma + v.iva, 0);
     const productosVendidos = ventasValidas.reduce(
         (suma, v) => suma + v.productos.reduce((s, p) => s + p.quantity, 0), 0
     );
@@ -138,13 +139,16 @@ export default function AdminHome() {
             <h4 className="fw-bold mb-3">Resumen de Ventas</h4>
 
             <div className="row g-3 mb-4">
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-sm-6 col-lg-3">
                     <Tarjeta titulo="Ventas realizadas" valor={ventas.length} icono="fa-receipt"/>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-sm-6 col-lg-3">
                     <Tarjeta titulo="Ingresos totales ($)" valor={ingresosTotales} icono="fa-sack-dollar"/>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-sm-6 col-lg-3">
+                    <Tarjeta titulo="IVA recaudado ($)" valor={ivaRecaudado} icono="fa-percent"/>
+                </div>
+                <div className="col-12 col-sm-6 col-lg-3">
                     <Tarjeta titulo="Productos vendidos" valor={productosVendidos} icono="fa-basket-shopping"/>
                 </div>
             </div>
@@ -183,7 +187,15 @@ export default function AdminHome() {
                                                 ? "--"
                                                 : v.productos.map((p) => `${p.quantity}x ${p.name}`).join(", ")}
                                         </td>
-                                        <td className="text-end fw-semibold">${v.total.toLocaleString("es-CL")}</td>
+                                        <td className="text-end text-nowrap">
+                                            <div className="fw-semibold">${v.total.toLocaleString("es-CL")}</div>
+                                            {/* desglose: subtotal + IVA + envio = total */}
+                                            <div className="small text-muted">
+                                                Subtotal ${v.subtotal.toLocaleString("es-CL")}<br/>
+                                                IVA ${v.iva.toLocaleString("es-CL")}<br/>
+                                                Envío {v.envio === 0 ? "gratis" : `$${v.envio.toLocaleString("es-CL")}`}
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
                             )}

@@ -29,6 +29,11 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class VentaService {
 
+    // mismas reglas que muestra el frontend en el carrito y en el pago (checkout.ts)
+    public static final double TASA_IVA = 0.19;
+    public static final int COSTO_ENVIO = 3990;
+    public static final int ENVIO_GRATIS_DESDE = 30000;
+
     private final VentaRepository ventaRepository;
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -38,7 +43,8 @@ public class VentaService {
      * 1. agrupa los items repetidos del carrito,
      * 2. bloquea las filas de los productos (SELECT ... FOR UPDATE),
      * 3. valida que existan y que haya stock suficiente,
-     * 4. toma los precios desde la BD (nunca confia en el precio del cliente) y calcula el total,
+     * 4. toma los precios desde la BD (nunca confia en el precio del cliente) y calcula
+     *    subtotal, IVA (19%), envio (gratis desde $30.000) y total,
      * 5. descuenta el stock y guarda la venta con sus detalles.
      * Si algo falla, la transaccion se revierte completa y el stock no cambia.
      *
@@ -86,7 +92,7 @@ public class VentaService {
                 .total(0)
                 .build();
 
-        int total = 0;
+        int subtotalVenta = 0;
         for (Map.Entry<String, Integer> e : cantidades.entrySet()) {
             Producto p = productos.get(e.getKey());
             int cantidad = e.getValue();
@@ -102,14 +108,31 @@ public class VentaService {
                     .cantidad(cantidad)
                     .subtotal(subtotal)
                     .build());
-            total = Math.addExact(total, subtotal);
+            subtotalVenta = Math.addExact(subtotalVenta, subtotal);
         }
+        int iva = calcularIva(subtotalVenta);
+        int envio = calcularEnvio(subtotalVenta);
+        int total = subtotalVenta + iva + envio;
+
+        venta.setSubtotal(subtotalVenta);
+        venta.setIva(iva);
+        venta.setEnvio(envio);
         venta.setTotal(total);
 
         Venta guardada = ventaRepository.save(venta);
-        log.info("Venta id={} registrada: total={} usuario={}", guardada.getId(), total,
+        log.info("Venta id={} registrada: subtotal={} iva={} envio={} total={} usuario={}",
+                guardada.getId(), subtotalVenta, iva, envio, total,
                 usuarioId == null ? "invitado" : usuarioId);
         return VentaResponse.desde(guardada);
+    }
+
+    /** IVA redondeado al peso, igual que Math.round del frontend. */
+    static int calcularIva(int subtotal) {
+        return (int) Math.round(subtotal * TASA_IVA);
+    }
+
+    static int calcularEnvio(int subtotal) {
+        return subtotal >= ENVIO_GRATIS_DESDE ? 0 : COSTO_ENVIO;
     }
 
     // ------------------------------------------------------------------ consultas

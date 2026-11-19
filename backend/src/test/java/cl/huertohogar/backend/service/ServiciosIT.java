@@ -235,9 +235,23 @@ class ServiciosIT {
             assertThat(v.correo()).isEqualTo("cliente@mail.cl");
             assertThat(v.estado()).isEqualTo(EstadoVenta.CONFIRMADA);
             assertThat(v.items()).hasSize(2);
-            assertThat(v.total()).isEqualTo(3 * 1200 + 5000);
+            assertThat(v.subtotal()).isEqualTo(3 * 1200 + 5000);
+            assertThat(v.iva()).isEqualTo(1634);     // 8600 * 0,19
+            assertThat(v.envio()).isEqualTo(3990);   // menos de $30.000
+            assertThat(v.total()).isEqualTo(8600 + 1634 + 3990);
             assertThat(stock("FR001")).isEqualTo(7);
             assertThat(stock("PO001")).isEqualTo(9);
+        }
+
+        @Test
+        void envioGratisDesde30000() {
+            // 6 x Miel Organica ($5.000) = $30.000
+            VentaResponse v = ventaService.crear(venta(new ItemVentaRequest("PO001", 6)), null);
+
+            assertThat(v.subtotal()).isEqualTo(30000);
+            assertThat(v.iva()).isEqualTo(5700);
+            assertThat(v.envio()).isZero();
+            assertThat(v.total()).isEqualTo(35700);
         }
 
         @Test
@@ -246,7 +260,7 @@ class ServiciosIT {
             VentaResponse v = ventaService.crear(venta(new ItemVentaRequest("VR001", 1)), id);
 
             assertThat(ventaService.listarDeUsuario(id)).extracting(VentaResponse::id).containsExactly(v.id());
-            assertThat(ventaService.obtenerDeUsuario(v.id(), id).total()).isEqualTo(900);
+            assertThat(ventaService.obtenerDeUsuario(v.id(), id).subtotal()).isEqualTo(900);
             // otro usuario no la ve
             assertThatThrownBy(() -> ventaService.obtenerDeUsuario(v.id(), adminId()))
                     .isInstanceOf(RecursoNoEncontradoException.class);
