@@ -1,4 +1,4 @@
-# Huerto Hogar - base de datos + backend
+# Huerto Hogar - base de datos + backend + frontend
 #
 #   Todo:              podman compose up -d --build     (o docker compose ...)
 #   Solo la BD (dev):  podman compose up -d db          y el backend con ./mvnw spring-boot:run
@@ -16,8 +16,10 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-huerto}
       TZ: America/Santiago
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    restart: unless-stopped
+    # solo accesible desde la misma maquina (nunca abrir MySQL a internet)
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
     volumes:
       - huerto_db_data:/var/lib/mysql
     healthcheck:
@@ -41,8 +43,20 @@ services:
       JWT_COOKIE_SECURE: ${JWT_COOKIE_SECURE:-false}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
       TZ: America/Santiago
+    restart: unless-stopped
+    # solo accesible desde la misma maquina; desde afuera se entra por nginx (/api)
     ports:
-      - "${BACKEND_PORT:-8080}:8080"
+      - "127.0.0.1:${BACKEND_PORT:-8080}:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: huerto-hogar-frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+    # nginx: sirve la pagina y reenvia /api al backend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
 
 volumes:
   huerto_db_data:
