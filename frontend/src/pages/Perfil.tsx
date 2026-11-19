@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { regiones } from "../data/ubicaciones";
-import { obtenerUsuarioActual, guardarCambioUsuario, type Resultado } from "../data/usuarios";
+import { type Resultado } from "../data/usuarios";
+import { useAuth } from "../context/AuthContext";
+import api, { mensajeError, type UsuarioApi } from "../data/api";
 
 export default function Perfil(){
-    const usuario = obtenerUsuarioActual();
+    // Proteger ya espero a que cargue la sesion, asi que aqui el usuario ya esta listo
+    const { usuario, setUsuario } = useAuth();
 
     // se rellenan los campos con los datos del usuario
     const [nombre, setNombre] = useState(usuario?.nombre ?? '');
@@ -15,7 +18,7 @@ export default function Perfil(){
     const [comuna, setComuna] = useState(usuario?.comuna || regiones[0].comunas[0]);
     const [direccion, setDireccion] = useState(usuario?.direccion ?? '');
     const [mensaje, setMensaje] = useState<Resultado | null>(null);
-    const navigate = useNavigate();
+    const [enviando, setEnviando] = useState(false);
 
     // si no hay sesion lo mandamos al login
     if (!usuario){
@@ -29,24 +32,31 @@ export default function Perfil(){
         setComuna(regiones.find(r => r.region === nuevaRegion)?.comunas[0] ?? '');
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setEnviando(true);
 
-        const resultado = guardarCambioUsuario({
-            ...usuario,
-            nombre: nombre,
-            rut: rut,
-            fechaNacimiento: fechaNacimiento,
-            telefono: telefono,
-            region: region,
-            comuna: comuna,
-            direccion: direccion
-        });
+        try {
+            // los campos vacios se mandan como null, si no el backend los rechaza
+            // (ej: el admin no tiene rut ni telefono)
+            const res = await api.put<UsuarioApi>("/cuenta/perfil", {
+                nombre: nombre.trim(),
+                rut: rut.trim() || null,
+                fechaNacimiento: fechaNacimiento || null,
+                telefono: telefono.trim() || null,
+                region: region,
+                comuna: comuna,
+                direccion: direccion.trim() || null
+            });
 
-        setMensaje(resultado);
-
-        // se "navega" a la misma pagina para que el navbar se actualice con el nombre nuevo
-        navigate("/perfil", { replace: true });
+            // se actualiza el usuario del contexto, asi el navbar muestra el nombre nuevo
+            setUsuario(res.data);
+            setMensaje({ ok: true, msg: "Perfil actualizado" });
+        } catch (err) {
+            setMensaje({ ok: false, msg: mensajeError(err) });
+        } finally {
+            setEnviando(false);
+        }
     };
 
     return(
@@ -105,7 +115,9 @@ export default function Perfil(){
                             )}
 
                             <div className="mb-3">
-                                <button type="submit" className="btn btn-primary">Actualizar</button>
+                                <button type="submit" className="btn btn-primary" disabled={enviando}>
+                                    {enviando ? "Guardando..." : "Actualizar"}
+                                </button>
                             </div>
 
                         </form>
