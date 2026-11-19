@@ -1,19 +1,17 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../App.css';
-import { obtenerUsuarioActual, cerrarSesion } from '../data/usuarios';
+import { useAuth } from '../context/AuthContext';
 import SearchBar from './SearchBar';
 
 export default function Navbar(){
-    // useLocation hace que el navbar se vuelva a renderizar al cambiar de pagina
-    // asi se actualiza despues de iniciar sesion
-    useLocation();
     const navigate = useNavigate();
 
-    const usuario = obtenerUsuarioActual();
+    // el contexto avisa cuando cambia el usuario, asi el navbar se actualiza solo
+    const { usuario, logout } = useAuth();
 
-    const salir = (e: React.MouseEvent) => {
+    const salir = async (e: React.MouseEvent) => {
         e.preventDefault();
-        cerrarSesion();
+        await logout();
         navigate("/login");
     };
 
@@ -86,7 +84,7 @@ export default function Navbar(){
                                         Mi Perfil
                                     </Link >
                                 </li>
-                                {usuario.rol === "admin" && (
+                                {usuario.rol === "ADMIN" && (
                                 <li>
                                     <Link to="/admin" className="dropdown-item">
                                         Panel Admin

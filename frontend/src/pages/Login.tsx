@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { iniciarSesion } from "../data/usuarios";
+import { useAuth } from "../context/AuthContext";
+import { mensajeError } from "../data/api";
 
 export default function Login(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [recordar, setRecordar] = useState(false);
     const [error, setError] = useState('');
+    const [enviando, setEnviando] = useState(false);
 
     const navigate = useNavigate();
+    const { login } = useAuth();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError('');
+        setEnviando(true);
 
-        const resultado = iniciarSesion(email, password, recordar);
-
-        if (!resultado.ok){
-            setError(resultado.msg);
-            return;
+        try {
+            await login(email, password);
+            navigate("/");
+        } catch (err) {
+            // ej: "Correo o contraseña incorrectos" o "No se pudo conectar con el servidor."
+            setError(mensajeError(err));
+        } finally {
+            setEnviando(false);
         }
-
-        navigate("/");
     };
 
     return(
@@ -45,18 +50,15 @@ export default function Login(){
                                 <div className="form-text">No compartas tu contraseña con nadie.</div>
                             </div>
 
-                            <div className="mb-2">
+                            <div className="mb-5">
                                 <Link to="/register" className="card-link">¿No tienes cuenta? Registrate</Link>
-                            </div>
-
-                            <div className="mb-5 form-check d-flex justify-content-center gap-2">
-                                <input type="checkbox" className="form-check-input" id="check1" checked={recordar} onChange={e => setRecordar(e.target.checked)}/>
-                                <label htmlFor="check1" className="form-check-label">Recordar</label>
                             </div>
 
                             {error && <div className="alert alert-danger">{error}</div>}
 
-                            <button type="submit" className="btn btn-primary mb-3">Iniciar Sesión</button>
+                            <button type="submit" className="btn btn-primary mb-3" disabled={enviando}>
+                                {enviando ? "Ingresando..." : "Iniciar Sesión"}
+                            </button>
                         </form>
 
 
