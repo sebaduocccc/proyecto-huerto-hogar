@@ -20,6 +20,12 @@ export type UsuarioApi = {
     createdAt: string;
 };
 
+// mensaje para mostrar en las alertas de los formularios (verde si ok, rojo si no)
+export type Resultado = {
+    ok: boolean;
+    msg: string;
+};
+
 // respuesta de /auth/login y /auth/refresh
 export type AuthResponse = {
     accessToken: string;

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { regiones } from "../data/ubicaciones";
-import { type Resultado } from "../data/usuarios";
 import { useAuth } from "../context/AuthContext";
-import api, { mensajeError, type UsuarioApi } from "../data/api";
+import api, { mensajeError, type UsuarioApi, type Resultado } from "../data/api";
 
 export default function Perfil(){
     // Proteger ya espero a que cargue la sesion, asi que aqui el usuario ya esta listo

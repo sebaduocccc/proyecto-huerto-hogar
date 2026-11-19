@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { regiones } from "../data/ubicaciones";
-import { type Resultado } from "../data/usuarios";
-import api, { mensajeError } from "../data/api";
+import api, { mensajeError, type Resultado } from "../data/api";
 import { validarRut, validarTelefono, validarEmail, calcularEdad } from "../data/validaciones";
 
 
