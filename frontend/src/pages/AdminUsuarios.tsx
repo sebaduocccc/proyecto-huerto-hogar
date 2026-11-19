@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { regiones } from "../data/ubicaciones";
-import { obtenerUsuarios, registrarUsuario, guardarCambioUsuario, eliminarUsuario, obtenerIdSesion } from "../data/usuarios";
-import type { Usuario } from "../data/usuarios";
+import { useAuth } from "../context/AuthContext";
+import api, { mensajeError, type UsuarioApi } from "../data/api";
+
+// rol tal como lo devuelve GET /roles
+type Rol = {
+    id: number;
+    nombre: string; // "ADMIN", "USUARIO", ...
+    descripcion: string;
+};
 
 type FormState = {
     nombre: string;
@@ -24,16 +31,36 @@ const emptyForm: FormState = {
 };
 
 export default function AdminUsuarios() {
-    const [usuarios, setUsuarios] = useState<Usuario[]>(() => obtenerUsuarios());
+    const [usuarios, setUsuarios] = useState<UsuarioApi[]>([]);
+    const [roles, setRoles] = useState<Rol[]>([]);
     const [form, setForm] = useState<FormState>(emptyForm);
-    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [error, setError] = useState('');
+
+    // el usuario con sesion iniciada, no se puede eliminar a si mismo
+    const { usuario: usuarioActual, setUsuario } = useAuth();
 
     const isEditing = editingId !== null;
-    const idSesion = obtenerIdSesion();
 
     const comunas = regiones.find(r => r.region === form.region)?.comunas ?? [];
 
-    const refresh = () => setUsuarios(obtenerUsuarios());
+    const refresh = async () => {
+        try {
+            const res = await api.get<UsuarioApi[]>("/usuarios");
+            setUsuarios(res.data);
+            setError('');
+        } catch (err) {
+            setError(mensajeError(err));
+        }
+    };
+
+    // al abrir la pagina se cargan los usuarios y los roles del backend
+    useEffect(() => {
+        refresh();
+        api.get<Rol[]>("/roles")
+            .then((res) => setRoles(res.data))
+            .catch((err) => setError(mensajeError(err)));
+    }, []);
 
     const resetForm = () => {
         setForm(emptyForm);
@@ -55,7 +82,7 @@ export default function AdminUsuarios() {
         setForm((f) => ({ ...f, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (form.password !== form.password2) {
@@ -69,85 +96,81 @@ export default function AdminUsuarios() {
             return;
         }
 
-        const email = form.email.trim().toLowerCase();
+        // los campos vacios van como null, si no el backend los rechaza.
+        // el backend revisa que el correo y el rut no esten repetidos
+        const datos = {
+            nombre: form.nombre.trim(),
+            email: form.email.trim(),
+            rol: form.rol,
+            password: form.password || null, // al editar, null = mantener la contraseña
+            rut: form.rut.trim() || null,
+            telefono: form.telefono.trim() || null,
+            fechaNacimiento: form.fechaNacimiento || null,
+            region: form.region,
+            comuna: form.comuna,
+            direccion: form.direccion.trim() || null,
+        };
 
-        if (isEditing) {
-            const usuarioViejo = usuarios.find((u) => u.id === editingId);
-            if (!usuarioViejo) return;
-
-            if (usuarios.some((u) => u.email === email && u.id !== editingId)) {
-                alert("El correo ya esta en uso.");
-                return;
+        try {
+            if (isEditing) {
+                const res = await api.put<UsuarioApi>(`/usuarios/${editingId}`, datos);
+                // si el admin se edito a si mismo se actualiza el navbar
+                if (editingId === usuarioActual?.id) setUsuario(res.data);
+            } else {
+                await api.post("/usuarios", datos);
             }
-
-            guardarCambioUsuario({
-                ...usuarioViejo,
-                nombre: form.nombre.trim(),
-                email: email,
-                rol: form.rol,
-                password: form.password === "" ? usuarioViejo.password : form.password,
-                rut: form.rut.trim(),
-                telefono: form.telefono.trim(),
-                fechaNacimiento: form.fechaNacimiento,
-                region: form.region,
-                comuna: form.comuna,
-                direccion: form.direccion.trim(),
-            });
-        } else {
-            const resultado = registrarUsuario({
-                nombre: form.nombre.trim(),
-                email: email,
-                password: form.password,
-                rut: form.rut.trim(),
-                telefono: form.telefono.trim(),
-                fechaNacimiento: form.fechaNacimiento,
-                region: form.region,
-                comuna: form.comuna,
-                direccion: form.direccion.trim(),
-            }, form.rol);
-
-            if (!resultado.ok) {
-                alert(resultado.msg);
-                return;
-            }
+        } catch (err) {
+            alert(mensajeError(err));
+            return;
         }
 
         resetForm();
-        refresh();
+        await refresh();
         alert(isEditing ? "Usuario actualizado correctamente." : "Usuario creado correctamente.");
     };
 
-    const handleEdit = (u: Usuario) => {
+    const handleEdit = (u: UsuarioApi) => {
         setEditingId(u.id);
         setForm({
             nombre: u.nombre,
             email: u.email,
-            rol: u.rol === "admin" ? "admin" : "usuario",
+            rol: u.rol,
             password: "",
             password2: "",
-            rut: u.rut,
-            telefono: u.telefono,
-            fechaNacimiento: u.fechaNacimiento,
+            rut: u.rut ?? "",
+            telefono: u.telefono ?? "",
+            fechaNacimiento: u.fechaNacimiento ?? "",
             region: u.region || regiones[0].region,
             comuna: u.comuna || regiones[0].comunas[0],
-            direccion: u.direccion,
+            direccion: u.direccion ?? "",
         });
     }
 
-    const handleDelete = (u: Usuario) => {
-        if (u.id === idSesion) {
+    const handleDelete = async (u: UsuarioApi) => {
+        if (u.id === usuarioActual?.id) {
             alert("No puedes eliminar el usuario con el que iniciaste sesión.");
             return;
         }
         if (!confirm(`¿Eliminar al usuario ${u.nombre || u.email}?`)) return;
-        eliminarUsuario(u.id);
+
+        try {
+            await api.delete(`/usuarios/${u.id}`);
+        } catch (err) {
+            alert(mensajeError(err));
+            return;
+        }
         if (editingId === u.id) resetForm();
-        refresh();
+        await refresh();
     }
 
     // muestra "--" si el campo esta vacio
-    const mostrar = (valor: string) => {
+    const mostrar = (valor: string | null) => {
         return valor ? valor : "--";
+    }
+
+    // "ADMIN" -> "Administrador de la tienda" (la descripcion del rol en el backend)
+    const nombreRol = (rol: string) => {
+        return roles.find((r) => r.nombre === rol)?.descripcion ?? rol;
     }
 
     return (
@@ -157,6 +180,8 @@ export default function AdminUsuarios() {
                     <h1 className="fw-bold">Gestión de Usuarios</h1>
                     <Link to="/" className="btn btn-outline-secondary">Volver a la Tienda</Link>
                 </div>
+
+                {error && <div className="alert alert-danger">{error}</div>}
 
                 <div className="row g-4">
                     <div className="col-lg-4">
@@ -183,8 +208,9 @@ export default function AdminUsuarios() {
                                         <select id="rol" name="rol" className="form-select" required
                                             value={form.rol} onChange={handleChange}>
                                             <option value="" disabled>Selecciona un rol</option>
-                                            <option value="usuario">Usuario Común</option>
-                                            <option value="admin">Administrador</option>
+                                            {roles.map((r) => (
+                                                <option key={r.id} value={r.nombre}>{r.descripcion}</option>
+                                            ))}
                                         </select>
                                     </div>
 
@@ -295,7 +321,7 @@ export default function AdminUsuarios() {
                                         ) : (
                                             usuarios.map((u) => (
                                                 <tr key={u.id}>
-                                                    <td><code className="small" title={u.id}>{u.id.slice(0, 8)}</code></td>
+                                                    <td><code className="small">{u.id}</code></td>
                                                     <td className="fw-semibold">{mostrar(u.nombre)}</td>
                                                     <td className="text-body-secondary">{mostrar(u.email)}</td>
                                                     <td>{mostrar(u.rut)}</td>
@@ -303,8 +329,8 @@ export default function AdminUsuarios() {
                                                     <td>{mostrar([u.direccion, u.comuna, u.region].filter(Boolean).join(", "))}</td>
                                                     <td>{mostrar(u.fechaNacimiento)}</td>
                                                     <td>
-                                                        <span className={u.rol === "admin" ? "badge text-bg-success" : "badge text-bg-secondary"}>
-                                                            {u.rol === "admin" ? "Administrador" : "Usuario Común"}
+                                                        <span className={u.rol === "ADMIN" ? "badge text-bg-success" : "badge text-bg-secondary"}>
+                                                            {nombreRol(u.rol)}
                                                         </span>
                                                     </td>
                                                     <td className="text-end text-nowrap">
@@ -315,7 +341,7 @@ export default function AdminUsuarios() {
                                                         <button
                                                             className="btn btn-sm btn-danger me-1"
                                                             onClick={() => handleDelete(u)}
-                                                            disabled={u.id === idSesion}
+                                                            disabled={u.id === usuarioActual?.id}
                                                         >Eliminar</button>
                                                     </td>
                                                 </tr>

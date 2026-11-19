@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { adminLinks } from "../data/adminLinks";
-import { obtenerUsuarios } from "../data/usuarios";
+import api, { type UsuarioApi } from "../data/api";
 import { getProductos } from "../data/catalogo";
 import { obtenerVentas } from "../data/ventas";
 
@@ -71,10 +72,17 @@ function Tarjeta({ titulo, valor, icono }: { titulo: string; valor: number; icon
 }
 
 export default function AdminHome() {
-    const usuarios = obtenerUsuarios();
+    // los usuarios vienen del backend, los productos y ventas todavia de localStorage
+    const [usuarios, setUsuarios] = useState<UsuarioApi[]>([]);
+
+    useEffect(() => {
+        api.get<UsuarioApi[]>("/usuarios")
+            .then((res) => setUsuarios(res.data))
+            .catch(() => setUsuarios([])); // si falla el dashboard muestra 0
+    }, []);
     const productos = getProductos();
 
-    const totalAdmins = usuarios.filter((u) => u.rol === "admin").length;
+    const totalAdmins = usuarios.filter((u) => u.rol === "ADMIN").length;
     const stockTotal = productos.reduce((suma, p) => suma + p.stock, 0);
 
     const productosPorCategoria = contar(productos.map((p) => p.category));
