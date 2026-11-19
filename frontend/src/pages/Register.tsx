@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { regiones } from "../data/ubicaciones";
-import { registrarUsuario, type Resultado } from "../data/usuarios";
+import { type Resultado } from "../data/usuarios";
+import api, { mensajeError } from "../data/api";
 import { validarRut, validarTelefono, validarEmail, calcularEdad } from "../data/validaciones";
 
 
@@ -17,6 +18,7 @@ export default function Register(){
     const [comuna, setComuna] = useState(regiones[0].comunas[0]);
     const [direccion, setDireccion] = useState('');
     const [mensaje, setMensaje] = useState<Resultado | null>(null);
+    const [enviando, setEnviando] = useState(false);
 
     const comunas = regiones.find(r => r.region === region)?.comunas ?? [];
     const passwordsDistintas = confirmarPassword !== '' && password !== confirmarPassword;
@@ -39,7 +41,7 @@ export default function Register(){
         setDireccion('');
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // evitar que el formulario recargue la pagina
 
         // comprobaciones antes de registrar
@@ -70,20 +72,27 @@ export default function Register(){
             return;
         }
 
-        const resultado = registrarUsuario({
-            nombre: nombre.trim(),
-            email,
-            password,
-            telefono,
-            direccion: direccion.trim(),
-            comuna,
-            region,
-            rut,
-            fechaNacimiento
-        });
-
-        setMensaje(resultado);
-        if (resultado.ok) limpiarFormulario();
+        // el backend vuelve a validar todo y revisa que el correo y el RUT no esten registrados
+        setEnviando(true);
+        try {
+            await api.post("/auth/registro", {
+                nombre: nombre.trim(),
+                email,
+                password,
+                telefono,
+                direccion: direccion.trim(),
+                comuna,
+                region,
+                rut,
+                fechaNacimiento
+            });
+            setMensaje({ ok: true, msg: 'Cuenta creada con éxito. Ya puedes iniciar sesión.' });
+            limpiarFormulario();
+        } catch (err) {
+            setMensaje({ ok: false, msg: mensajeError(err) });
+        } finally {
+            setEnviando(false);
+        }
     };
 
     return(
@@ -163,7 +172,9 @@ export default function Register(){
                                 <div className={`alert ${mensaje.ok ? 'alert-success' : 'alert-danger'}`}>{mensaje.msg}</div>
                             )}
 
-                            <button type="submit" className="btn btn-primary mb-3">Registrarme</button>
+                            <button type="submit" className="btn btn-primary mb-3" disabled={enviando}>
+                                {enviando ? "Registrando..." : "Registrarme"}
+                            </button>
                         </form>
 
 
