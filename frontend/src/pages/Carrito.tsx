@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useCarrito } from '../context/CarritoContext';
+import { calcularTotales } from '../data/checkout';
 
 
 export default function Carrito() {
     const { items, total, getStock, updateQuantity, removeItem, clearCarrito } = useCarrito();
+    const { subtotal, iva, envio, totalFinal } = calcularTotales(total);
 
     const handleClear = () => {
         if (confirm("¿Realmente quieres vaciar tu carrito?")) {
@@ -117,13 +119,27 @@ export default function Carrito() {
                     <div className="card border-0 shadow-sm position-sticky" style={{top: '2rem'}}>
                         <div className="card-body p-4">
                             <h5 className="fw-bold mb-3">Resumen del Pedido</h5>
+                                <hr className="my-3" />
 
-                            <hr className="my-3" />
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span className="text-muted">Subtotal</span>
+                                    <span>${subtotal.toLocaleString("es-CL")}</span>
+                                </div>
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span className="text-muted">IVA (19%)</span>
+                                    <span>${iva.toLocaleString("es-CL")}</span>
+                                </div>
+                                <div className="d-flex justify-content-between mb-2">
+                                    <span className="text-muted">Envío</span>
+                                    <span>{envio === 0 ? <span className="text-success fw-semibold">Gratis</span> : `$${envio.toLocaleString("es-CL")}`}</span>
+                                </div>
 
-                            <div className="d-flex justify-content-between mb-2">
-                                <span>Total</span>
-                                <span id="cart-total" className="fw-bold">${total.toLocaleString("es-CL")}</span>
-                            </div>
+                                <hr className="my-3" />
+
+                                <div className="d-flex justify-content-between mb-3">
+                                    <span className="fw-bold fs-5">Total</span>
+                                    <span id="cart-total" className="fw-bold fs-5">${totalFinal.toLocaleString("es-CL")}</span>
+                                </div>
 
                             <form id="coupon-form" className="mb-3">
                                 <label htmlFor="coupon-input" className="form-label small fw-bold text-muted">Ingresa tu cupón</label>

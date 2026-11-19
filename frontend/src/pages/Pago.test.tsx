@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { CHECKOUT_STORAGE_KEY, saveCheckoutDetails } from '../data/checkout';
 
 describe('saveCheckoutDetails', () => {
-	it('Guarda los datos del comprador y envío sin persistir datos de la tarjeta', () => {
+	it('Guarda los datos del comprador, desglose de totales y envío sin persistir datos de la tarjeta', () => {
 		const formData = new FormData();
 		formData.set('nombre', 'Vicente');
 		formData.set('direccion', 'Manuel Montt 123');
@@ -33,11 +33,17 @@ describe('saveCheckoutDetails', () => {
 				telefono: '+56912345678',
 				fechaCompra: '2026-10-21T12:00:00.000Z',
 				items,
-				total: 2400,
+				subtotal: 2400,
+				iva: 456,
+				envio: 3990,
+				total: 6846,
 			}),
 		);
 		expect(details.items).toEqual(items);
-		expect(details.total).toBe(2400);
+		expect(details.subtotal).toBe(2400);
+		expect(details.iva).toBe(456);
+		expect(details.envio).toBe(3990);
+		expect(details.total).toBe(6846);
 		expect(details).not.toHaveProperty('cardNumber');
 		expect(details).not.toHaveProperty('cvc');
 	});

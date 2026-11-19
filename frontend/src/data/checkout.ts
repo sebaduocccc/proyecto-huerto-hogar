@@ -3,6 +3,9 @@ import api from './api';
 import type { VentaApi } from './ventas';
 
 export const CHECKOUT_STORAGE_KEY = 'HuertoHogarCompraConfirmada';
+export const TASA_IVA = 0.19;
+export const COSTO_ENVIO_BASE = 3990;
+export const ENVIO_GRATIS_DESDE = 30000;
 
 export type CheckoutDetails = {
     nombre: string;
@@ -14,8 +17,23 @@ export type CheckoutDetails = {
     telefono: string;
     fechaCompra: string;
     items: CarritoItem[];
+    subtotal: number;
+    iva: number;
+    envio: number;
     total: number;
 };
+
+export function calcularTotales(subtotal: number) {
+    if (subtotal === 0) {
+        return { subtotal: 0, iva: 0, envio: 0, totalFinal: 0 };
+    }
+    
+    const iva = Math.round(subtotal * TASA_IVA);
+    const envio = subtotal >= ENVIO_GRATIS_DESDE ? 0 : COSTO_ENVIO_BASE;
+    const totalFinal = subtotal + iva + envio;
+
+    return { subtotal, iva, envio, totalFinal };
+}
 
 export function saveCheckoutDetails(
     formData: FormData,
@@ -23,6 +41,9 @@ export function saveCheckoutDetails(
     storage: Pick<Storage, 'setItem'> = localStorage,
     purchaseDate = new Date(),
 ): CheckoutDetails {
+    const rawSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const { subtotal, iva, envio, totalFinal } = calcularTotales(rawSubtotal);
+
     const details: CheckoutDetails = {
         nombre: String(formData.get('nombre') ?? ''),
         direccion: String(formData.get('direccion') ?? ''),
@@ -33,7 +54,10 @@ export function saveCheckoutDetails(
         telefono: String(formData.get('telefono') ?? ''),
         fechaCompra: purchaseDate.toISOString(),
         items: items.map((item) => ({ ...item })),
-        total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        subtotal,
+        iva,
+        envio,
+        total: totalFinal,
     };
 
     storage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(details));
@@ -57,3 +81,4 @@ export async function confirmarCompra(formData: FormData, items: CarritoItem[]) 
     });
     return res.data;
 }
+

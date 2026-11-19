@@ -4,6 +4,7 @@ import { CHECKOUT_STORAGE_KEY, type CheckoutDetails } from '../data/checkout';
 export default function PagoCorrecto(){
     const savedDetails = localStorage.getItem(CHECKOUT_STORAGE_KEY);
     const details = savedDetails ? JSON.parse(savedDetails) as CheckoutDetails : null;
+    
 
     return(
         <section className="mx-auto" style={{ maxWidth: '760px' }}>
@@ -91,6 +92,24 @@ export default function PagoCorrecto(){
                                                 ))}
                                             </tbody>
                                             <tfoot className="table-light">
+                                                {details.subtotal !== undefined && (
+                                                    <tr>
+                                                        <th scope="row" colSpan={3} className="text-end fw-normal">Subtotal</th>
+                                                        <td>${details.subtotal.toLocaleString('es-CL')}</td>
+                                                    </tr>
+                                                )}
+                                                {details.iva !== undefined && (
+                                                    <tr>
+                                                        <th scope="row" colSpan={3} className="text-end fw-normal">IVA (19%)</th>
+                                                        <td>${details.iva.toLocaleString('es-CL')}</td>
+                                                    </tr>
+                                                )}
+                                                {details.envio !== undefined && (
+                                                    <tr>
+                                                        <th scope="row" colSpan={3} className="text-end fw-normal">Envío</th>
+                                                        <td>{details.envio === 0 ? 'Gratis' : `$${details.envio.toLocaleString('es-CL')}`}</td>
+                                                    </tr>
+                                                )}
                                                 <tr>
                                                     <th scope="row" colSpan={3} className="text-end">Total pagado</th>
                                                     <td className="fw-bold">${details.total.toLocaleString('es-CL')}</td>

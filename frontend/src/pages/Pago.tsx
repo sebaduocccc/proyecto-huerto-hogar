@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
-import { saveCheckoutDetails, confirmarCompra } from '../data/checkout';
 import { useCarrito } from '../context/CarritoContext';
 import { mensajeError } from '../data/api';
 import { productosDeVenta, type VentaApi } from '../data/ventas';
+import { saveCheckoutDetails, confirmarCompra, calcularTotales } from '../data/checkout';
 
 export default function Pago(){
     const navigate = useNavigate();
@@ -17,6 +17,8 @@ export default function Pago(){
     getCVCProps,
         meta: { erroredInputs },
     } = useCreditCardValidator();
+    const { subtotal, iva, envio, totalFinal } = calcularTotales(total);
+
 
         async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
                 event.preventDefault();
@@ -87,8 +89,20 @@ export default function Pago(){
                             </tbody>
                             {items.length > 0 && <tfoot className="table-light">
                                 <tr>
-                                    <th scope="row" colSpan={3} className="text-end">Total</th>
-                                    <td className="fw-bold">${total.toLocaleString('es-CL')}</td>
+                                    <th scope="row" colSpan={3} className="text-end fw-normal">Subtotal</th>
+                                    <td>${subtotal.toLocaleString('es-CL')}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan={3} className="text-end fw-normal">IVA (19%)</th>
+                                    <td>${iva.toLocaleString('es-CL')}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan={3} className="text-end fw-normal">Costo de envío</th>
+                                    <td>{envio === 0 ? 'Gratis' : `$${envio.toLocaleString('es-CL')}`}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan={3} className="text-end">Total a pagar</th>
+                                    <td className="fw-bold">${totalFinal.toLocaleString('es-CL')}</td>
                                 </tr>
                             </tfoot>}
                         </table>
