@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreditCardValidator } from 'react-creditcard-validator';
-import { saveCheckoutDetails } from '../data/checkout';
+import { saveCheckoutDetails, confirmarCompra } from '../data/checkout';
 import { useCarrito } from '../context/CarritoContext';
-import { guardarVenta } from '../data/ventas';
-import { useAuth } from '../context/AuthContext';
+import { mensajeError } from '../data/api';
+import { productosDeVenta, type VentaApi } from '../data/ventas';
 
 export default function Pago(){
     const navigate = useNavigate();
-    const { items, total } = useCarrito();
-    const { usuario } = useAuth();
+    const { items, total, clearCarrito } = useCarrito();
+    const [error, setError] = useState('');
+    const [enviando, setEnviando] = useState(false);
     const {
         getCardNumberProps,
         getExpiryDateProps,
@@ -16,7 +18,7 @@ export default function Pago(){
         meta: { erroredInputs },
     } = useCreditCardValidator();
 
-        function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
                 event.preventDefault();
                 if (items.length === 0) return;
 
@@ -24,8 +26,21 @@ export default function Pago(){
 
                 if (event.currentTarget.checkValidity() && !hasCardErrors) {
                     const formData = new FormData(event.currentTarget);
-                    const details = saveCheckoutDetails(formData, items); // va para el recuento de panel admin
-                    guardarVenta(details, details.items, details.total, usuario ? String(usuario.id) : null);
+                    setError('');
+                    setEnviando(true);
+                    let venta: VentaApi;
+                    try {
+                        // el backend registra la venta y descuenta el stock
+                        venta = await confirmarCompra(formData, items);
+                    } catch (err) {
+                        // ej: "Stock insuficiente para: Manzanas Fuji (disponible: 2, pedido: 5)"
+                        setError(mensajeError(err));
+                        setEnviando(false);
+                        return;
+                    }
+                    // boleta que muestra la pagina PagoCorrecto, con los precios y la fecha del backend
+                    saveCheckoutDetails(formData, productosDeVenta(venta), localStorage, new Date(venta.fecha));
+                    clearCarrito();
                     navigate('pagocorrecto');
                 } else if (hasCardErrors) {
                         navigate('pagoincorrecto');
@@ -121,8 +136,10 @@ export default function Pago(){
                                 <div className="mb-3">
                                     <input type="tel" name="telefono" className="form-control" placeholder="Teléfono de contacto" required />
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100" disabled={items.length === 0}>
-                                    Finalizar Compra
+                                {error && <div className="alert alert-danger">{error}</div>}
+
+                                <button type="submit" className="btn btn-primary w-100" disabled={items.length === 0 || enviando}>
+                                    {enviando ? "Procesando..." : "Finalizar Compra"}
                                 </button>
                             </form>
 

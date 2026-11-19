@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
-import { obtenerVentas, cambiarEstadoVenta, ESTADOS_VENTA } from "../data/ventas";
+import { obtenerVentas, cambiarEstadoVenta, ESTADOS_VENTA, NOMBRE_ESTADO } from "../data/ventas";
 import type { Venta, EstadoVenta } from "../data/ventas";
+import { mensajeError } from "../data/api";
 
 const INTERVALO_REFRESCO = 15000; /* 15 segundos */
 const COLOR_ESTADO: Record<EstadoVenta, string> = {
-    pendiente: "badge text-bg-warning",
-    enviado: "badge text-bg-info",
-    entregado: "badge text-bg-success",
-    cancelado: "badge text-bg-danger",
+    CONFIRMADA: "badge text-bg-warning",
+    EN_PREPARACION: "badge text-bg-primary",
+    ENVIADA: "badge text-bg-info",
+    ENTREGADA: "badge text-bg-success",
+    CANCELADA: "badge text-bg-danger",
 };
-
-const capitalizar = (texto: string) => texto.charAt(0).toUpperCase() + texto.slice(1);
 
 export default function AdminVentas() {
     const [ventas, setVentas] = useState<Venta[]>([]);
@@ -23,11 +23,11 @@ export default function AdminVentas() {
     const cargar = useCallback(async() => {
         try {
             const lista = await obtenerVentas();
-            setVentas([...lista].reverse());
+            setVentas(lista); // el backend ya las manda de la mas nueva a la mas antigua
             setError(null);
             setUltimaActualizacion(new Date());
-        } catch {
-            setError("No se han podido cargar las ventas.");
+        } catch (err) {
+            setError(mensajeError(err));
         } finally {
             setCargando(false);
         }
@@ -43,8 +43,9 @@ export default function AdminVentas() {
         try {
             await cambiarEstadoVenta(venta.id, nuevoEstado);
             setVentas((prev) => prev.map((v) => (v.id === venta.id ? { ...v, estado: nuevoEstado } : v)));
-        } catch {
-            alert("No se pudo actualizar el estado del pedido.");
+        } catch (err) {
+            // ej: "Una venta ENTREGADA ya no puede cambiar de estado"
+            alert(mensajeError(err));
         }
     };
 
@@ -80,7 +81,7 @@ export default function AdminVentas() {
                         >
                             <option value="todos">Todos los estados</option>
                             {ESTADOS_VENTA.map((e) => (
-                                <option key={e} value={e}>{capitalizar(e)}</option>
+                                <option key={e} value={e}>{NOMBRE_ESTADO[e]}</option>
                             ))}
                         </select>
                         <button className="btn btn-sm btn-primary" onClick={cargar}>
@@ -121,7 +122,7 @@ export default function AdminVentas() {
                             ) : (
                                 ventasVisibles.map((v) => (
                                     <tr key={v.id}>
-                                        <td><code className="small" title={v.id}>{v.id.slice(0, 8)}</code></td>
+                                        <td><code className="small">{v.id}</code></td>
                                         <td className="text-nowrap">{new Date(v.fecha).toLocaleString("es-CL")}</td>
                                         <td className="fw-semibold">
                                             {v.nombre}
@@ -135,7 +136,7 @@ export default function AdminVentas() {
                                         </td>
                                         <td className="text-end fw-semibold">${v.total.toLocaleString("es-CL")}</td>
                                         <td className="text-nowrap">
-                                            <span className={`${COLOR_ESTADO[v.estado]} me-2`}>{capitalizar(v.estado)}</span>
+                                            <span className={`${COLOR_ESTADO[v.estado]} me-2`}>{NOMBRE_ESTADO[v.estado]}</span>
                                             <select
                                                 aria-label={`Estado del pedido ${v.id}`}
                                                 className="form-select form-select-sm d-inline-block w-auto"
@@ -143,7 +144,7 @@ export default function AdminVentas() {
                                                 onChange={(e) => handleEstado(v, e.target.value as EstadoVenta)}
                                             >
                                                 {ESTADOS_VENTA.map((e) => (
-                                                    <option key={e} value={e}>{capitalizar(e)}</option>
+                                                    <option key={e} value={e}>{NOMBRE_ESTADO[e]}</option>
                                                 ))}
                                             </select>
                                         </td>

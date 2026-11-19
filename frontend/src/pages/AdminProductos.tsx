@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { getProductos, getProducto, saveProducto, deleteProducto } from "../data/catalogo";
-import type { Producto } from "../data/catalogo";
+import { useEffect, useState } from "react";
+import { obtenerProductos, obtenerCategorias, guardarProducto, eliminarProducto } from "../data/catalogo";
+import type { Producto, Categoria } from "../data/catalogo";
+import { mensajeError } from "../data/api";
 
 type FormState = {
     sku: string;
@@ -18,13 +19,30 @@ const emptyForm: FormState = {
 };
 
 export default function AdminProductos() {
-    const [productos, setProductos] = useState<Producto[]>(() => getProductos());
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [form, setForm] = useState<FormState>(emptyForm);
     const [editingSku, setEditingSku] = useState<string | null>(null);
+    const [error, setError] = useState('');
 
     const isEditing = editingSku !== null;
 
-    const refresh = () => setProductos(getProductos());
+    const refresh = async () => {
+        try {
+            setProductos(await obtenerProductos());
+            setError('');
+        } catch (err) {
+            setError(mensajeError(err));
+        }
+    };
+
+    // al abrir la pagina se cargan los productos y las categorias del backend
+    useEffect(() => {
+        refresh();
+        obtenerCategorias()
+            .then(setCategorias)
+            .catch((err) => setError(mensajeError(err)));
+    }, []);
 
     const resetForm = () => {
         setForm(emptyForm);
@@ -38,31 +56,31 @@ export default function AdminProductos() {
         setForm((f) => ({ ...f, [name]: value}));
     };
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
         const sku = form.sku.trim().toUpperCase();
 
-        if (!isEditing && getProducto(sku)) {
-            alert(`"${sku}" ya existe.`)
+        // el backend revisa que el SKU no este repetido y tenga formato AA000
+        try {
+            await guardarProducto({
+                sku,
+                name: form.name.trim(),
+                category: form.category,
+                stock: Number(form.stock),
+                price: Number(form.price),
+                image: form.image.trim(),
+                description: form.description.trim(),
+                // al crear se pone un detalle por defecto, al editar null = mantener los que tenia
+                longDescription: isEditing ? null : { Origen: "Chile" },
+            }, !isEditing);
+        } catch (err) {
+            alert(mensajeError(err));
             return;
         }
 
-        const existing = getProducto(sku);
-
-        saveProducto({
-            sku,
-            name: form.name.trim(),
-            category: form.category,
-            stock: Number(form.stock),
-            price: Number(form.price),
-            image: form.image.trim() || "/not-found.svg",
-            description: form.description.trim(),
-            longDescription: existing?.longDescription ?? { Origen: "Chile" },
-        });
-
         resetForm();
-        refresh();
+        await refresh();
         alert(`${sku} guardado correctamente`);
     };
 
@@ -79,11 +97,16 @@ export default function AdminProductos() {
         })
     }
 
-    const handleDelete = (sku: string) => {
+    const handleDelete = async (sku: string) => {
         if (!confirm(`¿Estás seguro de que deseas eliminar el producto ${sku}?`)) return;
-        deleteProducto(sku);
+        try {
+            await eliminarProducto(sku);
+        } catch (err) {
+            alert(mensajeError(err));
+            return;
+        }
         if (editingSku === sku) resetForm();
-        refresh();
+        await refresh();
     }
     
 
@@ -94,6 +117,8 @@ export default function AdminProductos() {
                     <h1 className="fw-bold">Panel de Administración de Productos</h1>
                     <Link to="/" className="btn btn-outline-secondary">Volver a la Tienda</Link >
                 </div>
+
+                {error && <div className="alert alert-danger">{error}</div>}
 
                 <div className="row g-4">
                     <div className="col-lg-4">
@@ -141,10 +166,9 @@ export default function AdminProductos() {
                                             onChange={handleChange}                                             
                                         >  
                                             <option value="" disabled>Selecciona una categoría</option>
-                                            <option value="Frutas">Frutas</option>
-                                            <option value="Verduras">Verduras</option>
-                                            <option value="Orgánicos">Orgánicos</option>
-                                            <option value="Lácteos">Lácteos</option>
+                                            {categorias.map((c) => (
+                                                <option key={c.id} value={c.nombre}>{c.nombre}</option>
+                                            ))}
                                         </select>
                                     </div>
 

@@ -59,6 +59,41 @@ export async function obtenerProducto(sku: string): Promise<Producto | undefined
     }
 }
 
+export type Categoria = {
+    id: number;
+    nombre: string;
+    descripcion: string | null;
+};
+
+export async function obtenerCategorias(): Promise<Categoria[]> {
+    const res = await api.get<Categoria[]>("/categorias");
+    return res.data;
+}
+
+// crea (POST) o edita (PUT) un producto en el backend.
+// al editar, si longDescription viene null el backend conserva los detalles que tenia
+export async function guardarProducto(producto: Omit<Producto, "longDescription"> & { longDescription: Record<string, string> | null }, esNuevo: boolean): Promise<void> {
+    const datos = {
+        sku: producto.sku,
+        nombre: producto.name,
+        categoria: producto.category,
+        precio: producto.price,
+        stock: producto.stock,
+        imagen: producto.image || null,
+        descripcion: producto.description || null,
+        detalles: producto.longDescription,
+    };
+    if (esNuevo) {
+        await api.post("/productos", datos);
+    } else {
+        await api.put(`/productos/${encodeURIComponent(producto.sku)}`, datos);
+    }
+}
+
+export async function eliminarProducto(sku: string): Promise<void> {
+    await api.delete(`/productos/${encodeURIComponent(sku)}`);
+}
+
 // --- lo de abajo es el catalogo viejo en localStorage, lo sigue usando AdminProductos ---
 
 const STORAGE_KEY = "CatalogoProductos";

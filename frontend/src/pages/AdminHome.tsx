@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { adminLinks } from "../data/adminLinks";
 import api, { type UsuarioApi } from "../data/api";
-import { getProductos } from "../data/catalogo";
-import { obtenerVentas } from "../data/ventas";
+import { obtenerProductos, type Producto } from "../data/catalogo";
+import { obtenerVentas, type Venta } from "../data/ventas";
 
 type Dato = {
     nombre: string;
@@ -72,15 +72,22 @@ function Tarjeta({ titulo, valor, icono }: { titulo: string; valor: number; icon
 }
 
 export default function AdminHome() {
-    // los usuarios vienen del backend, los productos y ventas todavia de localStorage
+    // todo viene del backend; si algo falla esa parte del dashboard muestra 0
     const [usuarios, setUsuarios] = useState<UsuarioApi[]>([]);
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [ventas, setVentas] = useState<Venta[]>([]);
 
     useEffect(() => {
         api.get<UsuarioApi[]>("/usuarios")
             .then((res) => setUsuarios(res.data))
-            .catch(() => setUsuarios([])); // si falla el dashboard muestra 0
+            .catch(() => setUsuarios([]));
+        obtenerProductos()
+            .then(setProductos)
+            .catch(() => setProductos([]));
+        obtenerVentas() // ya vienen de la mas nueva a la mas antigua
+            .then(setVentas)
+            .catch(() => setVentas([]));
     }, []);
-    const productos = getProductos();
 
     const totalAdmins = usuarios.filter((u) => u.rol === "ADMIN").length;
     const stockTotal = productos.reduce((suma, p) => suma + p.stock, 0);
@@ -88,10 +95,10 @@ export default function AdminHome() {
     const productosPorCategoria = contar(productos.map((p) => p.category));
     const usuariosPorRegion = contar(usuarios.map((u) => u.region || "Sin región"));
 
-    // ventas, las mas nuevas primero
-    const ventas = obtenerVentas().reverse();
-    const ingresosTotales = ventas.reduce((suma, v) => suma + v.total, 0);
-    const productosVendidos = ventas.reduce(
+    // las ventas canceladas no cuentan como ingresos ni productos vendidos
+    const ventasValidas = ventas.filter((v) => v.estado !== "CANCELADA");
+    const ingresosTotales = ventasValidas.reduce((suma, v) => suma + v.total, 0);
+    const productosVendidos = ventasValidas.reduce(
         (suma, v) => suma + v.productos.reduce((s, p) => s + p.quantity, 0), 0
     );
 

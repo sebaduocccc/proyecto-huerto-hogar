@@ -1,50 +1,86 @@
 import type { CarritoItem } from "../context/CarritoContext";
-import type { CheckoutDetails } from "./checkout";
+import api from "./api";
 
-export type EstadoVenta = "pendiente" | "enviado" | "entregado" | "cancelado";
-export const ESTADOS_VENTA: EstadoVenta[] = ["pendiente", "enviado", "entregado", "cancelado"];
+// estados que usa el backend (enum EstadoVenta)
+export type EstadoVenta = "CONFIRMADA" | "EN_PREPARACION" | "ENVIADA" | "ENTREGADA" | "CANCELADA";
+export const ESTADOS_VENTA: EstadoVenta[] = ["CONFIRMADA", "EN_PREPARACION", "ENVIADA", "ENTREGADA", "CANCELADA"];
 
+// texto para mostrar en pantalla
+export const NOMBRE_ESTADO: Record<EstadoVenta, string> = {
+    CONFIRMADA: "Confirmada",
+    EN_PREPARACION: "En preparación",
+    ENVIADA: "Enviada",
+    ENTREGADA: "Entregada",
+    CANCELADA: "Cancelada",
+};
+
+// venta tal como la devuelve el backend (VentaResponse)
+export type VentaApi = {
+    id: number;
+    fecha: string;
+    usuarioId: number | null;
+    nombre: string;
+    correo: string;
+    telefono: string | null;
+    direccion: string;
+    ciudad: string;
+    codigoPostal: string | null;
+    pais: string;
+    total: number;
+    estado: EstadoVenta;
+    items: {
+        sku: string;
+        nombreProducto: string;
+        imagen: string | null;
+        precioUnitario: number;
+        cantidad: number;
+        subtotal: number;
+    }[];
+};
+
+// venta como la usan las pantallas del frontend
 export type Venta = {
-    id: string;
+    id: number;
     fecha: string;
     nombre: string;
     correo: string;
-    idUsuario: string | null; // si no inicio sesion entonces null
+    idUsuario: number | null; // si no inicio sesion entonces null
     productos: CarritoItem[];
     total: number;
     estado: EstadoVenta;
 };
 
-const CLAVE_VENTAS = "phuertohogar_ventas";
-
-export function obtenerVentas(): Venta[] {
-    try {
-        const raw = JSON.parse(localStorage.getItem(CLAVE_VENTAS) ?? "[]") as Venta[];
-        return raw.map((v) => ({ ...v, estado: v.estado ?? "pendiente" }));
-    } catch (error) {
-        console.log("datos corruptos en ventas " + error);
-        return [];
-    }
+// convierte los productos de la venta al formato del carrito (name, price, quantity...)
+export function productosDeVenta(v: VentaApi): CarritoItem[] {
+    return v.items.map((i) => ({
+        sku: i.sku,
+        name: i.nombreProducto,
+        price: i.precioUnitario,
+        image: i.imagen || "/not-found.svg",
+        quantity: i.cantidad,
+    }));
 }
 
-export function guardarVenta(datos: CheckoutDetails, productos: CarritoItem[], total: number, idUsuario: string | null): void {
-    const ventas = obtenerVentas();
-
-    ventas.push({
-        id: "v_" + Date.now().toString(36),
-        fecha: datos.fechaCompra,
-        nombre: datos.nombre,
-        correo: datos.correo,
-        idUsuario: idUsuario,
-        productos: productos,
-        total: total,
-        estado: "pendiente"
-    });
-
-    localStorage.setItem(CLAVE_VENTAS, JSON.stringify(ventas));
+export function ventaDesdeApi(v: VentaApi): Venta {
+    return {
+        id: v.id,
+        fecha: v.fecha,
+        nombre: v.nombre,
+        correo: v.correo,
+        idUsuario: v.usuarioId,
+        productos: productosDeVenta(v),
+        total: v.total,
+        estado: v.estado,
+    };
 }
 
-export function cambiarEstadoVenta(id: string, estado: EstadoVenta): void {
-    const ventas = obtenerVentas().map((v) => (v.id === id ? { ...v, estado: estado } : v));
-    localStorage.setItem(CLAVE_VENTAS, JSON.stringify(ventas));
+// todas las ventas, de la mas nueva a la mas antigua (requiere permiso de ventas)
+export async function obtenerVentas(): Promise<Venta[]> {
+    const res = await api.get<VentaApi[]>("/ventas");
+    return res.data.map(ventaDesdeApi);
+}
+
+// el backend no deja cambiar una venta ENTREGADA o CANCELADA
+export async function cambiarEstadoVenta(id: number, estado: EstadoVenta): Promise<void> {
+    await api.patch(`/ventas/${id}/estado`, { estado });
 }
