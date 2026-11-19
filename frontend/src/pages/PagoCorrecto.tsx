@@ -80,7 +80,7 @@ export default function PagoCorrecto(){
                                                     <tr key={item.sku}>
                                                         <td>
                                                             <div className="d-flex align-items-center gap-3">
-                                                                <img src={item.image || '/src/assets/not-found.svg'} alt={item.name} style={{ width: '52px', objectFit: 'contain' }} />
+                                                                <img src={item.image || '/not-found.svg'} alt={item.name} style={{ width: '52px', objectFit: 'contain' }} />
                                                                 <span className="fw-semibold">{item.name}</span>
                                                             </div>
                                                         </td>

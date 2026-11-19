@@ -49,7 +49,7 @@ export default function Carrito() {
                                         <td>
                                             <div className='d-flex align-items-center gap-3'>
                                                 <img 
-                                                    src={item.image || "/src/assets/not-found.svg"}
+                                                    src={item.image || "/not-found.svg"}
                                                     alt={item.name}
                                                     style={{ width: "60px", objectFit: "contain" }}
                                                 />

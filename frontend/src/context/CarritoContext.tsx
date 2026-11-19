@@ -8,6 +8,7 @@ export type CarritoItem = {
     price: number;
     image: string;
     quantity: number;
+    stock?: number; // stock del producto cuando se agrego (viene del backend)
 };
 
 type CarritoContextValue = {
@@ -23,8 +24,6 @@ type CarritoContextValue = {
 
 const STORAGE_KEY = "carrito";
 
-const getStock = (sku: string) => getProducto(sku)?.stock ?? 0;
-
 function loadCarrito(): CarritoItem[] {
     try {
         const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
@@ -39,6 +38,10 @@ const CarritoContext = createContext<CarritoContextValue | null>(null);
 export function CarritoProvider({ children }: {children: ReactNode}) {
     const [items, setItems] = useState<CarritoItem[]>(loadCarrito);
 
+    // el stock se guarda en cada item; los carritos viejos que no lo tienen usan el catalogo de localStorage
+    const getStock = (sku: string) =>
+        items.find((i) => i.sku === sku)?.stock ?? getProducto(sku)?.stock ?? 0;
+
     useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }, [items]);
@@ -48,18 +51,18 @@ export function CarritoProvider({ children }: {children: ReactNode}) {
             const existing = prev.find((i) => i.sku === producto.sku);
             const quantity = Math.min(
                 (existing?.quantity ?? 0) + cantidad,
-                getStock(producto.sku)
+                producto.stock
             );
             
             if (quantity <= 0) return prev;
             
             if (existing){
                 return prev.map((i) =>
-                    (i.sku === producto.sku ? { ...i, quantity } : i)
+                    (i.sku === producto.sku ? { ...i, quantity, stock: producto.stock } : i)
                 );
             }
-            const {sku, name, price, image } = producto;
-            return [...prev, {sku, name, price, image, quantity }];
+            const {sku, name, price, image, stock } = producto;
+            return [...prev, {sku, name, price, image, quantity, stock }];
         });
     };
 
@@ -69,7 +72,7 @@ export function CarritoProvider({ children }: {children: ReactNode}) {
         setItems((prev) =>
             prev.map((i) =>
                 i.sku === sku
-                    ? { ...i, quantity: Math.max(1, Math.min(i.quantity + delta, getStock(sku))) }
+                    ? { ...i, quantity: Math.max(1, Math.min(i.quantity + delta, i.stock ?? getProducto(sku)?.stock ?? 0)) }
                     : i
             )
         );

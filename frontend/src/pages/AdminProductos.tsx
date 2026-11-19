@@ -56,7 +56,7 @@ export default function AdminProductos() {
             category: form.category,
             stock: Number(form.stock),
             price: Number(form.price),
-            image: form.image.trim() || "/src/assets/not-found.svg",
+            image: form.image.trim() || "/not-found.svg",
             description: form.description.trim(),
             longDescription: existing?.longDescription ?? { Origen: "Chile" },
         });
@@ -183,7 +183,7 @@ export default function AdminProductos() {
                                             name="image"
                                             type="text"
                                             className="form-control" 
-                                            placeholder="Ej: /img/not-found.svg"
+                                            placeholder="Ej: /productos/manzana-fuji.jpg"
                                             value={form.image}  
                                             onChange={handleChange}                                             
                                         />                                        

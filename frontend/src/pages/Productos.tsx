@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductoCard from "../components/ProductoCard";
-import { getProductos } from "../data/catalogo";
+import { obtenerProductos } from "../data/catalogo";
+import { mensajeError } from "../data/api";
 import type { Producto } from "../data/catalogo";
 import { useCarrito } from "../context/CarritoContext";
 import { Link, useSearchParams } from "react-router-dom";
@@ -9,7 +10,17 @@ const normalize = (s: string) =>
     s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 export default function Productos() {
-    const[productos] = useState(() => getProductos());
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState('');
+
+    // se cargan todos los productos del backend, el filtro se hace aca en el navegador
+    useEffect(() => {
+        obtenerProductos()
+            .then(setProductos)
+            .catch((err) => setError(mensajeError(err)))
+            .finally(() => setCargando(false));
+    }, []);
     const { addItem } = useCarrito();
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -62,7 +73,13 @@ export default function Productos() {
                 </div>
             </div>
             
-            {filtered.length === 0 ? (
+            {cargando ? (
+                <div className="text-center py-5">
+                    <div className="spinner-border text-success" role="status"></div>
+                </div>
+            ) : error ? (
+                <div className="alert alert-danger text-center">{error}</div>
+            ) : filtered.length === 0 ? (
                 <div className="text-center py-5">
                     <h3 className="text-muted">No se encontraron productos.</h3>
                     <Link to="/productos" className="btn btn-primary mt-3">

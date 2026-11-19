@@ -1,15 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProducto } from "../data/catalogo";
+import { obtenerProducto, type Producto } from "../data/catalogo";
+import { mensajeError } from "../data/api";
 import { useCarrito } from "../context/CarritoContext";
 
 export default function ProductosDetalles() {
     const {sku} = useParams<{sku: string}>();
     const {addItem} = useCarrito();
 
-    const producto = sku ? getProducto(sku) : undefined;
+    const [producto, setProducto] = useState<Producto | undefined>(undefined);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState('');
 
     const [cantidad, setCantidad] = useState(1);    
+
+    // se busca el producto en el backend cada vez que cambia el sku de la url
+    useEffect(() => {
+        if (!sku) return;
+        setCargando(true);
+        obtenerProducto(sku)
+            .then(setProducto)
+            .catch((err) => setError(mensajeError(err)))
+            .finally(() => setCargando(false));
+    }, [sku]);
+
+    if (cargando) {
+        return (
+            <div className="text-center py-5">
+                <div className="spinner-border text-success" role="status"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return <div className="alert alert-danger text-center my-5">{error}</div>;
+    }
 
     if (!producto) {
         return(

@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProductoCard from "../components/ProductoCard";
-import { getProductos } from "../data/catalogo";
+import { obtenerProductos } from "../data/catalogo";
 import type { Producto } from "../data/catalogo";
 import { useCarrito } from "../context/CarritoContext";
 import YoutubeEmbed from "../components/YoutubeEmbed";
 
 
 export default function Home() {
-    const [productos] = useState(()=> getProductos().slice(0,4));
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [cargando, setCargando] = useState(true);
+
+    // se cargan los productos del backend y se muestran los 4 primeros
+    useEffect(() => {
+        obtenerProductos()
+            .then((lista) => setProductos(lista.slice(0, 4)))
+            .catch(() => setProductos([]))
+            .finally(() => setCargando(false));
+    }, []);
     const {addItem} = useCarrito();
 
     const handleAdd = (producto: Producto, cantidad: number) => {
@@ -56,7 +65,11 @@ export default function Home() {
                     Nuestros productos más vendidos
                     <i className="fa-solid fa-seedling text-emerald ms-2"></i>
                 </h3>
-                {productos.length === 0 ? (
+                {cargando ? (
+                    <div className="text-center py-5">
+                        <div className="spinner-border text-success" role="status"></div>
+                    </div>
+                ) : productos.length === 0 ? (
                     <div className="text-center py-5">
                         <h3 className="text-muted">No hay productos disponibles.</h3>
                     </div>
