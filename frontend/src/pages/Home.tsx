@@ -37,7 +37,7 @@ export default function Home() {
                     <div className="col-lg-6 text-center order-1 order-lg-2">
                         <Link to="/productos">
                             <img 
-                                src="src/assets/huerto-hogar.webp" 
+                                src="/huerto-hogar.webp" 
                                 className="img-fluid shadow-sm 
                                 rounded" alt="Huerto Hogar"
                             />
