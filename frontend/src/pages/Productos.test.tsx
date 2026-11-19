@@ -1,15 +1,20 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CarritoProvider } from "../context/CarritoContext";
-import { getProductos } from "../data/catalogo";
+import type { Producto } from "../data/catalogo";
 import Productos from "./Productos";
 import userEvent from "@testing-library/user-event";
 
-// en los tests no hay backend: obtenerProductos devuelve el catalogo de ejemplo
-vi.mock("../data/catalogo", async (importOriginal) => {
-    const original = await importOriginal<typeof import("../data/catalogo")>();
-    return { ...original, obtenerProductos: async () => original.getProductos() };
-});
+// en los tests no hay backend: obtenerProductos devuelve estos productos de ejemplo
+const productosPrueba: Producto[] = [
+    { sku: "FR001", name: "Manzanas Fuji", category: "Frutas", price: 1200, stock: 10, image: "", description: "", longDescription: {} },
+    { sku: "VR001", name: "Zanahorias Orgánicas", category: "Verduras", price: 900, stock: 10, image: "", description: "", longDescription: {} },
+    { sku: "PL001", name: "Leche Entera", category: "Lácteos", price: 1000, stock: 10, image: "", description: "", longDescription: {} },
+];
+
+vi.mock("../data/catalogo", () => ({
+    obtenerProductos: async () => productosPrueba,
+}));
 
 beforeEach(() => {
     localStorage.clear();
@@ -28,7 +33,7 @@ function renderAt(url: string) {
 it("genera una tarjeta por producto", async () => {
     renderAt("/productos");
     const buttons = await screen.findAllByRole("button", { name: /añadir al carrito/i });
-    expect(buttons).toHaveLength(getProductos().length);
+    expect(buttons).toHaveLength(productosPrueba.length);
 });
 
 it("muestra el mensaje de que no hay productos", async () => {

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { getProducto, type Producto } from "../data/catalogo";
+import type { Producto } from "../data/catalogo";
 
 export type CarritoItem = {
     sku: string;
@@ -38,9 +38,12 @@ const CarritoContext = createContext<CarritoContextValue | null>(null);
 export function CarritoProvider({ children }: {children: ReactNode}) {
     const [items, setItems] = useState<CarritoItem[]>(loadCarrito);
 
-    // el stock se guarda en cada item; los carritos viejos que no lo tienen usan el catalogo de localStorage
-    const getStock = (sku: string) =>
-        items.find((i) => i.sku === sku)?.stock ?? getProducto(sku)?.stock ?? 0;
+    // el stock se guarda en cada item al agregarlo.
+    // los carritos viejos que no lo tienen no dejan subir la cantidad que ya tenian
+    const getStock = (sku: string) => {
+        const item = items.find((i) => i.sku === sku);
+        return item?.stock ?? item?.quantity ?? 0;
+    };
 
     useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -72,7 +75,7 @@ export function CarritoProvider({ children }: {children: ReactNode}) {
         setItems((prev) =>
             prev.map((i) =>
                 i.sku === sku
-                    ? { ...i, quantity: Math.max(1, Math.min(i.quantity + delta, i.stock ?? getProducto(sku)?.stock ?? 0)) }
+                    ? { ...i, quantity: Math.max(1, Math.min(i.quantity + delta, i.stock ?? i.quantity)) }
                     : i
             )
         );
